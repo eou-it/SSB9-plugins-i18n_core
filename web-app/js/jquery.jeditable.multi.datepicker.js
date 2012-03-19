@@ -36,24 +36,28 @@ var default_service_date_format='dd/MM/yyyy';
 var converters = {
     gregorianToIslamic: {
         format: {
-            url: 'islamicDate',
-            nameOfDateParam: 'dateString',
+            url: 'dateConverter',
+            nameOfDateParam: 'date',
             extraParams: {
                 test: 'dummyString',
-                fromDateFormatString: default_service_date_format,
-                toDateFormatString: default_service_date_format
+                fromDateFormat: default_service_date_format,
+                toDateFormat: default_service_date_format,
+                toULocale: 'en_US@calendar=islamic',
+                fromULocale: 'en_US@calendar=gregorian'
             }
         }
     },
 
     islamicToGregorian: {
         format: {
-            url: 'islamicDate/gregorian',
-            nameOfDateParam: 'dateString',
+            url: 'dateConverter',
+            nameOfDateParam: 'date',
             extraParams: {
                 test: 'dummyString',
-                fromDateFormatString: default_service_date_format,
-                toDateFormatString: default_service_date_format
+                fromDateFormat: default_service_date_format,
+                toDateFormat: default_service_date_format,
+                toULocale: 'en_US@calendar=gregorian',
+                fromULocale: 'en_US@calendar=islamic'
             }
         }
     }
@@ -67,7 +71,7 @@ $.multicalendar.setDefaults({
     defaultDateFormat : default_multicalendar_date_format,
     calendars:[default_calendar1, default_calendar2],
     firstDayOfTheWeek: 4,
-    isRTL: true
+    isRTL: false
 });
 
 // add :focus selector

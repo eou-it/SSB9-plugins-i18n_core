@@ -1,9 +1,10 @@
 ﻿(function($) {
 
 function MultiCalendarsPicker() {
-	this.calendarContainer = 'multiCalendarContainer',
-	this.calendarIdPrefix = 'multiCalendar',
+	this.calendarContainer = 'multiCalendarContainer';
+	this.calendarIdPrefix = 'multiCalendar';
 	this.TO = 'To';
+    this.calendarGregorian = 'gregorian';
 	
 	this._defaults = {
 		defaultCalendar: 'gregorian',
@@ -210,11 +211,9 @@ $.extend(MultiCalendarsPicker.prototype, {
 		}
 	},
 	
-	_showDateInCalendar : function(inst)
-	{
+	_showDateInCalendar : function(inst) {
 		var date = $(inst).val();
 		if(date != '') {
-			//set date
 			console.log(date);
 			
 			var calendarOptions = inst.settings;
@@ -227,7 +226,6 @@ $.extend(MultiCalendarsPicker.prototype, {
 					if(calendars[i] == defaultCalendar) {
 						$.calendars.picker.setDate($('#' + $.multicalendar.calendarIdPrefix + (i + 1) )[0], date, null, true);
 						$(inst).val(date);
-						
 					}
 					else {
 						var converterName = $.multicalendar._getConverterName(defaultCalendar, calendars[i]);
@@ -243,14 +241,14 @@ $.extend(MultiCalendarsPicker.prototype, {
 						  dataType: 'text',
 						  success: $.multicalendar._showDateInCalendarSuccessCallback(i, inst.id, date)
 						});
-						
 					}
+                    //$.multicalendar._adjustTodaysDateInCalendar(i, inst, calendars[i]);
 				}
 			}
 		}
 	},
- 
-	_registerEvents : function (inst) {
+
+    _registerEvents : function (inst) {
 		$(inst).focus( function (evt) {		
 			$.multicalendar._createDatePickerDOMStructure(inst);			
 			$.multicalendar._addCalendarsToDOM(inst);
