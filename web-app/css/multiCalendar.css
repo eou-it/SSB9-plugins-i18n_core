@@ -1,17 +1,45 @@
+/* ThemeRoller override style sheet for jQuery Calendars Picker v1.1.4. */
+.ui-datepicker {
+  display: block;
+}
+
+button.ui-datepicker-cmd {
+  height: 2em;
+}
+
+.ui-datepicker-cmd-prev {
+  position: static;
+  float: left; /*width: 30%;*/
+  height: auto;
+  margin-left: 1%;
+}
+
+.ui-datepicker-cmd-next {
+  position: static;
+  float: right; /*width: 30%;*/
+  height: auto;
+  margin-right: 1%;
+  text-align: right;
+}
+
+.ui-datepicker-cmd-current,
+.ui-datepicker-cmd-today {
+  float: left;
+  width: 37%;
+  text-align: center;
+}
+
+.ui-datepicker-row-break {
+  width: 100%;
+}
+
+.ui-datepicker-group {
+  float: left;
+  width: 17em;
+}
+
 #multiCalendarContainer {
-    z-index: 2;
-    position: absolute;
-    min-width: 500px;
-}
-
-#multiCalendarContainer > div{
-    float: left;
-}
-
-/*#multiCalendarContainer > div:last-child {
-    float: right;
-} */
-
-.direction-rtl {
-    direction: rtl;
+  z-index: 3000;
+  position: absolute;
+  min-width: 500px;
 }
