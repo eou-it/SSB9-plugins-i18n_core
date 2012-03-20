@@ -1,0 +1,17 @@
+#multiCalendarContainer {
+    z-index: 2;
+    position: absolute;
+    min-width: 500px;
+}
+
+#multiCalendarContainer > div{
+    float: left;
+}
+
+/*#multiCalendarContainer > div:last-child {
+    float: right;
+} */
+
+.direction-rtl {
+    direction: rtl;
+}
