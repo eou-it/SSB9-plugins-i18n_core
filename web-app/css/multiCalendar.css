@@ -43,3 +43,13 @@ button.ui-datepicker-cmd {
   position: absolute;
   min-width: 500px;
 }
+
+
+#multiCalendarContainer > div{
+    float: left;
+}
+
+#multiCalendarContainer .ui-datepicker{
+display:block;
+}
+
