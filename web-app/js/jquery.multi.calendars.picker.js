@@ -6,6 +6,7 @@ function MultiCalendarsPicker() {
 	this.TO = 'To';
     this.CALENDAR_GREGORIAN = 'gregorian';
     this.DEFAULT_DATE_FORMAT = 'mm/dd/yyyy';
+    this.JAVA_DATE_FORMAT = 'MM/dd/yyyy';
 
 	this._defaults = {
 		defaultCalendar: this.CALENDAR_GREGORIAN,

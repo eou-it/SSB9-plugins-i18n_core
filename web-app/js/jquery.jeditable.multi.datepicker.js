@@ -39,7 +39,7 @@ var default_calendar3='gregorian';
 //var default_multicalendar_date_format='mm/dd/yyyy';
 
 //This is a mandate for widget. It needs can only accept dates that are in integer format.
-var default_service_date_format='MM/dd/yyyy';
+//var default_service_date_format='MM/dd/yyyy';
 
 var converters = {
     gregorianToIslamic: {
@@ -48,8 +48,8 @@ var converters = {
             nameOfDateParam: 'date',
             extraParams: {
                 calendar: 'islamic-civil',
-                fromDateFormat: default_service_date_format,
-                toDateFormat: default_service_date_format,
+                fromDateFormat: $.multicalendar.JAVA_DATE_FORMAT,
+                toDateFormat: $.multicalendar.JAVA_DATE_FORMAT,
                 toULocale: 'en_US@calendar=islamic-civil',
                 fromULocale: 'en_US@calendar=gregorian'
             }
@@ -62,8 +62,8 @@ var converters = {
             nameOfDateParam: 'date',
             extraParams: {
                 calendar: 'islamic-civil',
-                fromDateFormat: default_service_date_format,
-                toDateFormat: default_service_date_format,
+                fromDateFormat: $.multicalendar.JAVA_DATE_FORMAT,
+                toDateFormat: $.multicalendar.JAVA_DATE_FORMAT,
                 toULocale: 'en_US@calendar=gregorian',
                 fromULocale: 'en_US@calendar=islamic-civil'
             }
