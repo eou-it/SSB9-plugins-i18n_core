@@ -30,8 +30,16 @@ $.calendars.picker.setDefaults({
 var default_calendar='islamic';
 var default_calendar1='islamic';
 var default_calendar2='gregorian';
-var default_multicalendar_date_format='dd/mm/yyyy';
-var default_service_date_format='dd/MM/yyyy';
+var default_calendar3='gregorian';
+
+//var default_calendar1='gregorian';
+//var default_calendar2='islamic';
+
+
+//var default_multicalendar_date_format='mm/dd/yyyy';
+
+//This is a mandate for widget. It needs can only accept dates that are in integer format.
+var default_service_date_format='MM/dd/yyyy';
 
 var converters = {
     gregorianToIslamic: {
@@ -39,10 +47,10 @@ var converters = {
             url: 'dateConverter',
             nameOfDateParam: 'date',
             extraParams: {
-                test: 'dummyString',
+                calendar: 'islamic-civil',
                 fromDateFormat: default_service_date_format,
                 toDateFormat: default_service_date_format,
-                toULocale: 'en_US@calendar=islamic',
+                toULocale: 'en_US@calendar=islamic-civil',
                 fromULocale: 'en_US@calendar=gregorian'
             }
         }
@@ -53,23 +61,22 @@ var converters = {
             url: 'dateConverter',
             nameOfDateParam: 'date',
             extraParams: {
-                test: 'dummyString',
+                calendar: 'islamic-civil',
                 fromDateFormat: default_service_date_format,
                 toDateFormat: default_service_date_format,
                 toULocale: 'en_US@calendar=gregorian',
-                fromULocale: 'en_US@calendar=islamic'
+                fromULocale: 'en_US@calendar=islamic-civil'
             }
         }
     }
 };
 
-//var dateFormats = {islamic: 'yyyy/mm/dd'};
+var dateFormats = {islamic: 'dd/M/yyyy'};
 $.multicalendar.setDefaults({
     defaultCalendar: default_calendar,
     converters: converters,
-    //dateFormats: dateFormats,
-    defaultDateFormat : default_multicalendar_date_format,
-    calendars:[default_calendar1, default_calendar2],
+    dateFormats: dateFormats,
+    calendars:[ default_calendar1, default_calendar2 ],
     firstDayOfTheWeek: 4,
     isRTL: false
 });

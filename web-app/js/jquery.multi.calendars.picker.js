@@ -1,30 +1,21 @@
 ﻿(function($) {
 
-
-//$.calendars.baseCalendar.prototype.originalToday = $.calendars.baseCalendar.prototype.today;
-//$.calendars.baseCalendar.prototype.today = function() {
-//	var cDate = $.multicalendar._defaults.todayDate[(this.local.name).toLowerCase()];
-//    if(!cDate) {
-//        cDate = $.calendars.baseCalendar.prototype.originalToday();
-//    }
-//    return cDate;
-//}
-
 function MultiCalendarsPicker() {
 	this.calendarContainer = 'multiCalendarContainer';
 	this.calendarIdPrefix = 'multiCalendar';
 	this.TO = 'To';
-    this.calendarGregorian = 'gregorian';
+    this.CALENDAR_GREGORIAN = 'gregorian';
+    this.DEFAULT_DATE_FORMAT = 'mm/dd/yyyy';
 
 	this._defaults = {
-		defaultCalendar: 'gregorian',
-		defaultDateFormat : 'mm/dd/yyyy',
+		defaultCalendar: this.CALENDAR_GREGORIAN,
+		defaultDateFormat : this.DEFAULT_DATE_FORMAT,
 		converters: [],
 		dateFormats: {},
 		orientation: 'horizontal',
 		language: 'en',
 		isRTL: false,
-		calendars: 'gregorian',
+		calendars: this.CALENDAR_GREGORIAN,
 		firstDayOfTheWeek: 0,
         todaysDates:[]
 	};
@@ -145,6 +136,37 @@ $.extend(MultiCalendarsPicker.prototype, {
 		
 		return calendarOptions.converters[converterName].format;	
 	},
+
+     _convertDateBetweenCalendarFormats_old : function(fromCalendar, toCalendar, date) {
+        var toCalendarObj = $.calendars.calendars[toCalendar].prototype;
+
+        var fromCalLocalProps = $.calendars._localCals[fromCalendar + '-'].local;
+        //$.extend(fromCalendarObj, fromCalendarObj.local? {} : {local: fromCalLocalProps});
+        var cDateObj = toCalendarObj.parseDate(fromCalLocalProps.dateFormat, date, toCalendarObj.regional['']);
+
+        var toCalLocalProps = $.calendars._localCals[toCalendar + '-'].local;
+        //$.extend(cDateObj._calendar, toCalendarObj);
+        $.extend(toCalendarObj, toCalendarObj.local? {} : {local: toCalLocalProps});
+        date = toCalendarObj.formatDate(toCalendarObj.local.dateFormat, cDateObj);
+        return date;
+    },
+
+    _convertDateBetweenCalendarFormats : function(calendar, fromFormat, toFormat, date) {
+        var calendarObj = $.calendars.calendars[calendar].prototype;
+
+        var calLocalProps = $.calendars._localCals[calendar + '-'].local;
+        var cDateObj = calendarObj.parseDate(fromFormat, date, calLocalProps);
+
+        $.extend(calendarObj, calendarObj.local? {} : {local: calLocalProps});
+        date = calendarObj.formatDate(toFormat, cDateObj);
+        return date;
+    },
+
+    _getDateFormat : function (calendar) {
+        var calendarProps = $.calendars._localCals[calendar + '-'].local;
+        return calendarProps.dateFormat;
+    },
+
 	
 	_formatDateAsAService : function(calendarOrder, inst, date) {
 		var calendarOptions = inst.settings;
@@ -155,6 +177,13 @@ $.extend(MultiCalendarsPicker.prototype, {
 		var formatProps = calendarOptions.converters[converterName].format;
 		var nameOfDateParam = formatProps.nameOfDateParam;
 
+        var fromFormat = $.multicalendar._getDateFormat(selectedCalendar);
+        var toFormat = calendarOptions.defaultDateFormat;
+        date = $.multicalendar._convertDateBetweenCalendarFormats(selectedCalendar, fromFormat, toFormat, date);
+
+        fromFormat = calendarOptions.defaultDateFormat;
+        toFormat = $.multicalendar._getDateFormat(defaultCalendar);
+
         var jsonString = '{"' + nameOfDateParam + '": "' + date +'"}';
 		var data = $.parseJSON(jsonString);
 		data = $.extend(data, formatProps.extraParams); 
@@ -162,14 +191,21 @@ $.extend(MultiCalendarsPicker.prototype, {
 		  url: formatProps.url,
 		  data: data,
 		  dataType: 'text',
-		  success: function(date){
-			  $(inst).val(date);
-		  }
+          success: $.multicalendar._formatDateAsAServiceSuccess(defaultCalendar, fromFormat, toFormat, inst)
 		});
 	
 	},
-	
-	_adjustPositionOfCalendar : function(inst) {
+
+    _formatDateAsAServiceSuccess: function (selectedCalendar, fromFormat, toFormat, inst) {
+       var calendarOptions = inst.settings;
+       return function (date) {
+
+          date = $.multicalendar._convertDateBetweenCalendarFormats(selectedCalendar, fromFormat, toFormat, date)
+          $(inst).val(date);
+       }
+    },
+
+    _adjustPositionOfCalendar : function(inst) {
             var actualScreenHeightAvailable = $(window).height() - $('#footerApplicationBar').outerHeight();
             var actualScreenWidthAvailable = $(window).width();
 			var instPosition = $(inst).offset();
@@ -200,33 +236,45 @@ $.extend(MultiCalendarsPicker.prototype, {
 		this._adjustPositionOfCalendar(inst);
 	},
 	
-	_showDateInCalendarSuccessCallback : function (calendarIndex, inputElementId, originalDate) {
+	_showDateInCalendarSuccessCallback : function (selectedCalendar, fromFormat, toFormat, calendarIndex, inputElementId, originalDate) {
 		return function(date) {
-			$.calendars.picker.setDate($('#' + $.multicalendar.calendarIdPrefix + (calendarIndex + 1) )[0], date, null, true);
+
+            date = $.multicalendar._convertDateBetweenCalendarFormats(selectedCalendar, fromFormat, toFormat, date);
+           	$.calendars.picker.setDate($('#' + $.multicalendar.calendarIdPrefix + (calendarIndex + 1) )[0], date, null, true);
 			$('#' + inputElementId).val(originalDate);
 		}
 	},
-	
+
+
 	_showDateInCalendar : function(inst) {
 		var date = $(inst).val();
+
 		if(date != '') {
 
 			var calendarOptions = inst.settings;
 			var defaultCalendar = calendarOptions.defaultCalendar;
 			var calendars = calendarOptions.calendars;
 			var numberOfCalendars = calendars.length;
+            var originalDate = date;
 			
 			if(calendars && numberOfCalendars > 0) {
 				for(var i = 0; i < numberOfCalendars; i++) {
 					if(calendars[i] == defaultCalendar) {
-						$.calendars.picker.setDate($('#' + $.multicalendar.calendarIdPrefix + (i + 1) )[0], date, null, true);
-						$(inst).val(date);
+						$.calendars.picker.setDate($('#' + $.multicalendar.calendarIdPrefix + (i + 1) )[0], originalDate, null, true);
+						$(inst).val(originalDate);
 					}
 					else {
 						var converterName = $.multicalendar._getConverterName(defaultCalendar, calendars[i]);
 						var formatProps = calendarOptions.converters[converterName].format;
 						var nameOfDateParam = formatProps.nameOfDateParam;
-						
+
+                        var fromFormat = $.multicalendar._getDateFormat(defaultCalendar);
+                        var toFormat = calendarOptions.defaultDateFormat;
+                        date = $.multicalendar._convertDateBetweenCalendarFormats(defaultCalendar, fromFormat, toFormat, date);
+
+                        fromFormat = calendarOptions.defaultDateFormat;;
+                        toFormat = $.multicalendar._getDateFormat(calendars[i]);
+
 						var jsonString = '{"' + nameOfDateParam + '": "' + date +'"}';
 						var data = $.parseJSON(jsonString);
 						data = $.extend(data, formatProps.extraParams); 
@@ -234,7 +282,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 						  url: formatProps.url,
 						  data: data,
 						  dataType: 'text',
-						  success: $.multicalendar._showDateInCalendarSuccessCallback(i, inst.id, date)
+						  success: $.multicalendar._showDateInCalendarSuccessCallback(calendars[i], fromFormat, toFormat, i, inst.id, originalDate)
 						});
 					}
 				}
@@ -256,16 +304,16 @@ $.extend(MultiCalendarsPicker.prototype, {
 		var calendars = calendarOptions.calendars;
 		var numberOfCalendars = calendars.length;
 
-        var calendar = $.calendars.calendars[$.multicalendar.calendarGregorian].prototype;
+        var calendar = $.calendars.calendars[$.multicalendar.CALENDAR_GREGORIAN].prototype;
         var dateFormat = calendarOptions.defaultDateFormat;
 
-		var cDateObj = calendar.parseDate(dateFormat, $.calendars.newDate().formatDate(), calendar.regional[''])
-        $.multicalendar._defaults.todaysDates[$.multicalendar.calendarGregorian] = cDateObj;
+		var cDateObj = calendar.parseDate(dateFormat, $.calendars.newDate().formatDate(dateFormat), calendar.regional[''])
+        $.multicalendar._defaults.todaysDates[$.multicalendar.CALENDAR_GREGORIAN] = cDateObj;
 
 		if(calendars && numberOfCalendars > 0) {
 			for(var i = 0; i < numberOfCalendars; i++) {
-				if(this.calendarGregorian != calendars[i]) {
-					var converterName = $.multicalendar._getConverterName(this.calendarGregorian, calendars[i]);
+				if(this.CALENDAR_GREGORIAN != calendars[i]) {
+					var converterName = $.multicalendar._getConverterName(this.CALENDAR_GREGORIAN, calendars[i]);
 					var formatProps = calendarOptions.converters[converterName].format;
 
 					var nameOfDateParam = formatProps.nameOfDateParam;
@@ -341,6 +389,5 @@ $.fn.multiDatePicker = function(opts) {
 }
 
 $.multicalendar = new MultiCalendarsPicker(); // singleton instance
-//$.multicalendar.initialized = false;
 
 })(jQuery);
