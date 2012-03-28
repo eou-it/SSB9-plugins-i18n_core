@@ -8,3 +8,5 @@
 //
 //    ant.mkdir(dir:"${basedir}/grails-app/jobs")
 //
+
+ant.move(file:"${pluginBasedir}/src/java/metainfo/zk/lang-addon.xml", tofile:"${basedir}/web-app/WEB-INF/i18n-core-lang-addon.xml", overwrite:"true")
