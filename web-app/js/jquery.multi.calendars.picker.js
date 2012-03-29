@@ -21,7 +21,7 @@ function MultiCalendarsPicker() {
         todaysDates:[]
 	};
 	
-	$(document).mousedown({calendarContainer: this.calendarContainer}, this._checkExternalClick);
+	$(document).mousedown(this._checkExternalClick);
 }
 
 $.extend(MultiCalendarsPicker.prototype, {
@@ -353,7 +353,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 	},
 	
 	_checkExternalClick: function(event) {
-		var clickedOutsideCalendar = $(event.target).parents('#' + event.data.calendarContainer).length == 0
+		var clickedOutsideCalendar = $(event.target).parents('#' + this.calendarContainer).length == 0
 		                                && !$(event.target).hasClass($.multicalendar._markerClass);//,
         if(clickedOutsideCalendar) {
             $.multicalendar._hideCalendar();
