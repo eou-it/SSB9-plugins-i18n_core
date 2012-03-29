@@ -1,0 +1,25 @@
+<language-addon>
+    <addon-name>i18n-core</addon-name>
+    <language-name>xul/html</language-name>
+
+    <javascript src="~./js/calendars/jquery.calendars.js" />
+    <javascript src="~./js/calendars/jquery.calendars.plus.js" />
+    <javascript src="~./js/calendars/jquery.calendars.picker.js" />
+    <javascript src="~./js/calendars/jquery.calendars.picker.ext.js" />
+    <javascript src="~./js/calendars/jquery.calendars.islamic.js" />
+
+    <javascript src="~./js/jquery.multi.calendars.picker.js" />
+    <javascript src="~./js/jquery.multi.calendars.picker.ext.js" />
+    <javascript src="~./js/multiCalendar-defaults.js" />
+    <!--The line below was a fix introduced for spinner control of zk-grails version 1.0.4-->
+    <!--Commenting this out as a part of upgrade to zk-grails version 1.0.6-->
+    <!--<javascript src="~./js/zk/spinner_bugfix.js"/>-->
+    <version>
+        <version-class>com.sungardhe.common.ui.zk.inp.Version</version-class>
+        <version-uid>0.0.1</version-uid>
+    </version>
+
+    <stylesheet href="~./css/multiCalendar.css" type="text/css"/>
+
+</language-addon>
+
