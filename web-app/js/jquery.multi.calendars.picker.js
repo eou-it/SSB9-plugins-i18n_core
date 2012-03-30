@@ -4,9 +4,11 @@ function MultiCalendarsPicker() {
 	this.calendarContainer = 'multiCalendarContainer';
 	this.calendarIdPrefix = 'multiCalendar';
 	this.TO = 'To';
+    this.VALID_CALENDAR_NAMES = ['gregorian', 'islamic'];
     this.CALENDAR_GREGORIAN = 'gregorian';
     this.DEFAULT_DATE_FORMAT = 'mm/dd/yyyy';
     this.JAVA_DATE_FORMAT = 'MM/dd/yyyy';
+    this._CAL_LOCALE_PARAMS_THAT_ARE_ARRAYS = ['epochs', 'monthNames', 'monthNamesShort', 'dayNames', 'dayNamesShort', 'dayNamesMin'];
 
 	this._defaults = {
 		defaultCalendar: this.CALENDAR_GREGORIAN,
@@ -26,11 +28,6 @@ function MultiCalendarsPicker() {
 
 $.extend(MultiCalendarsPicker.prototype, {
 	_markerClass: 'hasMultiCalendarPicker',
-	
-	setDefaults: function(settings) {
-		$.extend(this._defaults, settings || {});
-		return this;
-	},
 	
 	_createDatePickerDOMStructure : function(inst) {
 		
@@ -201,7 +198,7 @@ $.extend(MultiCalendarsPicker.prototype, {
        var calendarOptions = inst.settings;
        return function (date) {
 
-          date = $.multicalendar._convertDateBetweenCalendarFormats(selectedCalendar, fromFormat, toFormat, date)
+          date = $.multicalendar._convertDateBetweenCalendarFormats(selectedCalendar, fromFormat, toFormat, date);
           $(inst).val(date);
        }
     },
@@ -271,7 +268,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 
                         var fromFormat = $.multicalendar._getDateFormat(defaultCalendar);
                         var toFormat = calendarOptions.defaultDateFormat;
-                        date = $.multicalendar._convertDateBetweenCalendarFormats(defaultCalendar, fromFormat, toFormat, date);
+                        date = $.multicalendar._convertDateBetweenCalendarFormats(defaultCalendar, fromFormat, toFormat, originalDate);
 
                         fromFormat = calendarOptions.defaultDateFormat;;
                         toFormat = $.multicalendar._getDateFormat(calendars[i]);
@@ -353,7 +350,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 	},
 	
 	_checkExternalClick: function(event) {
-		var clickedOutsideCalendar = $(event.target).parents('#' + this.calendarContainer).length == 0
+		var clickedOutsideCalendar = $(event.target).parents('#' + $.multicalendar.calendarContainer).length == 0
 		                                && !$(event.target).hasClass($.multicalendar._markerClass);//,
         if(clickedOutsideCalendar) {
             $.multicalendar._hideCalendar();
@@ -362,7 +359,52 @@ $.extend(MultiCalendarsPicker.prototype, {
 	
 	_getCalendarOrder: function (id) {
 		return parseInt(id.replace($.multicalendar.calendarIdPrefix,'')) - 1;
-	}
+	},
+
+    setDefaults: function(settings) {
+		$.extend(this._defaults, settings || {});
+		return this;
+	},
+
+    _splitString: function(string , char) {
+        var splitArr = string.split(char);
+        for(var i = 0; i < splitArr.length; i++) {
+             splitArr[i] = splitArr[i].trim();
+        }
+        return splitArr;
+    },
+
+    _processCalendarLocaleProps : function (options) {
+        if(options.calendars && options.calendarLocaleProps) {
+            for(var i = 0; i < options.calendars.length; i++) {
+                if(options.calendarLocaleProps[options.calendars[i]]) {
+                    var calendarLocaleProps = options.calendarLocaleProps[options.calendars[i]];
+
+                    for(var key in calendarLocaleProps) {
+                        var calPropValues = calendarLocaleProps[key];
+                        if($.inArray(key, $.multicalendar._CAL_LOCALE_PARAMS_THAT_ARE_ARRAYS) != -1 && calPropValues.indexOf(key) == -1) {
+                            calendarLocaleProps[key] = this._splitString(calPropValues, ',');
+                        }
+                        else {
+                            delete calendarLocaleProps[key];
+                        }
+                    }
+
+                    var localeCalendar = $.calendars.calendars[options.calendars[i]];
+                    $.extend(localeCalendar.prototype.regional[''], calendarLocaleProps);
+                }
+            }
+        }
+    },
+
+    _removeInvalidCalendars: function (calendars) {
+        for(var i = 0; i < calendars.length; i++) {
+            if(!($.inArray(calendars[i], $.multicalendar.VALID_CALENDAR_NAMES) != -1 )) {
+                delete calendars[i];
+            }
+        }
+        return calendars;
+    }
 });
 
 $.fn.multiDatePicker = function(opts) {
@@ -372,13 +414,19 @@ $.fn.multiDatePicker = function(opts) {
 		options.calendars = [options.calendars];
 	}
 	else {
-		if(options.isRTL) {
-			var calendars = $.extend([], options.calendars);
-			for(var i = options.calendars.length - 1, j = 0; i >= 0; i--, j++) {
-				options.calendars[j] = calendars[i];
-			}
+        var calendars = $.extend([], $.multicalendar._removeInvalidCalendars(options.calendars));
+        var newCalendarsList = new Array();
+		for(var i = 0, j = 0; i < calendars.length; i++) {
+            if(calendars[i] && calendars[i].trim() != '') {
+                newCalendarsList[j] = calendars[i];
+                j++;
+            }
+
 		}
+        options.calendars = newCalendarsList;
 	}
+
+    $.multicalendar._processCalendarLocaleProps(options);
 
     $.multicalendar._getTodayDates(options);
 
