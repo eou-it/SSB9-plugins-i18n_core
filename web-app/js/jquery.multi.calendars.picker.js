@@ -12,7 +12,8 @@ function MultiCalendarsPicker() {
 
 	this._defaults = {
 		defaultCalendar: this.CALENDAR_GREGORIAN,
-		defaultDateFormat : this.DEFAULT_DATE_FORMAT,
+		defaultDateFormat: this.DEFAULT_DATE_FORMAT,
+        displayDateFormat: this.DEFAULT_DATE_FORMAT,
 		converters: [],
 		dateFormats: {},
 		orientation: 'horizontal',
@@ -54,7 +55,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 		if(calendars && numberOfCalendars > 0) {
 			for(var i = 0; i < numberOfCalendars; i++) {
 				var dateFormat = calendarOptions.dateFormats[calendars[i]];
-				dateFormat = dateFormat ? dateFormat : calendarOptions.defaultDateFormat;
+				dateFormat = dateFormat ? dateFormat : ( calendarOptions.displayDateFormat ? calendarOptions.displayDateFormat : calendarOptions.defaultDateFormat);
 
                 var isRTL = false;
                 if(calendarOptions.isRTL && calendarOptions.isRTL == true) {
@@ -270,7 +271,7 @@ $.extend(MultiCalendarsPicker.prototype, {
                         var toFormat = calendarOptions.defaultDateFormat;
                         date = $.multicalendar._convertDateBetweenCalendarFormats(defaultCalendar, fromFormat, toFormat, originalDate);
 
-                        fromFormat = calendarOptions.defaultDateFormat;;
+                        fromFormat = calendarOptions.defaultDateFormat;
                         toFormat = $.multicalendar._getDateFormat(calendars[i]);
 
 						var jsonString = '{"' + nameOfDateParam + '": "' + date +'"}';

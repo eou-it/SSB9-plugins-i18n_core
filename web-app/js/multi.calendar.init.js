@@ -45,8 +45,8 @@ $(document).ready(function() {
                 nameOfDateParam: 'date',
                 extraParams: {
                     calendar: 'islamic-civil',
-                    fromDateFormat: $.multicalendar.JAVA_DATE_FORMAT,
-                    toDateFormat: $.multicalendar.JAVA_DATE_FORMAT,
+                    fromDateFormat: $.i18n.prop("default.date.format"),
+                    toDateFormat: $.i18n.prop("default.date.format"),
                     toULocale: 'en_US@calendar=islamic-civil',
                     fromULocale: 'en_US@calendar=gregorian'
                 }
@@ -59,8 +59,8 @@ $(document).ready(function() {
                 nameOfDateParam: 'date',
                 extraParams: {
                     calendar: 'islamic-civil',
-                    fromDateFormat: $.multicalendar.JAVA_DATE_FORMAT,
-                    toDateFormat: $.multicalendar.JAVA_DATE_FORMAT,
+                    fromDateFormat: $.i18n.prop("default.date.format"),
+                    toDateFormat: $.i18n.prop("default.date.format"),
                     toULocale: 'en_US@calendar=gregorian',
                     fromULocale: 'en_US@calendar=islamic-civil'
                 }
@@ -68,13 +68,14 @@ $(document).ready(function() {
         }
     };
 
-    var dateJsonString = '{"' + default_calendar1 + '": "' + calendar1_date_format +'", "' + default_calendar2 + '": "' + calendar2_date_format +'"}';
-    var dateFormats = $.parseJSON(dateJsonString);
+    //var dateJsonString = '{"' + default_calendar1 + '": "' + calendar1_date_format +'", "' + default_calendar2 + '": "' + calendar2_date_format +'"}';
+    //var dateFormats = $.parseJSON(dateJsonString);
 
     $.multicalendar.setDefaults({
         defaultCalendar: default_calendar,
         converters: converters,
-        dateFormats: dateFormats,
+        defaultDateFormat: $.i18n.prop("js.datepicker.dateFormat"),
+        displayDateFormat: $.i18n.prop("js.datepicker.dateFormat.display"),
         calendars:[ default_calendar1, default_calendar2 ],
         isRTL: $.i18n.prop("default.language.direction"),
         calendarLocaleProps: calendarLocaleProps
