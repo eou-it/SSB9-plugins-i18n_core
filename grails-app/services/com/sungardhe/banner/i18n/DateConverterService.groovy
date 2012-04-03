@@ -30,9 +30,9 @@ class DateConverterService {
     }
 
 
-    String convert(String fromDateString, String fromULocaleString = null, String toULocaleString = null, String fromDateFormatString = null, String toDateFormatString = null, String adjustDays = null) {
+    def convert(def fromDateValue, String fromULocaleString = null, String toULocaleString = null, String fromDateFormatString = null, String toDateFormatString = null, String adjustDays = null) {
 
-        assert fromDateString
+        assert fromDateValue
 
         String toDateString = ""
 
@@ -43,11 +43,17 @@ class DateConverterService {
             if (!fromULocaleString) fromULocaleString = getDefaultFromULocaleString()
             if (!toULocaleString) toULocaleString = getDefaultToULocaleString()
 
+            Date fromDate
+
             //String fromULocaleString = fromLocaleString + "@calendar=" + fromCalendarString
-            ULocale fromULocale = new ULocale(fromULocaleString)
-            Calendar fromCalendar = Calendar.getInstance(fromULocale);
-            com.ibm.icu.text.DateFormat fromDateFormat = fromCalendar.handleGetDateFormat(fromDateFormatString, fromULocale)
-            Date fromDate = fromDateFormat.parse(fromDateString)
+            if(fromDateValue instanceof String) {
+                ULocale fromULocale = new ULocale(fromULocaleString)
+                Calendar fromCalendar = Calendar.getInstance(fromULocale);
+                com.ibm.icu.text.DateFormat fromDateFormat = fromCalendar.handleGetDateFormat(fromDateFormatString, fromULocale)
+                fromDate = fromDateFormat.parse(fromDateValue)
+            } else if ( fromDateValue instanceof Date){
+                fromDate = fromDateValue
+            }
 
             //String toULocaleString = toLocaleString + "@calendar=" + toCalendarString
             ULocale toULocale = new ULocale(toULocaleString)
@@ -57,7 +63,12 @@ class DateConverterService {
             if (adjustDays) toCalendar = adjustDate(toCalendar, adjustDays)
 
             com.ibm.icu.text.DateFormat toDateFormat = toCalendar.handleGetDateFormat(toDateFormatString, toULocale)
-            toDateString = toDateFormat.format(toCalendar)
+            if(fromDateValue instanceof Date){
+                return toCalendar.getTime()
+            } else {
+                toDateString = toDateFormat.format(toCalendar)
+                return toDateString
+            }
 
         } catch (Exception exception) {
             String errorString = "Unable to perform conversion --  fromDateString: " + fromDateString + ", fromULocaleString: " + fromULocaleString + ", toULocaleString: " + toULocaleString + ", fromDateFormatString: " + fromDateFormatString + ", toDateFormatString: " + toDateFormatString
@@ -67,21 +78,21 @@ class DateConverterService {
     }
 
 
-    private String getDefaultToULocaleString() {
+    public String getDefaultToULocaleString() {
         String property = localizerService(code: "default.date.conversion.to.ULocale")
         if (!property) property = "en_US@calendar=gregorian"
         return property
     }
 
 
-    private String getDefaultFromULocaleString() {
+    public String getDefaultFromULocaleString() {
         String property = localizerService(code: "default.date.conversion.from.ULocale")
         if (!property) property = "en_US@calendar=gregorian"
         return property
     }
 
 
-    private String getDefaultToDateFormatString() {
+    public String getDefaultToDateFormatString() {
         String property = localizerService(code: "default.date.conversion.to.format")
         if (!property) property = localizerService(code: "default.date.format")
         if (!property) property = "MM/dd/yyyy"
@@ -91,7 +102,7 @@ class DateConverterService {
     }
 
 
-    private String getDefaultFromDateFormatString() {
+    public String getDefaultFromDateFormatString() {
         String property = localizerService(code: "default.date.conversion.from.format")
         if (!property) property = localizerService(code: "default.date.format")
         if (!property) property = "MM/dd/yyyy"
