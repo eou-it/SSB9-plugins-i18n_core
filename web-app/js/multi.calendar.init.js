@@ -17,8 +17,6 @@ $(document).ready(function() {
     var default_calendar=$.i18n.prop("default.calendar");
     var default_calendar1=$.i18n.prop("default.calendar1");
     var default_calendar2=$.i18n.prop("default.calendar2");
-    var calendar1_date_format=$.i18n.prop("default.calendar1.date.format");
-    var calendar2_date_format=$.i18n.prop("default.calendar2.date.format");
 
     var islamicCalendarLocaleProps = {
         monthNames: $.i18n.prop("default.calendar1.monthNames"),
@@ -67,9 +65,6 @@ $(document).ready(function() {
             }
         }
     };
-
-    //var dateJsonString = '{"' + default_calendar1 + '": "' + calendar1_date_format +'", "' + default_calendar2 + '": "' + calendar2_date_format +'"}';
-    //var dateFormats = $.parseJSON(dateJsonString);
 
     $.multicalendar.setDefaults({
         defaultCalendar: default_calendar,

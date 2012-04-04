@@ -79,33 +79,30 @@ class DateConverterService {
 
 
     public String getDefaultToULocaleString() {
-        String property = localizerService(code: "default.date.conversion.to.ULocale")
-        if (!property) property = "en_US@calendar=gregorian"
+        String property = localizerService(code: "default.calendar2.ULocale")
+        if (!property) log.error("message property key: default.calendar2.ULocale is missing")
         return property
     }
 
 
     public String getDefaultFromULocaleString() {
-        String property = localizerService(code: "default.date.conversion.from.ULocale")
-        if (!property) property = "en_US@calendar=gregorian"
+        String property = localizerService(code: "default.calendar1.ULocale")
+        if (!property) log.error("message property key: default.calendar1.ULocale is missing")
         return property
     }
 
 
     public String getDefaultToDateFormatString() {
-        String property = localizerService(code: "default.date.conversion.to.format")
-        if (!property) property = localizerService(code: "default.date.format")
-        if (!property) property = "MM/dd/yyyy"
-
+        String property = localizerService(code: "default.date.format")
+        if (!property) log.error("message property key: default.date.format is missing")
         return property
 
     }
 
 
     public String getDefaultFromDateFormatString() {
-        String property = localizerService(code: "default.date.conversion.from.format")
-        if (!property) property = localizerService(code: "default.date.format")
-        if (!property) property = "MM/dd/yyyy"
+        String property = localizerService(code: "default.date.format")
+        if (!property) log.error("message property key: default.date.format is missing")
 
         return property
     }
