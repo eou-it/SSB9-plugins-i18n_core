@@ -71,7 +71,7 @@ class DateConverterService {
             }
 
         } catch (Exception exception) {
-            String errorString = "Unable to perform conversion --  fromDateString: " + fromDateString + ", fromULocaleString: " + fromULocaleString + ", toULocaleString: " + toULocaleString + ", fromDateFormatString: " + fromDateFormatString + ", toDateFormatString: " + toDateFormatString
+            String errorString = "Unable to perform conversion --  date: " + fromDateValue + ", fromULocaleString: " + fromULocaleString + ", toULocaleString: " + toULocaleString + ", fromDateFormatString: " + fromDateFormatString + ", toDateFormatString: " + toDateFormatString
             logger.error errorString, exception
             return "error"
         }
