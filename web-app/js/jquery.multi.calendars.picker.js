@@ -335,6 +335,8 @@ $.extend(MultiCalendarsPicker.prototype, {
             var calendarObj = $.calendars.calendars[calendar].prototype;
 			var dateFormat = calendarOptions.defaultDateFormat;
 
+            var calLocalProps = $.calendars._localCals[calendar + '-'].local;
+            $.extend(calendarObj, calendarObj.local? {} : {local: calLocalProps});
 			var cDateObj = calendarObj.parseDate(dateFormat, date, calendarObj.regional['']);
             $.multicalendar._defaults.todaysDates[calendar] = cDateObj;
         }
