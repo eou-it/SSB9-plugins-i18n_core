@@ -10,7 +10,7 @@
 
     <javascript src="~./js/jquery.multi.calendars.picker.js" />
     <javascript src="~./js/jquery.multi.calendars.picker.ext.js" />
-    <javascript src="~./js/multiCalendar-defaults.js" />
+    <javascript src="~./js/multi.calendar.init.js" />
     <!--The line below was a fix introduced for spinner control of zk-grails version 1.0.4-->
     <!--Commenting this out as a part of upgrade to zk-grails version 1.0.6-->
     <!--<javascript src="~./js/zk/spinner_bugfix.js"/>-->

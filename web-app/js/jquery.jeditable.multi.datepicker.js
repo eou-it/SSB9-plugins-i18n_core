@@ -66,6 +66,6 @@ $.editable.addInputType( 'datepicker', {
         jQuery.extend(datepicker, settings.datepicker);
       }
 
-      input.multiDatePicker();
+      input.multiDatePicker(datepicker);
     }
 } );
