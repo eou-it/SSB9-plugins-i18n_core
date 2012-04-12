@@ -77,6 +77,22 @@ class DateConverterService {
         }
     }
 
+    public String[] getMonths(String uLocaleString) {
+        return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getMonths();
+    }
+
+    public String[] getShortMonths(String uLocaleString) {
+          return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortMonths();
+    }
+
+     public String[] getWeekdays(String uLocaleString) {
+        return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getWeekdays();
+    }
+
+    public String[] getShortWeekdays(String uLocaleString) {
+          return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortWeekdays();
+    }
+
 
     public String getDefaultToULocaleString() {
         String property = localizerService(code: "default.calendar2.ULocale")
