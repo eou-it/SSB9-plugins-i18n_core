@@ -18,7 +18,7 @@ $(document).ready(function() {
     var default_calendar1=$.i18n.prop("default.calendar1");
     var default_calendar2=$.i18n.prop("default.calendar2");
 
-    var islamicCalendarLocaleProps = {
+    /*var islamicCalendarLocaleProps = {
         monthNames: $.i18n.prop("default.calendar1.monthNames"),
 		monthNamesShort: $.i18n.prop("default.calendar1.monthNamesShort"),
 		dayNames: $.i18n.prop("default.calendar1.dayNames"),
@@ -32,6 +32,22 @@ $(document).ready(function() {
 		dayNames: $.i18n.prop("default.calendar2.dayNames"),
 		dayNamesShort: $.i18n.prop("default.calendar2.dayNamesShort"),
         dayNamesMin: $.i18n.prop("default.calendar2.dayNamesMin")
+    };
+    */
+     var islamicCalendarLocaleProps = {
+        monthNames: $.i18n.prop("default.islamic.monthNames"),
+		monthNamesShort: $.i18n.prop("default.islamic.monthNamesShort"),
+		dayNames: $.i18n.prop("default.islamic.dayNames"),
+		dayNamesShort: $.i18n.prop("default.islamic.dayNamesShort"),
+        dayNamesMin: $.i18n.prop("default.islamic.dayNamesMin")
+    };
+
+    var gregorianCalendarLocaleProps = {
+        monthNames: $.i18n.prop("default.gregorian.monthNames"),
+		monthNamesShort: $.i18n.prop("default.gregorian.monthNamesShort"),
+		dayNames: $.i18n.prop("default.gregorian.dayNames"),
+		dayNamesShort: $.i18n.prop("default.gregorian.dayNamesShort"),
+        dayNamesMin: $.i18n.prop("default.gregorian.dayNamesMin")
     };
 
     var calendarLocaleProps = {islamic: islamicCalendarLocaleProps, gregorian: gregorianCalendarLocaleProps};
