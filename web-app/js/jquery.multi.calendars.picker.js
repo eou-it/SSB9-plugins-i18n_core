@@ -213,7 +213,7 @@ $.extend(MultiCalendarsPicker.prototype, {
           $(inst).val(date);
 
           if(onSelectExt) {
-            onSelectExt(data,inst );
+            onSelectExt(date ,inst );
           }
        }
     },
