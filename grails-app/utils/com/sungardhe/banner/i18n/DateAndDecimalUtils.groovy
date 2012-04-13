@@ -13,6 +13,7 @@ package com.sungardhe.banner.i18n
 
 import java.text.DateFormatSymbols
 import java.text.DecimalFormatSymbols
+import org.codehaus.groovy.grails.commons.ApplicationHolder
 
 /**
  * This utility class is used to generate the default date and decimal formats used by
@@ -55,9 +56,64 @@ class DateAndDecimalUtils {
                     "js.number.digit": "${decimalFormatSymbols.digit}",
             ]
 
+            List calendars = getListOfCalendars(locale)
+            addCalendarProps(calendars, locale, propertyMap)
+
             propertiesMap[locale] = propertyMap
 
             return propertyMap
+        }
+    }
+
+    public static List getListOfCalendars(def locale) {
+        def messageSource =  ApplicationHolder.application.mainContext.getBean('messageSource')
+
+        List calendars = new ArrayList();
+
+        int i = 1
+        while (true) {
+            try {
+                calendars.add(messageSource.getMessage("default.calendar" + i , null, locale));
+            }
+            catch (Exception e) {
+                break;
+            }
+            i++;
+        }
+        return calendars;
+    }
+
+     public static String convertToCommaDelimited(String[] list) {
+        StringBuilder sb = new StringBuilder();
+        if(list != null) {
+            for (int i = 0; i < list.length; i++) {
+                if(!list[i].trim().equals("")) {
+                    sb.append(list[i]);
+                    if (i < list.length - 1) {
+                        sb.append(',');
+                    }
+                }
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public static void addCalendarProps(List calendars, Locale locale, def propertyMap = [:]) {
+        if(calendars != null) {
+            def messageSource =  ApplicationHolder.application.mainContext.getBean('messageSource')
+            def dateConverterService = new DateConverterService();
+
+            for(int i = 0; i < calendars.size(); i++) {
+               String calendar = calendars.get(i);
+               String uLocale = messageSource.getMessage("default.calendar." + calendar + ".ulocale" , null, locale)
+
+               propertyMap.put("default." + calendar + ".monthNames", convertToCommaDelimited(dateConverterService.getMonths(uLocale)))
+               propertyMap.put("default." + calendar + ".monthNamesShort", convertToCommaDelimited(dateConverterService.getShortMonths(uLocale)))
+               propertyMap.put("default." + calendar + ".dayNames", convertToCommaDelimited(dateConverterService.getWeekdays(uLocale)))
+               propertyMap.put("default." + calendar + ".dayNamesShort", convertToCommaDelimited(dateConverterService.getShortWeekdays(uLocale)))
+               propertyMap.put("default." + calendar + ".dayNamesMin", convertToCommaDelimited(dateConverterService.getShortWeekdays(uLocale)))
+            }
         }
     }
 }
