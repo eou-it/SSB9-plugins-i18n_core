@@ -26,4 +26,5 @@ if ((new File(zkFile).exists())) {
     ant.move(todir: targetLocation + "/css") {
         fileset(dir: "${pluginBasedir}/web-app/css")
     }
+    ant.move(file: "${pluginBasedir}/web-app/i18n_properties.gsp", toFile:"${basedir}/web-app/i18n_properties.gsp")
 }
