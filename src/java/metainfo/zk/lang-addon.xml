@@ -8,6 +8,9 @@
     <javascript src="~./js/calendars/jquery.calendars.picker.ext.js" />
     <javascript src="~./js/calendars/jquery.calendars.islamic.js" />
 
+    <javascript src="~./js/jquery.i18n.properties.js" />
+    <javascript src="i18n_properties.gsp" />
+
     <javascript src="~./js/jquery.multi.calendars.picker.js" />
     <javascript src="~./js/jquery.multi.calendars.picker.ext.js" />
     <javascript src="~./js/multi.calendar.init.js" />
