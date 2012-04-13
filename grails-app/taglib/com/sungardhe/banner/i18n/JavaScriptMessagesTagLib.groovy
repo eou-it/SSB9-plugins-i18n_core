@@ -28,15 +28,34 @@ class JavaScriptMessagesTagLib {
         msg.replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;")
     }
 
-    def i18nJavaScript = { attrs ->
+    private def resourceModuleNames(request) {
+        def names = []
 
-        if (request.resourceDependencyTracker) {
-            Set keys = []
+        if (request.resourceDependencyTracker != null) {
+            // resources plugin <= 1.0.2
+            request.resourceDependencyTracker.each { names << it }
+        } else if (request.resourceModuleTracker != null) {
+            // resources plugin >= 1.0.3
+            request.resourceModuleTracker.each {
+                if (it.value) { // todo what does 'false' for this property mean? validate usage
+                    names << it.key
+                }
+            }
+        }
+
+        names
+    }
+
+    def i18nJavaScript = { attrs ->
+        def names = resourceModuleNames(request)
+        Set keys = []
+
+        if (names.size() > 0) {
 
             // Search for any place where we are referencing message codes
             def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)/
 
-            request.resourceDependencyTracker.each { name ->
+            names.each { name ->
                 resourceService.getModule(name)?.resources?.findAll { it.sourceUrlExtension == "js" }?.each {
 
                     if (!it.attributes.containsKey( LOCALE_KEYS_ATTRIBUTE )) {
@@ -70,8 +89,11 @@ class JavaScriptMessagesTagLib {
                     keys.addAll( it.attributes[LOCALE_KEYS_ATTRIBUTE] )
                 }
             }
+        } else {
+            keys = ["default.calendar1.ULocale", "default.calendar2.ULocale", "default.date.format", "default.date.format.display", "js.datepicker.dateFormat", "js.datepicker.dateFormat.display", "default.calendar", "default.calendar1", "default.calendar2", "default.language.direction", "default.language.locale", "default.calendar1.monthNames", "default.calendar1.monthNamesShort", "default.calendar1.dayNames", "default.calendar1.dayNamesShort", "default.calendar1.dayNamesMin", "default.calendar2.monthNames", "default.calendar2.monthNamesShort", "default.calendar2.dayNames", "default.calendar2.dayNamesShort", "default.calendar2.dayNamesMin"]
+        }
 
-            out << '\$.i18n.map = {'
+        out << '\$.i18n.map = {'
             if (keys) {
                 def javaScriptProperties = []
                 keys.sort().each {
@@ -93,6 +115,5 @@ class JavaScriptMessagesTagLib {
                 out << javaScriptProperties.join(",")
             }
             out << '};'
-        }
     }
 }
