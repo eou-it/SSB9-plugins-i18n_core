@@ -115,5 +115,7 @@ class DateAndDecimalUtils {
                propertyMap.put("default." + calendar + ".dayNamesMin", convertToCommaDelimited(dateConverterService.getShortWeekdays(uLocale)))
             }
         }
+        propertyMap.put("js.datepicker.dateFormat", messageSource.getProperty("js.datepicker.dateFormat", null, locale))
+        propertyMap.put("js.datepicker.dateFormat.display", messageSource.getProperty("js.datepicker.dateFormat.display", null, locale))
     }
 }
