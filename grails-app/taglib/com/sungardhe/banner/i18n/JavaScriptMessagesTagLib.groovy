@@ -107,9 +107,10 @@ class JavaScriptMessagesTagLib {
                             msg = value
                         }
                     }
-
-                    msg = encodeHTML(msg)
-                    javaScriptProperties << "\"$it\": \"$msg\""
+                    if (it != msg){
+                        msg = encodeHTML(msg)
+                        javaScriptProperties << "\"$it\": \"$msg\""
+                    }
                 }
 
                 out << javaScriptProperties.join(",")
