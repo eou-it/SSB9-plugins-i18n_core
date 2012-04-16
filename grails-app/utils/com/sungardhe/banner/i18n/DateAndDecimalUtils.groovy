@@ -100,8 +100,8 @@ class DateAndDecimalUtils {
     }
 
     public static void addCalendarProps(List calendars, Locale locale, def propertyMap = [:]) {
+        def messageSource =  ApplicationHolder.application.mainContext.getBean('messageSource')
         if(calendars != null) {
-            def messageSource =  ApplicationHolder.application.mainContext.getBean('messageSource')
             def dateConverterService = new DateConverterService();
 
             for(int i = 0; i < calendars.size(); i++) {
