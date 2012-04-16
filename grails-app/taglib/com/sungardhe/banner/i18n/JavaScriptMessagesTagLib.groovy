@@ -90,7 +90,7 @@ class JavaScriptMessagesTagLib {
                 }
             }
         } else {
-            keys = ["default.calendar1.ULocale", "default.calendar2.ULocale", "default.date.format", "default.date.format.display", "js.datepicker.dateFormat", "js.datepicker.dateFormat.display", "default.calendar", "default.calendar1", "default.calendar2", "default.language.direction", "default.language.locale", "default.calendar1.monthNames", "default.calendar1.monthNamesShort", "default.calendar1.dayNames", "default.calendar1.dayNamesShort", "default.calendar1.dayNamesMin", "default.calendar2.monthNames", "default.calendar2.monthNamesShort", "default.calendar2.dayNames", "default.calendar2.dayNamesShort", "default.calendar2.dayNamesMin"]
+            keys = ["default.calendar", "default.calendar1", "default.calendar1.dayNames", "default.calendar1.dayNamesMin", "default.calendar1.dayNamesShort", "default.calendar1.monthNames", "default.calendar1.monthNamesShort", "default.calendar2", "default.calendar2.dayNames", "default.calendar2.dayNamesMin", "default.calendar2.dayNamesShort", "default.calendar2.monthNames", "default.calendar2.monthNamesShort", "default.date.format", "default.gregorian.dayNames", "default.gregorian.dayNamesMin", "default.gregorian.dayNamesShort", "default.gregorian.monthNames", "default.gregorian.monthNamesShort", "default.islamic.dayNames", "default.islamic.dayNamesMin", "default.islamic.dayNamesShort", "default.islamic.monthNames", "default.islamic.monthNamesShort", "default.language.direction"]
         }
 
         out << '\$.i18n.map = {'
@@ -107,9 +107,10 @@ class JavaScriptMessagesTagLib {
                             msg = value
                         }
                     }
-
-                    msg = encodeHTML(msg)
-                    javaScriptProperties << "\"$it\": \"$msg\""
+                    if (it != msg){
+                        msg = encodeHTML(msg)
+                        javaScriptProperties << "\"$it\": \"$msg\""
+                    }
                 }
 
                 out << javaScriptProperties.join(",")

@@ -1,18 +1,18 @@
 //
-// This script is executed by Grails during application upgrade ('grails upgrade'
-// command). This script is a Gant script so you can use all special variables
-// provided by Gant (such as 'baseDir' which points on project base dir). You can
+// This script is executed by Grails after plugin was installed to project.
+// This script is a Gant script so you can use all special variables provided
+// by Gant (such as 'baseDir' which points on project base dir). You can
 // use 'ant' to access a global instance of AntBuilder
 //
 // For example you can create directory under project tree:
 //
 //    ant.mkdir(dir:"${basedir}/grails-app/jobs")
 //
-
 ant.move(file: "${pluginBasedir}/src/java/metainfo/zk/lang-addon.xml", tofile: "${basedir}/web-app/WEB-INF/i18n-core-lang-addon.xml", overwrite: "true")
 
 def zkFile = "${basedir}/web-app/WEB-INF/zk.xml"
 def targetLocation = "${pluginBasedir}/src/java/web"
+
 
 if ((new File(zkFile).exists())) {
 
@@ -26,4 +26,5 @@ if ((new File(zkFile).exists())) {
     ant.move(todir: targetLocation + "/css") {
         fileset(dir: "${pluginBasedir}/web-app/css")
     }
+    ant.move(file: "${pluginBasedir}/web-app/i18n_properties.gsp", toFile:"${basedir}/web-app/i18n_properties.gsp")
 }
