@@ -52,7 +52,12 @@ class DateConverterService {
                 com.ibm.icu.text.DateFormat fromDateFormat = fromCalendar.handleGetDateFormat(fromDateFormatString, fromULocale)
                 fromDate = fromDateFormat.parse(fromDateValue)
             } else if ( fromDateValue instanceof Date){
-                fromDate = fromDateValue
+                ULocale fromULocale = new ULocale(fromULocaleString)
+                Calendar fromCalendar = Calendar.getInstance(fromULocale);
+                fromCalendar.setTime(fromDateValue)
+                com.ibm.icu.text.DateFormat fromDateFormat = fromCalendar.handleGetDateFormat(fromDateFormatString, fromULocale)
+                fromDateValue = fromDateFormat.format(fromCalendar)
+                fromDate = fromDateFormat.parse(fromDateValue)
             }
 
             //String toULocaleString = toLocaleString + "@calendar=" + toCalendarString
@@ -67,7 +72,7 @@ class DateConverterService {
                 return toCalendar.getTime()
             } else {
                 toDateString = toDateFormat.format(toCalendar)
-                return toDateString
+                return arabicToDecimal(toDateString)
             }
 
         } catch (Exception exception) {
@@ -76,6 +81,22 @@ class DateConverterService {
             return "error"
         }
     }
+
+     private String arabicToDecimal(String number) {
+	    StringBuilder sb = new StringBuilder();
+		 for(int i=0;i<number.length();i++) {
+			 char ch = number.charAt(i);
+			 int x = (int)ch;
+			 if(x >= 1632 && x <= 1641) {
+				x -= 1632;
+				sb.append(x);
+			 }
+			 else {
+				sb.append(ch);
+			 }
+		 }
+		 return sb.toString();
+	 }
 
     public String[] getMonths(String uLocaleString) {
         return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getMonths();
