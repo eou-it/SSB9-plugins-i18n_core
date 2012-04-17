@@ -412,6 +412,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 
                     var localeCalendar = $.calendars.calendars[options.calendars[i]];
                     $.extend(localeCalendar.prototype.regional[''], calendarLocaleProps);
+                    $.calendars.instance(options.calendars[i]).local.dateFormat = options.displayDateFormat;
                 }
             }
         }
@@ -424,6 +425,19 @@ $.extend(MultiCalendarsPicker.prototype, {
             }
         }
         return calendars;
+    },
+
+    isValidDateFormat: function(calendar, dateString) {
+        var isValid = false;
+        try {
+            var calendarObj = $.calendars.calendars[calendar].prototype;
+	        var calLocalProps = $.calendars._localCals[calendar + '-'].local;
+            var cDateObj = calendarObj.parseDate(calLocalProps.dateFormat, dateString, calLocalProps);
+            isValid = true;
+        } catch (e) {
+            isValid = false;
+        }
+        return isValid;
     }
 });
 

@@ -93,8 +93,19 @@ class DateConverterService {
           return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortWeekdays();
     }
 
+    public String getDefaultULocaleString() {
+           return getULocaleStringForCalendar("gregorian")
+    }
 
-    public String getDefaultToULocaleString() {
+    public String getULocaleStringForCalendar(String calendar) {
+       String uLocaleCode = "default.calendar." + calendar + ".ulocale";
+       String property = localizerService(code: uLocaleCode)
+       if (!property) log.error("message property key: " + uLocaleCode + " is missing")
+       return property
+    }
+
+
+    /*public String getDefaultToULocaleString() {
         String property = localizerService(code: "default.calendar2.ULocale")
         if (!property) log.error("message property key: default.calendar2.ULocale is missing")
         return property
@@ -121,7 +132,7 @@ class DateConverterService {
         if (!property) log.error("message property key: default.date.format is missing")
 
         return property
-    }
+    }   */
 
 
     private Calendar adjustDate(Calendar calendar, String adjustDays) {
