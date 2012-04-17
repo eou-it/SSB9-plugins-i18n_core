@@ -61,8 +61,8 @@ $(document).ready(function() {
                     calendar: 'islamic-civil',
                     fromDateFormat: $.i18n.prop("default.date.format"),
                     toDateFormat: $.i18n.prop("default.date.format"),
-                    toULocale: 'en_US@calendar=islamic-civil',
-                    fromULocale: 'en_US@calendar=gregorian'
+                    toULocale: $.i18n.prop("default.calendar.islamic.ulocale"),
+                    fromULocale: $.i18n.prop("default.calendar.gregorian.ulocale")
                 }
             }
         },
@@ -75,8 +75,8 @@ $(document).ready(function() {
                     calendar: 'islamic-civil',
                     fromDateFormat: $.i18n.prop("default.date.format"),
                     toDateFormat: $.i18n.prop("default.date.format"),
-                    toULocale: 'en_US@calendar=gregorian',
-                    fromULocale: 'en_US@calendar=islamic-civil'
+                    toULocale: $.i18n.prop("default.calendar.gregorian.ulocale"),
+                    fromULocale: $.i18n.prop("default.calendar.islamic.ulocale")
                 }
             }
         }

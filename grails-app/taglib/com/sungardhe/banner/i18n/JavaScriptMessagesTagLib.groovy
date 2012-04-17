@@ -90,7 +90,7 @@ class JavaScriptMessagesTagLib {
                 }
             }
         } else {
-            keys = ["default.calendar", "default.calendar1", "default.calendar2", "default.date.format", "default.gregorian.dayNames", "default.gregorian.dayNamesMin", "default.gregorian.dayNamesShort", "default.gregorian.monthNames", "default.gregorian.monthNamesShort", "default.islamic.dayNames", "default.islamic.dayNamesMin", "default.islamic.dayNamesShort", "default.islamic.monthNames", "default.islamic.monthNamesShort", "default.language.direction", "js.datepicker.dateFormat", "js.datepicker.dateFormat.display"]
+            keys = ["default.calendar", "default.calendar1", "default.calendar2", "default.calendar.gregorian.ulocale", "default.calendar.islamic.ulocale", "default.date.format", "default.gregorian.dayNames", "default.gregorian.dayNamesMin", "default.gregorian.dayNamesShort", "default.gregorian.monthNames", "default.gregorian.monthNamesShort", "default.islamic.dayNames", "default.islamic.dayNamesMin", "default.islamic.dayNamesShort", "default.islamic.monthNames", "default.islamic.monthNamesShort", "default.language.direction", "js.datepicker.dateFormat", "js.datepicker.dateFormat.display"]
         }
 
         out << '\$.i18n.map = {'

@@ -30,19 +30,18 @@ class DateConverterService {
     }
 
 
-    def convert(def fromDateValue, String fromULocaleString = null, String toULocaleString = null, String fromDateFormatString = null, String toDateFormatString = null, String adjustDays = null) {
+    def convert(def fromDateValue, String fromULocaleString, String toULocaleString, String fromDateFormatString, String toDateFormatString, String adjustDays = null) {
 
         assert fromDateValue
+        assert fromULocaleString
+        assert toULocaleString
+        assert fromDateFormatString
+        assert toDateFormatString
 
         String toDateString = ""
 
 
         try {
-            if (!fromDateFormatString) fromDateFormatString = getDefaultFromDateFormatString()
-            if (!toDateFormatString) toDateFormatString = getDefaultToDateFormatString()
-            if (!fromULocaleString) fromULocaleString = getDefaultFromULocaleString()
-            if (!toULocaleString) toULocaleString = getDefaultToULocaleString()
-
             Date fromDate
 
             //String fromULocaleString = fromLocaleString + "@calendar=" + fromCalendarString
@@ -124,37 +123,6 @@ class DateConverterService {
        if (!property) log.error("message property key: " + uLocaleCode + " is missing")
        return property
     }
-
-
-    /*public String getDefaultToULocaleString() {
-        String property = localizerService(code: "default.calendar2.ULocale")
-        if (!property) log.error("message property key: default.calendar2.ULocale is missing")
-        return property
-    }
-
-
-    public String getDefaultFromULocaleString() {
-        String property = localizerService(code: "default.calendar1.ULocale")
-        if (!property) log.error("message property key: default.calendar1.ULocale is missing")
-        return property
-    }
-
-
-    public String getDefaultToDateFormatString() {
-        String property = localizerService(code: "default.date.format")
-        if (!property) log.error("message property key: default.date.format is missing")
-        return property
-
-    }
-
-
-    public String getDefaultFromDateFormatString() {
-        String property = localizerService(code: "default.date.format")
-        if (!property) log.error("message property key: default.date.format is missing")
-
-        return property
-    }   */
-
 
     private Calendar adjustDate(Calendar calendar, String adjustDays) {
 
