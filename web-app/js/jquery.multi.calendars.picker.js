@@ -4,7 +4,6 @@ function MultiCalendarsPicker() {
 	this.calendarContainer = 'multiCalendarContainer';
 	this.calendarIdPrefix = 'multiCalendar';
 	this.TO = 'To';
-    this.VALID_CALENDAR_NAMES = ['gregorian', 'islamic'];
     this.CALENDAR_GREGORIAN = 'gregorian';
     this.DEFAULT_DATE_FORMAT = 'mm/dd/yyyy';
     this.JAVA_DATE_FORMAT = 'MM/dd/yyyy';
@@ -149,11 +148,9 @@ $.extend(MultiCalendarsPicker.prototype, {
         var toCalendarObj = $.calendars.calendars[toCalendar].prototype;
 
         var fromCalLocalProps = $.calendars._localCals[fromCalendar + '-'].local;
-        //$.extend(fromCalendarObj, fromCalendarObj.local? {} : {local: fromCalLocalProps});
         var cDateObj = toCalendarObj.parseDate(fromCalLocalProps.dateFormat, date, toCalendarObj.regional['']);
 
         var toCalLocalProps = $.calendars._localCals[toCalendar + '-'].local;
-        //$.extend(cDateObj._calendar, toCalendarObj);
         $.extend(toCalendarObj, toCalendarObj.local? {} : {local: toCalLocalProps});
         date = toCalendarObj.formatDate(toCalendarObj.local.dateFormat, cDateObj);
         return date;
@@ -312,8 +309,7 @@ $.extend(MultiCalendarsPicker.prototype, {
     },
 
      _getTodayDates : function (calendarOptions) {
-        //var calendarOptions = inst.settings;
-		var defaultCalendar = calendarOptions.defaultCalendar;
+        var defaultCalendar = calendarOptions.defaultCalendar;
 		var calendars = calendarOptions.calendars;
 		var numberOfCalendars = calendars.length;
 
@@ -379,7 +375,25 @@ $.extend(MultiCalendarsPicker.prototype, {
 
     setDefaults: function(settings) {
 		$.extend(this._defaults, settings || {});
+
+        if(settings.calendars && typeof settings.calendars == 'string') {
+		    settings.calendars = [settings.calendars];
+        }
+        else {
+            var calendars = $.extend([], $.multicalendar._removeInvalidCalendars(settings.calendars));
+            var newCalendarsList = new Array();
+            for(var i = 0, j = 0; i < calendars.length; i++) {
+                if(calendars[i] && calendars[i].trim() != '') {
+                    newCalendarsList[j] = calendars[i];
+                    j++;
+                }
+
+            }
+            settings.calendars = newCalendarsList;
+        }
+
         $.multicalendar._processCalendarLocaleProps(settings);
+        $.multicalendar._getTodayDates(settings);
 		return this;
 	},
 
@@ -420,8 +434,9 @@ $.extend(MultiCalendarsPicker.prototype, {
 
     _removeInvalidCalendars: function (calendars) {
         for(var i = 0; i < calendars.length; i++) {
-            if(!($.inArray(calendars[i], $.multicalendar.VALID_CALENDAR_NAMES) != -1 )) {
-                delete calendars[i];
+            if(!$.calendars.calendars[calendars[i]]) {
+                calendars.splice(i,1);
+                i--;
             }
         }
         return calendars;
@@ -444,27 +459,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 $.fn.multiDatePicker = function(opts) {
 	var options = $.extend([], $.multicalendar._defaults, opts);
 
-	if(options.calendars && typeof options.calendars == 'string') {
-		options.calendars = [options.calendars];
-	}
-	else {
-        var calendars = $.extend([], $.multicalendar._removeInvalidCalendars(options.calendars));
-        var newCalendarsList = new Array();
-		for(var i = 0, j = 0; i < calendars.length; i++) {
-            if(calendars[i] && calendars[i].trim() != '') {
-                newCalendarsList[j] = calendars[i];
-                j++;
-            }
-
-		}
-        options.calendars = newCalendarsList;
-	}
-
-    //$.multicalendar._processCalendarLocaleProps(options);
-
-    $.multicalendar._getTodayDates(options);
-
-    var inst = $(this)[0];
+	var inst = $(this)[0];
 	inst.settings = options;
 	
 	$(inst).addClass($.multicalendar._markerClass);
