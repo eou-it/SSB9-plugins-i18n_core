@@ -124,6 +124,22 @@ class DateConverterService {
        return property
     }
 
+    public convertGregorianToDefaultCalendar(date) {
+        return convert(date,
+                getDefaultULocaleString(),
+                getULocaleStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                localizerService(code: "default.date.format") ,
+                localizerService(code: "default.date.format.display"))
+    }
+
+    public convertDefaultCalendarToGregorian(date) {
+        return convert(date ,
+                getULocaleStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                getDefaultULocaleString(),
+                localizerService(code: "default.date.format.display"),
+                localizerService(code: "default.date.format"));
+    }
+
     private Calendar adjustDate(Calendar calendar, String adjustDays) {
 
         if (adjustDays) calendar.add(Calendar.DATE, adjustDays.toInteger())
