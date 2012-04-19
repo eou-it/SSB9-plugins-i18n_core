@@ -89,7 +89,8 @@ $.extend(MultiCalendarsPicker.prototype, {
 						}
                         else{
                             if(onSelectExt) {
-                                onSelectExt(data,inst );
+                                var data = target[0].formatDate();
+                                onSelectExt(data ,inst);
                             }
                         }
 
