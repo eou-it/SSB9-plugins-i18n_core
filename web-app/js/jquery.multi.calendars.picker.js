@@ -276,30 +276,44 @@ $.extend(MultiCalendarsPicker.prototype, {
 					}
 					else {
 						var converterName = $.multicalendar._getConverterName(defaultCalendar, calendars[i]);
-						var formatProps = calendarOptions.converters[converterName].format;
-						var nameOfDateParam = formatProps.nameOfDateParam;
+                        if($.multicalendar._isConverterDefined(calendarOptions, converterName)) {
+                            var formatProps = calendarOptions.converters[converterName].format;
+                            var nameOfDateParam = formatProps.nameOfDateParam;
 
-                        var fromFormat = $.multicalendar._getDateFormat(defaultCalendar);
-                        var toFormat = calendarOptions.defaultDateFormat;
-                        date = $.multicalendar._convertDateBetweenCalendarFormats(defaultCalendar, fromFormat, toFormat, originalDate);
+                            var fromFormat = $.multicalendar._getDateFormat(defaultCalendar);
+                            var toFormat = calendarOptions.defaultDateFormat;
+                            date = $.multicalendar._convertDateBetweenCalendarFormats(defaultCalendar, fromFormat, toFormat, originalDate);
 
-                        fromFormat = calendarOptions.defaultDateFormat;
-                        toFormat = $.multicalendar._getDateFormat(calendars[i]);
+                            fromFormat = calendarOptions.defaultDateFormat;
+                            toFormat = $.multicalendar._getDateFormat(calendars[i]);
 
-						var jsonString = '{"' + nameOfDateParam + '": "' + date +'"}';
-						var data = $.parseJSON(jsonString);
-						data = $.extend(data, formatProps.extraParams); 
-						$.ajax({
-						  url: formatProps.url,
-						  data: data,
-						  dataType: 'text',
-						  success: $.multicalendar._showDateInCalendarSuccessCallback(calendars[i], fromFormat, toFormat, i, inst.id, originalDate)
-						});
+                            var jsonString = '{"' + nameOfDateParam + '": "' + date +'"}';
+                            var data = $.parseJSON(jsonString);
+                            data = $.extend(data, formatProps.extraParams);
+                            $.ajax({
+                              url: formatProps.url,
+                              data: data,
+                              dataType: 'text',
+                              success: $.multicalendar._showDateInCalendarSuccessCallback(calendars[i], fromFormat, toFormat, i, inst.id, originalDate)
+                            });
+                        }
+                        else {
+                            $(inst).val(originalDate);
+                        }
 					}
 				}
 			}
 		}
 	},
+
+    _isConverterDefined : function (calendarOptions, converter) {
+        var isConverterDefined = false;
+        if(calendarOptions.converters
+            && calendarOptions.converters[converter]) {
+           isConverterDefined = true;
+        }
+        return isConverterDefined;
+    },
 
     _todaysDate : function(calendar) {
         var cDate = $.multicalendar._defaults.todaysDates[calendar.local.name.toLowerCase()];
@@ -324,18 +338,20 @@ $.extend(MultiCalendarsPicker.prototype, {
 			for(var i = 0; i < numberOfCalendars; i++) {
 				if(this.CALENDAR_GREGORIAN != calendars[i]) {
 					var converterName = $.multicalendar._getConverterName(this.CALENDAR_GREGORIAN, calendars[i]);
-					var formatProps = calendarOptions.converters[converterName].format;
+                    if($.multicalendar._isConverterDefined(calendarOptions, converterName)) {
+                        var formatProps = calendarOptions.converters[converterName].format;
 
-					var nameOfDateParam = formatProps.nameOfDateParam;
-					var jsonString = '{"' + nameOfDateParam + '": "' + $.calendars.newDate().formatDate(dateFormat) +'"}';
-					var data = $.parseJSON(jsonString);
-					data = $.extend(data, formatProps.extraParams);
-					$.ajax({
-					  url: formatProps.url,
-					  data: data,
-					  dataType: 'text',
-					  success: $.multicalendar._storeTodaysDateSuccessCallback(calendarOptions, calendars[i])
-					});
+                        var nameOfDateParam = formatProps.nameOfDateParam;
+                        var jsonString = '{"' + nameOfDateParam + '": "' + $.calendars.newDate().formatDate(dateFormat) +'"}';
+                        var data = $.parseJSON(jsonString);
+                        data = $.extend(data, formatProps.extraParams);
+                        $.ajax({
+                          url: formatProps.url,
+                          data: data,
+                          dataType: 'text',
+                          success: $.multicalendar._storeTodaysDateSuccessCallback(calendarOptions, calendars[i])
+                        });
+                    }
 				}
 			}
 		}
@@ -377,6 +393,7 @@ $.extend(MultiCalendarsPicker.prototype, {
     setDefaults: function(settings) {
 		$.extend(this._defaults, settings || {});
 
+        settings.calendars=this._defaults.calendars;
         if(settings.calendars && typeof settings.calendars == 'string') {
 		    settings.calendars = [settings.calendars];
         }
@@ -392,6 +409,10 @@ $.extend(MultiCalendarsPicker.prototype, {
             }
             settings.calendars = newCalendarsList;
         }
+        settings.defaultDateFormat=this._defaults.defaultDateFormat;
+        settings.displayDateFormat=this._defaults.displayDateFormat;
+
+        $.extend(this._defaults, settings || {});
 
         $.multicalendar._processCalendarLocaleProps(settings);
         $.multicalendar._getTodayDates(settings);
@@ -457,7 +478,7 @@ $.extend(MultiCalendarsPicker.prototype, {
     }
 });
 
-$.fn.multiDatePicker = function(opts) {
+$.fn.multiCalendarPicker = function(opts) {
 	var options = $.extend([], $.multicalendar._defaults, opts);
 
 	var inst = $(this)[0];
