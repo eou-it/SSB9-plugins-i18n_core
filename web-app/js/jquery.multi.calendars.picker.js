@@ -8,6 +8,8 @@ function MultiCalendarsPicker() {
     this.DEFAULT_DATE_FORMAT = 'mm/dd/yyyy';
     this.JAVA_DATE_FORMAT = 'MM/dd/yyyy';
     this._CAL_LOCALE_PARAMS_THAT_ARE_ARRAYS = ['epochs', 'monthNames', 'monthNamesShort', 'dayNames', 'dayNamesShort', 'dayNamesMin'];
+    this._isCalendarShown = false;
+    this._currentObj = null;
 
 	this._defaults = {
 		defaultCalendar: this.CALENDAR_GREGORIAN,
@@ -20,7 +22,11 @@ function MultiCalendarsPicker() {
 		isRTL: false,
 		calendars: this.CALENDAR_GREGORIAN,
 		firstDayOfTheWeek: 0,
-        todaysDates:[]
+        todaysDates:[],
+        buttonImage: '',
+        buttonClass: '',
+        showOn: 'focus'
+
 	};
 	
 	$(document).mousedown(this._checkExternalClick);
@@ -240,11 +246,14 @@ $.extend(MultiCalendarsPicker.prototype, {
 	
 	_hideCalendar : function (inst) {
 		$("#" + this.calendarContainer).hide("slow");
+        $.multicalendar._isCalendarShown = false;
 	},
 	
 	_showCalendar : function (inst) {
 		$("#" + this.calendarContainer).show("slow");
 		this._adjustPositionOfCalendar(inst);
+        $.multicalendar._isCalendarShown = true;
+        $.multicalendar._currentObj = $(inst);
 	},
 	
 	_showDateInCalendarSuccessCallback : function (selectedCalendar, fromFormat, toFormat, calendarIndex, inputElementId, originalDate) {
@@ -370,17 +379,54 @@ $.extend(MultiCalendarsPicker.prototype, {
     },
 
     _registerEvents : function (inst) {
-		$(inst).focus( function (evt) {		
-			$.multicalendar._createDatePickerDOMStructure(inst);			
-			$.multicalendar._addCalendarsToDOM(inst);
-			$.multicalendar._showDateInCalendar(inst);
-			$.multicalendar._showCalendar(this); 
-        });
+        var settings = inst.settings;
+        var showOn = settings.showOn
+
+        if(showOn == "both" || showOn == "focus") {
+		    $(inst).focus( function (evt) {
+                if(!$.multicalendar._isCalendarShown || ($.multicalendar._currentObj && $.multicalendar._currentObj.get(0) !== $(evt.target).get(0))) {
+                    $.multicalendar._createDatePickerDOMStructure(inst);
+                    $.multicalendar._addCalendarsToDOM(inst);
+                    $.multicalendar._showDateInCalendar(inst);
+                    $.multicalendar._showCalendar(this);
+                }
+            });
+        }
+
+        if(showOn == "both" || showOn == "button") {
+            //var img = $(inst).next('img');
+		    //$(img).click( function (evt) {
+            var span = $(inst).next('span');
+		    $(span).click( function (evt) {
+                var input = $(this).prev('input.' + $.multicalendar._markerClass);
+                if($.multicalendar._isCalendarShown && $.multicalendar._currentObj && $.multicalendar._currentObj.get(0) === input.get(0)) {
+                    $.multicalendar._hideCalendar();
+                }
+                else {
+                    $.multicalendar._createDatePickerDOMStructure(inst);
+                    $.multicalendar._addCalendarsToDOM(inst);
+                    $.multicalendar._showDateInCalendar(inst);
+
+                    if(input) {
+                        $.multicalendar._showCalendar(input);
+                    }
+                }
+            });
+        }
 	},
 	
 	_checkExternalClick: function(event) {
 		var clickedOutsideCalendar = $(event.target).parents('#' + $.multicalendar.calendarContainer).length == 0
 		                                && !$(event.target).hasClass($.multicalendar._markerClass);//,
+
+        if(clickedOutsideCalendar) {
+            //if($(event.target).is('img')
+            if($(event.target).is('span')
+                && $(event.target).prev('input').hasClass($.multicalendar._markerClass)) {
+                clickedOutsideCalendar = false;
+            }
+        }
+
         if(clickedOutsideCalendar) {
             $.multicalendar._hideCalendar();
         }
@@ -475,6 +521,25 @@ $.extend(MultiCalendarsPicker.prototype, {
             isValid = false;
         }
         return isValid;
+    },
+
+    _addCalendarImage: function(inst) {
+        var options = inst.settings;
+        //var img = $('<img>');
+
+        /*var img = $('<img>'); //Equivalent: $(document.createElement('img'))
+        img.attr('src', inst.settings.buttonImage);
+        img.insertAfter($(inst));*/
+
+        var span = $('<span>');
+        span.attr('class', 'calendar-icon');
+        if(options.buttonImage && options.buttonImage != '') {
+            span.attr('style', 'background-image: url("' + options.buttonImage + '");');
+        }
+        else if(options.buttonClass && options.buttonClass != '') {
+            $(span).addClass(options.buttonClass);
+        }
+        span.insertAfter($(inst));
     }
 });
 
@@ -485,7 +550,12 @@ $.fn.multiCalendarPicker = function(opts) {
 	inst.settings = options;
 	
 	$(inst).addClass($.multicalendar._markerClass);
-	$.multicalendar._registerEvents(inst);
+
+    if((options.buttonImage && options.buttonImage != '') || options.buttonClass && options.buttonClass != '') {
+        $.multicalendar._addCalendarImage(inst);
+    }
+
+    $.multicalendar._registerEvents(inst);
 }
 
 $.multicalendar = new MultiCalendarsPicker(); // singleton instance

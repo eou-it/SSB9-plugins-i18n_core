@@ -89,6 +89,12 @@ $(document).ready(function() {
         displayDateFormat: $.i18n.prop("js.datepicker.dateFormat.display"),
         calendars:[ default_calendar1, default_calendar2 ],
         isRTL: $.i18n.prop("default.language.direction"),
-        calendarLocaleProps: calendarLocaleProps
+        calendarLocaleProps: calendarLocaleProps,
+        //buttonImage:'/TestBannerUiSs/plugins/i18n-core-0.0.4/css/images/calendar.gif',
+        //buttonImage: '${resource(dir:'css',file:'images/calendar.gif')}',
+        //buttonImage: calendarImg,
+        //buttonImage:'../css/images/calendar.gif',
+        buttonClass: 'calendar-img',
+        showOn: 'both'
     });
 });
