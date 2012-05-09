@@ -10,6 +10,8 @@ function MultiCalendarsPicker() {
     this._CAL_LOCALE_PARAMS_THAT_ARE_ARRAYS = ['epochs', 'monthNames', 'monthNamesShort', 'dayNames', 'dayNamesShort', 'dayNamesMin'];
     this._isCalendarShown = false;
     this._currentObj = null;
+    this.activeCalendar = 1;
+    this.numberOfCalendars;
 
 	this._defaults = {
 		defaultCalendar: this.CALENDAR_GREGORIAN,
@@ -28,18 +30,18 @@ function MultiCalendarsPicker() {
         showOn: 'focus'
 
 	};
-	
+
 	$(document).mousedown(this._checkExternalClick);
 }
 
 $.extend(MultiCalendarsPicker.prototype, {
 	_markerClass: 'hasMultiCalendarPicker',
-	
+
 	_createDatePickerDOMStructure : function(inst) {
-		
+
 		var calendarOptions = inst.settings;
 		$('#' + this.calendarContainer).remove();
-		var DOMStructure = '<div id="' + this.calendarContainer + '" class="' + calendarOptions.orientation + '" style="display:none;">';
+		var DOMStructure = '<div id="' + this.calendarContainer + '" class="' + calendarOptions.orientation + '" style="display:none;"><div id="sceenReaderText" aria-live="rude" aria-atomic="true"></div>';
 		var calendars = calendarOptions.calendars;
 		var numberOfCalendars = calendars.length;
 		if(calendars && numberOfCalendars > 0) {
@@ -48,15 +50,15 @@ $.extend(MultiCalendarsPicker.prototype, {
 			}
 		}
 		DOMStructure += '</div>';
-		
+
 		$(document).find('body').append(DOMStructure);
 	},
-	
+
 	_addCalendarsToDOM : function (inst) {
 		var calendarOptions = inst.settings;
 		var calendars = calendarOptions.calendars;
 		var numberOfCalendars = calendars.length;
-		
+
 		if(calendars && numberOfCalendars > 0) {
 			for(var i = 0; i < numberOfCalendars; i++) {
 				var dateFormat = calendarOptions.dateFormats[calendars[i]];
@@ -73,6 +75,7 @@ $.extend(MultiCalendarsPicker.prototype, {
                     firstDay: calendarOptions.firstDayOfTheWeek,
 					dateFormat: dateFormat,
 					onSelect: function ( target ) {
+					if(target[0]) {
 						var settings = inst.settings;
 						var calendarOrder = $.multicalendar._getCalendarOrder(this.id);
                         var onSelectExt = inst.settings.onSelect? inst.settings.onSelect : null;
@@ -99,7 +102,7 @@ $.extend(MultiCalendarsPicker.prototype, {
                                 onSelectExt(data ,inst);
                             }
                         }
-
+                    }
 						$.multicalendar._hideCalendar(inst);
 					}
 				});
@@ -107,48 +110,48 @@ $.extend(MultiCalendarsPicker.prototype, {
 			}
 		}
 	},
-	
+
 	_getConverterName : function (from, to) {
 		return from + $.multicalendar.TO + to.charAt(0).toUpperCase() + to.substr(1).toLowerCase();
 	},
-	
+
 	_isFormatDateAServiceCall : function (calendarOrder, calendarOptions) {
 		var isServiceCall = false;
 		var defaultCalendar = calendarOptions.defaultCalendar;
 		var calendars = calendarOptions.calendars;
 		var selectedCalendar = calendars[calendarOrder];
 		var converterName = $.multicalendar._getConverterName(selectedCalendar, defaultCalendar);
-		
-		if(calendarOptions.converters[converterName] 
-			&& calendarOptions.converters[converterName].format 
+
+		if(calendarOptions.converters[converterName]
+			&& calendarOptions.converters[converterName].format
 			&& calendarOptions.converters[converterName].format.url) {
 			isServiceCall = true;
 		}
 		return isServiceCall;
 	},
-	
+
 	_isFormatDateAFunctionCall : function (calendarOrder, calendarOptions) {
 		var isFunctionCall = false;
 		var defaultCalendar = calendarOptions.defaultCalendar;
 		var calendars = calendarOptions.calendars;
 		var selectedCalendar = calendars[calendarOrder];
 		var converterName = $.multicalendar._getConverterName(selectedCalendar, defaultCalendar);
-		
-		if(calendarOptions.converters[converterName] 
-			&& calendarOptions.converters[converterName].format 
+
+		if(calendarOptions.converters[converterName]
+			&& calendarOptions.converters[converterName].format
 			&& (typeof calendarOptions.converters[converterName].format) == 'function') {
 			isFunctionCall = true;
 		}
 		return isFunctionCall;
 	},
-	
+
 	_getFormatFn : function (calendarOrder, calendarOptions) {
 		var defaultCalendar = calendarOptions.defaultCalendar;
 		var calendars = calendarOptions.calendars;
 		var selectedCalendar = calendars[calendarOrder];
 		var converterName = $.multicalendar._getConverterName(selectedCalendar, defaultCalendar);
-		
-		return calendarOptions.converters[converterName].format;	
+
+		return calendarOptions.converters[converterName].format;
 	},
 
      _convertDateBetweenCalendarFormats_old : function(fromCalendar, toCalendar, date) {
@@ -179,7 +182,7 @@ $.extend(MultiCalendarsPicker.prototype, {
         return calendarProps.dateFormat;
     },
 
-	
+
 	_formatDateAsAService : function(calendarOrder, inst, date) {
 		var calendarOptions = inst.settings;
 		var defaultCalendar = calendarOptions.defaultCalendar;
@@ -198,14 +201,14 @@ $.extend(MultiCalendarsPicker.prototype, {
 
         var jsonString = '{"' + nameOfDateParam + '": "' + date +'"}';
 		var data = $.parseJSON(jsonString);
-		data = $.extend(data, formatProps.extraParams); 
+		data = $.extend(data, formatProps.extraParams);
 		$.ajax({
 		  url: formatProps.url,
 		  data: data,
 		  dataType: 'text',
           success: $.multicalendar._formatDateAsAServiceSuccess(defaultCalendar, fromFormat, toFormat, inst)
 		});
-	
+
 	},
 
     _formatDateAsAServiceSuccess: function (selectedCalendar, fromFormat, toFormat, inst) {
@@ -243,19 +246,20 @@ $.extend(MultiCalendarsPicker.prototype, {
             else{$("#" + this.calendarContainer).css({left: (instPosition.left ) + "px"});
             }
 	},
-	
+
 	_hideCalendar : function (inst) {
 		$("#" + this.calendarContainer).hide("slow");
-        $.multicalendar._isCalendarShown = false;
 	},
-	
+
 	_showCalendar : function (inst) {
 		$("#" + this.calendarContainer).show("slow");
+        $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar ).addClass('activeCalendar');
+        $.multicalendar.numberOfCalendars = inst.settings.calendars.length;
 		this._adjustPositionOfCalendar(inst);
         $.multicalendar._isCalendarShown = true;
         $.multicalendar._currentObj = $(inst);
 	},
-	
+
 	_showDateInCalendarSuccessCallback : function (selectedCalendar, fromFormat, toFormat, calendarIndex, inputElementId, originalDate) {
 		return function(date) {
 
@@ -276,7 +280,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 			var calendars = calendarOptions.calendars;
 			var numberOfCalendars = calendars.length;
             var originalDate = date;
-			
+
 			if(calendars && numberOfCalendars > 0) {
 				for(var i = 0; i < numberOfCalendars; i++) {
 					if(calendars[i] == defaultCalendar) {
@@ -413,8 +417,21 @@ $.extend(MultiCalendarsPicker.prototype, {
                 }
             });
         }
+
+        $(inst).bind('keydown keypress', function (evt) {
+            var activeCalendar = $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar )[0];
+            if(evt.type == 'keydown') $.calendars.picker.keyDownMultipicker( evt, activeCalendar);
+            else $.calendars.picker.keyPressMultipicker( evt, activeCalendar);
+        });
+
+       $('#multiCalendarContainer .hasCalendarsPicker').live( "mouseenter" , function(){
+            $('.hasCalendarsPicker').removeClass('activeCalendar');
+            $(this).addClass('activeCalendar');
+            $.multicalendar.activeCalendar =  $(this).attr('id').substring(13);
+        });
+
 	},
-	
+
 	_checkExternalClick: function(event) {
 		var clickedOutsideCalendar = $(event.target).parents('#' + $.multicalendar.calendarContainer).length == 0
 		                                && !$(event.target).hasClass($.multicalendar._markerClass);//,
@@ -431,7 +448,7 @@ $.extend(MultiCalendarsPicker.prototype, {
             $.multicalendar._hideCalendar();
         }
 	},
-	
+
 	_getCalendarOrder: function (id) {
 		return parseInt(id.replace($.multicalendar.calendarIdPrefix,'')) - 1;
 	},
@@ -548,7 +565,7 @@ $.fn.multiCalendarPicker = function(opts) {
 
 	var inst = $(this)[0];
 	inst.settings = options;
-	
+
 	$(inst).addClass($.multicalendar._markerClass);
 
     if((options.buttonImage && options.buttonImage != '') || options.buttonClass && options.buttonClass != '') {
