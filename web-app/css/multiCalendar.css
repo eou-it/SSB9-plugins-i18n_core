@@ -40,6 +40,8 @@
 .ui-widget-content { border: 1px solid #cccccc; background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #333333; }
 .ui-widget-content a { color: #333333; }
 .ui-widget-header a { color: #222222; }
+#multiCalendarContainer .ui-widget-header a { margin:2px 0px; width:10%;}
+#multiCalendarContainer .ui-widget-header span{width:80%;display: inline-block; text-align: center;}
 .ui-datepicker-div .ui-widget-header {
     background-color: #EDF0F4 !important;
     color: #333333;
@@ -119,6 +121,7 @@
 .ui-icon { width: 16px; height: 16px; background-image: url(images/ui-icons_222222_256x240.png); }
 .ui-widget-content .ui-icon {background-image: url(images/ui-icons_222222_256x240.png); }
 .ui-widget-header .ui-icon {background-image: url(images/ui-icons_003366_256x240.png); }
+#multiCalendar1 .ui-widget-header .ui-icon { margin:0px 2px; }
 .ui-state-default .ui-icon { background-image: url(images/ui-icons_888888_256x240.png); }
 .ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(images/ui-icons_454545_256x240.png); }
 .ui-state-active .ui-icon {background-image: url(images/ui-icons_ffffff_256x240.png); }
@@ -347,7 +350,7 @@
 .ui-datepicker {
     box-shadow: 2px 2px 3px #666666;
     display: none;
-    height: 15em;
+    /*height: 15em;*/
     padding: 0.5em 0.5em .75em;
     width: 20em;
 }
@@ -481,9 +484,15 @@ button.ui-datepicker-cmd {
   width: 100%;
 }
 
+
 .ui-datepicker-group {
-  float: left;
-  width: 17em;
+    float: left;
+    padding: 5px;
+    width: 17em;
+}
+
+.activeCalendar .ui-datepicker-group {
+    border: 2px solid #194F85;
 }
 
 #multiCalendarContainer {
@@ -578,6 +587,11 @@ display:block;
     color: #333333;
     font-weight: normal;
 }
+
+#multiCalendarContainer .ui-datepicker-other-month {
+    opacity: 0.3;
+}
+
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #333333; text-decoration: none; }
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
     color: #FFFFFF;
@@ -863,7 +877,7 @@ display:block;
 .ui-datepicker {
     box-shadow: 2px 2px 3px #666666;
     display: none;
-    height: 15em;
+    /*height: 15em;*/
     padding: 0.5em 0.5em .75em;
     width: 20em;
 }
@@ -1037,10 +1051,6 @@ display:block;
     width: 20px;
     background-size: 20px auto;
     vertical-align: middle;
-}
-
-.ui-datepicker {
-    width: 210px!important;
 }
 
 #sceenReaderText{

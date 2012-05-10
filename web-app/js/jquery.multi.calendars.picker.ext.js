@@ -153,7 +153,7 @@
                 action: function(inst) {
                     $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar ).removeClass('activeCalendar');
                     $.multicalendar.activeCalendar = $.multicalendar.activeCalendar + 1;
-                    if($.multicalendar.activeCalendar > $.multicalendar.numberOfCalendars){$.multicalendar.activeCalendar = 1; }
+                    if(!$('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar ).length){$.multicalendar.activeCalendar = 1; }
                     $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar ).addClass('activeCalendar');
                 }
 

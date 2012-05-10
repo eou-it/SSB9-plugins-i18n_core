@@ -225,7 +225,7 @@ $.extend(MultiCalendarsPicker.prototype, {
        }
     },
 
-    _adjustPositionOfCalendar : function(inst) {
+    adjustPositionOfCalendar : function(inst) {
             var actualScreenHeightAvailable = $(window).height() - $('#footerApplicationBar').outerHeight();
             var actualScreenWidthAvailable = $(window).width();
 			var instPosition = $(inst).offset();
@@ -249,13 +249,14 @@ $.extend(MultiCalendarsPicker.prototype, {
 
 	_hideCalendar : function (inst) {
 		$("#" + this.calendarContainer).hide("slow");
+        $.multicalendar.activeCalendar = null;
 	},
 
 	_showCalendar : function (inst) {
 		$("#" + this.calendarContainer).show("slow");
+        $.multicalendar.activeCalendar = 1;
         $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar ).addClass('activeCalendar');
-        $.multicalendar.numberOfCalendars = inst.settings.calendars.length;
-		this._adjustPositionOfCalendar(inst);
+		this.adjustPositionOfCalendar(inst);
         $.multicalendar._isCalendarShown = true;
         $.multicalendar._currentObj = $(inst);
 	},
@@ -419,9 +420,11 @@ $.extend(MultiCalendarsPicker.prototype, {
         }
 
         $(inst).bind('keydown keypress', function (evt) {
-            var activeCalendar = $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar )[0];
-            if(evt.type == 'keydown') $.calendars.picker.keyDownMultipicker( evt, activeCalendar);
-            else $.calendars.picker.keyPressMultipicker( evt, activeCalendar);
+            if($.multicalendar._isCalendarShown){
+                var activeCalendar = $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar )[0];
+                if(evt.type == 'keydown') $.calendars.picker.keyDownMultipicker( evt, activeCalendar);
+                else $.calendars.picker.keyPressMultipicker( evt, activeCalendar);
+            }
         });
 
        $('#multiCalendarContainer .hasCalendarsPicker').live( "mouseenter" , function(){
