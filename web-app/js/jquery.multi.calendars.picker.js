@@ -387,6 +387,69 @@ $.extend(MultiCalendarsPicker.prototype, {
         var settings = inst.settings;
         var showOn = settings.showOn
 
+        $(inst).change( function (evt) {
+            try {
+                var valEntered = $(inst).val();
+                var cDateObj
+                var calendar = $.calendars.instance($.i18n.prop("default.calendar"));
+                if (valEntered.length == 1 && isNaN(valEntered)){
+                    // put system date
+                    cDateObj = calendar.today();
+                } else {
+                    var matches = valEntered.match( /\d+/g );
+                    // no special characters
+                    if (matches.length == 1){
+                        if(valEntered.length <= 2 ){
+                            if (calendar.local.dateFormat.charAt(0).toLowerCase() == "y"){
+                                var decade = $.i18n.prop("default.decade.below50")
+                                if (matches[i] > 50)
+                                    decade = $.i18n.prop("default.decade.above50")
+
+                                cDateObj = calendar.today().set(Number($(inst).val()) + Number(decade), calendar.local.dateFormat.charAt(0));
+                            } else {
+                                cDateObj = calendar.today().set($(inst).val(), calendar.local.dateFormat.charAt(0));
+                            }
+                        } else {
+                            //slice by 2 characers
+                            matches = valEntered.match(/.{2}/g);
+                        }
+                    }
+                    if(cDateObj == null){
+                        var dateFormat = calendar.local.dateFormat.toLowerCase();
+                        var dateArr = {
+                          'd': dateFormat.indexOf("d"),
+                          'm': dateFormat.indexOf("m"),
+                          'y': dateFormat.indexOf("y")
+                        };
+
+                        var sortable = [];
+                        for (var val in dateArr)
+                        sortable.push([val, dateArr[val]])
+                        sortable.sort(function(a, b) {return a[1] - b[1]})
+
+                        cDateObj = calendar.today();
+                        for (i = 0; i < matches.length; i++){
+                            if(sortable[i][0] == "y"){
+                                var decade = $.i18n.prop("default.decade.below50")
+                                if (matches[i] > 50)
+                                    decade = $.i18n.prop("default.decade.above50")
+
+                                cDateObj = cDateObj.set(Number(matches[i]) + Number(decade), sortable[i][0]);
+                            } else {
+                                cDateObj = cDateObj.set(matches[i], sortable[i][0]);
+                            }
+                        }
+                    }
+                }
+
+                if(cDateObj)
+                    var dateStr = calendar.formatDate(calendar.local.dateFormat, cDateObj);
+
+                $(inst).val(dateStr)
+            } catch(e) {
+            }
+        });
+
         if(showOn == "both" || showOn == "focus") {
 		    $(inst).focus( function (evt) {
                 if(!$.multicalendar._isCalendarShown || ($.multicalendar._currentObj && $.multicalendar._currentObj.get(0) !== $(evt.target).get(0))) {
