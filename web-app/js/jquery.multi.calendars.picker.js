@@ -248,6 +248,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 	},
 
 	_hideCalendar : function (inst) {
+         $.multicalendar._isCalendarShown = false;
 		$("#" + this.calendarContainer).hide("slow");
         $.multicalendar.activeCalendar = null;
 	},
