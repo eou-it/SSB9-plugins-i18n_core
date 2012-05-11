@@ -247,20 +247,34 @@ $.extend(MultiCalendarsPicker.prototype, {
             }
 	},
 
-	_hideCalendar : function (inst) {
-         $.multicalendar._isCalendarShown = false;
-		$("#" + this.calendarContainer).hide("slow");
-        $.multicalendar.activeCalendar = null;
-	},
+    toggleCalendar: function(inst){
+        if($.multicalendar._isCalendarShown)
+            $.multicalendar._hideCalendar(inst);
+        else
+            $.multicalendar._showCalendar(inst);
+    },
 
-	_showCalendar : function (inst) {
-		$("#" + this.calendarContainer).show("slow");
+    _hideCalendar : function (inst) {
+        $.multicalendar._isCalendarShown = false;
+        $("#" + this.calendarContainer).hide("slow");
+        $.multicalendar.activeCalendar = null;
+    },
+
+
+    _showCalendar : function (inst) {
+        if(!$('#multiCalendarContainer').length){
+            $.multicalendar._createDatePickerDOMStructure(inst);
+            $.multicalendar._addCalendarsToDOM(inst);
+            $.multicalendar._showDateInCalendar(inst);
+        }
+        $("#" + this.calendarContainer).show("slow");
         $.multicalendar.activeCalendar = 1;
-        $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar ).addClass('activeCalendar');
-		this.adjustPositionOfCalendar(inst);
-        $.multicalendar._isCalendarShown = true;
-        $.multicalendar._currentObj = $(inst);
-	},
+         $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar ).addClass('activeCalendar');
+        this.adjustPositionOfCalendar(inst);
+         $.multicalendar._isCalendarShown = true;
+         $.multicalendar._currentObj = $(inst);
+    },
+
 
 	_showDateInCalendarSuccessCallback : function (selectedCalendar, fromFormat, toFormat, calendarIndex, inputElementId, originalDate) {
 		return function(date) {
@@ -483,6 +497,10 @@ $.extend(MultiCalendarsPicker.prototype, {
             });
         }
 
+        $(inst).dblclick(function (evt) {
+            $.multicalendar.toggleCalendar(evt.target);
+        });
+
         $(inst).bind('keydown keypress', function (evt) {
             if($.multicalendar._isCalendarShown){
                 var activeCalendar = $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar )[0];
@@ -490,6 +508,7 @@ $.extend(MultiCalendarsPicker.prototype, {
                 else $.calendars.picker.keyPressMultipicker( evt, activeCalendar);
             }
         });
+
 
        $('#multiCalendarContainer .hasCalendarsPicker').live( "mouseenter" , function(){
             $('.hasCalendarsPicker').removeClass('activeCalendar');
