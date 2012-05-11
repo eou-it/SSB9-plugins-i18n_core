@@ -19,10 +19,8 @@ $.editable.addInputType( 'datepicker', {
     element: function( settings, original ) {
       var form = $( this ),
           input = $( '<input id="multiCalendarDestination"/>' );
-          btn = $( "<button type='button'>&nbsp;</button>" );
       input.attr( 'autocomplete','off' );
       form.append( input );
-      form.append( btn );
       return input;
     },
 
