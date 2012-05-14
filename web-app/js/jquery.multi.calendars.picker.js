@@ -226,24 +226,27 @@ $.extend(MultiCalendarsPicker.prototype, {
     },
 
     adjustPositionOfCalendar : function(inst) {
-            var actualScreenHeightAvailable = $(window).height() - $('#footerApplicationBar').outerHeight();
-            var actualScreenWidthAvailable = $(window).width();
+            var screenHeightAvailable = $(window).height() - $('#footerApplicationBar').outerHeight();
+            var screenWidthAvailable = $(window).width();
 			var instPosition = $(inst).offset();
 			var instHeight = $(inst).outerHeight();
 			var instWidth = $(inst).outerWidth();
             var pickerContainerHeight = $("#" + this.calendarContainer + "> #multiCalendar1").height();
-            var pickerContainerWidth = $("#" + this.calendarContainer).width();
-            if(instPosition.top + instHeight + pickerContainerHeight >= actualScreenHeightAvailable ){
+            var pickerContainerWidth =  $("#" + this.calendarContainer).width();
+            var firstPickerOuterWidth = $("#" + this.calendarContainer + " .hasCalendarsPicker:first .ui-datepicker").outerWidth();
+            var lastPickerOuterWidth = $("#" + this.calendarContainer + " .hasCalendarsPicker:first .ui-datepicker").outerWidth();
+            if(instPosition.top + instHeight + pickerContainerHeight >= screenHeightAvailable && instPosition.top > pickerContainerHeight){
                 $("#" + this.calendarContainer).css({top: (instPosition.top - pickerContainerHeight) + "px"});
             }
             else{
                 $("#" + this.calendarContainer).css({top: (instPosition.top + instHeight) + "px"});
             }
 
-            if(instPosition.left + instWidth + pickerContainerWidth >= actualScreenWidthAvailable && instPosition.left >= pickerContainerWidth){
-                $("#" + this.calendarContainer).css({right: (actualScreenWidthAvailable - instPosition.left - instWidth) + "px"});
+            if(instPosition.left >= firstPickerOuterWidth ){
+                $("#" + this.calendarContainer).css({left: (instPosition.left - firstPickerOuterWidth) + "px"});
             }
-            else{$("#" + this.calendarContainer).css({left: (instPosition.left ) + "px"});
+            else{
+                $("#" + this.calendarContainer).css({left: (instPosition.left ) + "px"});
             }
 	},
 
