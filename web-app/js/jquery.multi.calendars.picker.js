@@ -242,7 +242,7 @@ $.extend(MultiCalendarsPicker.prototype, {
                 $("#" + this.calendarContainer).css({top: (instPosition.top + instHeight) + "px"});
             }
 
-            if(instPosition.left >= firstPickerOuterWidth ){
+            if(instPosition.left >= firstPickerOuterWidth && $.multicalendar.activeCalendar > 1){
                 $("#" + this.calendarContainer).css({left: (instPosition.left - firstPickerOuterWidth) + "px"});
             }
             else{
