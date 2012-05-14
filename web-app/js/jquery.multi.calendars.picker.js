@@ -414,23 +414,13 @@ $.extend(MultiCalendarsPicker.prototype, {
                     var matches = valEntered.match( /\d+/g );
                     // no special characters
                     if (matches.length == 1){
-                        if(valEntered.length <= 2 ){
-                            if (calendar.local.dateFormat.charAt(0).toLowerCase() == "y"){
-                                var decade = $.i18n.prop("default.decade.below50")
-                                if (matches[i] > 50)
-                                    decade = $.i18n.prop("default.decade.above50")
-
-                                cDateObj = calendar.today().set(Number($(inst).val()) + Number(decade), calendar.local.dateFormat.charAt(0));
-                            } else {
-                                cDateObj = calendar.today().set($(inst).val(), calendar.local.dateFormat.charAt(0));
-                            }
-                        } else {
+                        if(valEntered.length > 2 ){
                             //slice by 2 characers
                             matches = valEntered.match(/.{2}/g);
                         }
                     }
                     if(cDateObj == null){
-                        var dateFormat = calendar.local.dateFormat.toLowerCase();
+                        var dateFormat = $.i18n.prop("default.dateEntry.format").toLowerCase();//calendar.local.dateFormat.toLowerCase();
                         var dateArr = {
                           'd': dateFormat.indexOf("d"),
                           'm': dateFormat.indexOf("m"),
@@ -445,11 +435,7 @@ $.extend(MultiCalendarsPicker.prototype, {
                         cDateObj = calendar.today();
                         for (i = 0; i < matches.length; i++){
                             if(sortable[i][0] == "y"){
-                                var decade = $.i18n.prop("default.decade.below50")
-                                if (matches[i] > 50)
-                                    decade = $.i18n.prop("default.decade.above50")
-
-                                cDateObj = cDateObj.set(Number(matches[i]) + Number(decade), sortable[i][0]);
+                                cDateObj = cDateObj.set(Number(matches[i]) + Number($.multicalendar._getCentury(Number(matches[i]))), sortable[i][0]);
                             } else {
                                 cDateObj = cDateObj.set(matches[i], sortable[i][0]);
                             }
@@ -643,6 +629,18 @@ $.extend(MultiCalendarsPicker.prototype, {
             $(span).addClass(options.buttonClass);
         }
         span.insertAfter($(inst));
+    },
+    _getCentury: function(val) {
+        var century = 0;
+        try{
+            century = $.i18n.prop("default.century.below.pivot");
+            if (val > $.i18n.prop("default.century.pivot"))
+                century = $.i18n.prop("default.century.above.pivot");
+        }catch(e){
+        }
+        if(!Number(century))
+            century = 0;
+        return century;
     }
 });
 
