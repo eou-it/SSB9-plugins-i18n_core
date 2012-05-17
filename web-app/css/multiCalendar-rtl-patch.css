@@ -1,0 +1,21 @@
+input.hasMultiCalendarPicker {
+    margin: 0 0 0 -22px!important;
+}
+input.hasMultiCalendarPicker + span {
+    background: url('images/date-picker-sprites-flip.png') no-repeat scroll 0px 1px transparent!important;: ;
+}
+
+input.hasMultiCalendarPicker {
+    border-radius: 3px  0  0 3px;
+}
+
+input.hasMultiCalendarPicker:focus + span{
+    background-position:0px -99px !important;
+}
+
+ input.hasMultiCalendarPicker:hover + span, input.hasMultiCalendarPicker + span:hover{
+    background-position:0px -49px !important;
+}
+
+
+
