@@ -552,9 +552,9 @@ display:block;
 ----------------------------------*/
 .ui-datepicker .ui-state-highlight, .ui-datepicker .ui-state-hover {
     background: none repeat scroll 0 0 #EAF4FD !important;
-    border: 1px solid #C5DBEC;
-    color: #194F85;
-    font-weight:bold;
+    border: 1px solid #C5DBEC!important;
+    color: #194F85!important;
+    font-weight:bold!important;
 }
 .ui-datepicker .ui-state-default .ui-state-hover {
 	background-color:#B2CEDF !important;
