@@ -2,14 +2,13 @@ $(document).ready(function() {
 
     $.calendars.picker.setDefaults({
         renderer:          $.calendars.picker.themeRollerRenderer,
-        changeMonth:       false,
+        changeMonth:       true,
         showAnim:          "fadeIn",
         showOptions:       null,
         showSpeed:         500,
         useMouseWheel:     false,
         showOtherMonths:   true,
         selectOtherMonths: true,
-        changeMonth:       false,
         prevText:          "<span class=\"ui-icon ui-icon-circle-triangle-w\"> </span>",
         nextText:          "<span class=\"ui-icon ui-icon-circle-triangle-e\"> </span>",
         dayStatus:         $.i18n.prop("js.datepicker.selectText") + ' DD, M d, yyyy',
