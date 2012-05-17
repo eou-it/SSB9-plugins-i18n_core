@@ -11,7 +11,10 @@ $(document).ready(function() {
         selectOtherMonths: true,
         changeMonth:       false,
         prevText:          "<span class=\"ui-icon ui-icon-circle-triangle-w\"> </span>",
-        nextText:          "<span class=\"ui-icon ui-icon-circle-triangle-e\"> </span>"
+        nextText:          "<span class=\"ui-icon ui-icon-circle-triangle-e\"> </span>",
+        dayStatus:         $.i18n.prop("js.datepicker.selectText") + ' DD, M d, yyyy',
+        prevStatus:        $.i18n.prop("js.datepicker.prevStatus"),
+        nextStatus:        $.i18n.prop("js.datepicker.nextStatus")
     });
 
     var default_calendar=$.i18n.prop("default.calendar");
