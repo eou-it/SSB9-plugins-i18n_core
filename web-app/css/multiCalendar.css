@@ -878,7 +878,7 @@ display:block;
     margin: 0;
     width: 100%;
 }
-.ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: bold; border: 0;  }
+.ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: bold; border: 0; min-width:25px;  }
 .ui-datepicker td { border: 0; padding: 1px; }
 .ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: right; text-decoration: none; }
 .ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
@@ -978,7 +978,7 @@ button.ui-datepicker-cmd {
 
 .ui-datepicker-group {
   float: left;
-  width: 17em;
+  width: auto !important;
 }
 
 #multiCalendarContainer {
@@ -1039,7 +1039,6 @@ input.hasMultiCalendarPicker + span {
 }
 
 input.hasMultiCalendarPicker {
-    width:100%;
     margin:0 -22px 0 0; /* leave space for button width */
     padding:0 0;
     height:1.7em;
