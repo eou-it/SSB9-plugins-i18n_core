@@ -539,7 +539,7 @@ $.extend(MultiCalendarsPicker.prototype, {
             var calendars = $.extend([], $.multicalendar._removeInvalidCalendars(settings.calendars));
             var newCalendarsList = new Array();
             for(var i = 0, j = 0; i < calendars.length; i++) {
-                if(calendars[i] && calendars[i].trim() != '') {
+                if(calendars[i] && $.trim(calendars[i]) != '') {
                     newCalendarsList[j] = calendars[i];
                     j++;
                 }
@@ -562,7 +562,7 @@ $.extend(MultiCalendarsPicker.prototype, {
         if(typeof string == "string") {
             splitArr = string.split(char)
             for(var i = 0; i < splitArr.length; i++) {
-                 splitArr[i] = splitArr[i].trim();
+                 splitArr[i] = $.trim(splitArr[i]);
             }
         }
         return splitArr;
