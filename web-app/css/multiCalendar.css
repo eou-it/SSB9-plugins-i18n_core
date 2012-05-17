@@ -562,6 +562,7 @@ display:block;
 
 #multiCalendarContainer .ui-datepicker-other-month {
     opacity: 0.3;
+    filter:Alpha(Opacity=30)
 }
 
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #333333; text-decoration: none; }
@@ -998,10 +999,12 @@ display:block;
 
 #multiCalendarContainer .hasCalendarsPicker > div{
     opacity:0.5;
+    filter:Alpha(Opacity=50)
 }
 
 #multiCalendarContainer .hasCalendarsPicker.activeCalendar > div{
     opacity:1;
+    filter:Alpha(Opacity=100)
 }
 
 #sceenReaderText{
