@@ -237,7 +237,7 @@
 					(drawDate.month() == month ? '' : ' ' + renderer.otherMonthClass) +
 					(drawDate.compareTo(today) == 0 && drawDate.month() == month ?
 					' ' + renderer.todayClass : '') +
-					(drawDate.compareTo(inst.drawDate) == 0 && drawDate.month() == month ?
+                    (drawDate.compareTo(inst.drawDate) == 0 && drawDate.month() == month && $.multicalendar._isCalendarShown?
 					' ' + renderer.highlightedClass : '') + '"' +
 					(dateInfo.title || (dayStatus && selectable) ? ' title="' +
 					(dateInfo.title || drawDate.formatDate(dayStatus)) + '"' : '') + '>' +
