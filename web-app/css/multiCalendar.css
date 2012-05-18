@@ -1009,6 +1009,7 @@ display:block;
 #sceenReaderText{
     width:0px;
     height:0px;
+    font-size:0px;
 }
 
 input.hasMultiCalendarPicker + span{
