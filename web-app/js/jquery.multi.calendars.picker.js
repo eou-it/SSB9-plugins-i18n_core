@@ -401,6 +401,43 @@ $.extend(MultiCalendarsPicker.prototype, {
         }
     },
 
+    _extractFullDate : function (dateString) {
+        var format = $.i18n.prop('js.datepicker.dateFormat.display');
+
+        var separator = '';
+
+        if (format.indexOf('-') >= 0) {
+            separator = '-';
+        }
+        else if (format.indexOf('/') >= 0) {
+            separator = '/';
+        }
+        else if (format.indexOf('.') >= 0) {
+            separator = '.';
+        }
+
+        if (dateString.indexOf(separator) >= 0)  {
+            var dateArray = dateString.split(separator);
+            var formatArray = format.split(separator);
+            var yearIndex = 0;
+
+            for(var i = 0; i < formatArray.length; i++) {
+                if(formatArray[i].toLowerCase().indexOf('y') != -1) {
+                    yearIndex = i;
+                    break;
+                }
+            }
+
+            var year = dateArray[yearIndex];
+            if(year.length == 2) {
+                year = Number($.multicalendar._getCentury(parseInt(year))) + parseInt(year);
+                dateArray[yearIndex] = year;
+                dateString = dateArray.join(separator);
+            }
+        }
+        return dateString;
+    },
+
     _registerEvents : function (inst) {
         var settings = inst.settings;
         var showOn = settings.showOn
@@ -408,8 +445,19 @@ $.extend(MultiCalendarsPicker.prototype, {
         $(inst).change( function (evt) {
             try {
                 var valEntered = $(inst).val();
-                var cDateObj
-                var calendar = $.calendars.instance($.i18n.prop("default.calendar"));
+                var cDateObj;
+
+                valEntered = $.multicalendar._extractFullDate(valEntered);
+                var defaultCalendar = settings.defaultCalendar;
+                if($.multicalendar.isValidDateFormat(defaultCalendar, valEntered)) {
+                    $(inst).val(valEntered);
+                    return;
+                }
+
+                var calendar = $.calendars.instance(defaultCalendar);
+
+                var displayFormat = $.i18n.prop("js.datepicker.dateFormat.display");
+
                 if (valEntered.length == 1 && isNaN(valEntered)){
                     // put system date
                     cDateObj = calendar.today();
@@ -432,24 +480,30 @@ $.extend(MultiCalendarsPicker.prototype, {
 
                         var sortable = [];
                         for (var val in dateArr)
-                        sortable.push([val, dateArr[val]])
-                        sortable.sort(function(a, b) {return a[1] - b[1]})
+                        sortable.push([val, dateArr[val]]);
+                        sortable.sort(function(a, b) {return a[1] - b[1]});
 
                         cDateObj = calendar.today();
+                        var day = cDateObj.day();
+                        var month = cDateObj.month();
+                        var year = cDateObj.year();
                         for (i = 0; i < matches.length; i++){
                             if(sortable[i][0] == "y"){
-                                cDateObj = cDateObj.set(Number(matches[i]) + Number($.multicalendar._getCentury(Number(matches[i]))), sortable[i][0]);
+                                year = Number(matches[i]) + Number($.multicalendar._getCentury(Number(matches[i])));
+                            } else if (sortable[i][0] == "m") {
+                                month = matches[i];
                             } else {
-                                cDateObj = cDateObj.set(matches[i], sortable[i][0]);
+                                day = matches[i];
                             }
                         }
+                        cDateObj = cDateObj.newDate(year, month, day);
                     }
                 }
 
                 if(cDateObj)
                     var dateStr = calendar.formatDate(calendar.local.dateFormat, cDateObj);
 
-                $(inst).val(dateStr)
+                $(inst).val(dateStr);
             } catch(e) {
             }
         });
@@ -481,8 +535,6 @@ $.extend(MultiCalendarsPicker.prototype, {
 
                     if(input) {
                         $.multicalendar._showCalendar(input);
-                        input.focus()
-
                     }
                 }
             });
@@ -638,9 +690,9 @@ $.extend(MultiCalendarsPicker.prototype, {
     _getCentury: function(val) {
         var century = 0;
         try{
-            century = $.i18n.prop("default.century.below.pivot");
-            if (val > $.i18n.prop("default.century.pivot"))
-                century = $.i18n.prop("default.century.above.pivot");
+            century = parseInt($.i18n.prop("default.century.below.pivot"));
+            if (val > parseInt($.i18n.prop("default.century.pivot")))
+                century = parseInt($.i18n.prop("default.century.above.pivot"));
         }catch(e){
         }
         if(!Number(century))
