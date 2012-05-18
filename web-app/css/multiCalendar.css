@@ -75,7 +75,7 @@
 }
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
     background-color: #194F85;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     background:-moz-linear-gradient(50% 11.8085% -90deg,
 	rgba(27, 86, 145, 1) 0%,
 	rgba(16, 73, 122, 1) 24.633%,
@@ -588,7 +588,7 @@ display:block;
 }
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
     background-color: #194F85 !important;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     background:-moz-linear-gradient(50% 11.8085% -90deg,
 	rgba(27, 86, 145, 1) 0%,
 	rgba(16, 73, 122, 1) 24.633%,
