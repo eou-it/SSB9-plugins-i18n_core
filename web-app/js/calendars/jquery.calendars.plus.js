@@ -237,7 +237,7 @@ $.extend($.calendars.baseCalendar.prototype, {
 		var getName = function(match, shortNames, longNames, step) {
 			var names = (doubled(match, step) ? longNames : shortNames);
 			for (var i = 0; i < names.length; i++) {
-				if (value.substr(iValue, names[i].length) == names[i]) {
+				if ((value.substr(iValue, names[i].length)).toLowerCase() == names[i].toLowerCase()) {
 					iValue += names[i].length;
 					return i + calendar.minMonth;
 				}

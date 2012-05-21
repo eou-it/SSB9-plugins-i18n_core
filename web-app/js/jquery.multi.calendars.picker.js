@@ -538,6 +538,14 @@ $.extend(MultiCalendarsPicker.prototype, {
                     }
                 }
             });
+
+            if(showOn == "button") {
+                $(inst).focus( function (evt) {
+                    if($.multicalendar._currentObj && $.multicalendar._currentObj.get(0) !== $(evt.target).get(0)) {
+                        $.multicalendar._hideCalendar();
+                    }
+                });
+            }
         }
 
         $(inst).dblclick(function (evt) {
