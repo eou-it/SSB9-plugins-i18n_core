@@ -159,7 +159,7 @@
 
             },
             showCalendar: {text: 'showCalendarText', status: 'showCalendarStatus',
-                keystroke: {keyCode: 40, altKey: true }, // alt + down
+                keystroke: {keyCode: 120 }, // F9
                 enabled: function(inst) {
                     return true;
                 },

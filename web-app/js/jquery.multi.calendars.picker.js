@@ -554,7 +554,14 @@ $.extend(MultiCalendarsPicker.prototype, {
         });
 
         $(inst).bind('keydown keypress', function (evt) {
-            if($.multicalendar._isCalendarShown){
+
+            if(evt.type == 'keydown' && evt.keyCode == 120) {
+                $.multicalendar.toggleCalendar(evt.target);
+                evt.preventDefault();
+			    evt.stopPropagation();
+
+            }
+            else if($.multicalendar._isCalendarShown){
                 var activeCalendar = $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar )[0];
                 if(evt.type == 'keydown') $.calendars.picker.keyDownMultipicker( evt, activeCalendar);
                 else $.calendars.picker.keyPressMultipicker( evt, activeCalendar);
