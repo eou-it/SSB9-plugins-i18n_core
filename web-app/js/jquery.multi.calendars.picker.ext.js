@@ -295,7 +295,8 @@
 		if (handled) {
 			event.preventDefault();
 			event.stopPropagation();
-            $('#sceenReaderText').html($('.activeCalendar a.ui-state-hover')[0].title);
+            if($.multicalendar._isCalendarShown && $('.activeCalendar a.ui-state-hover')[0])
+                $('#sceenReaderText').html($('.activeCalendar a.ui-state-hover')[0].title);
 		}
 		return !handled;
 	},
