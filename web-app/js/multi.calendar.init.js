@@ -13,7 +13,9 @@ $(document).ready(function() {
         nextText:          "<span class=\"ui-icon ui-icon-circle-triangle-e\"> </span>",
         dayStatus:         $.i18n.prop("js.datepicker.selectText") + ' DD, M d, yyyy',
         prevStatus:        $.i18n.prop("js.datepicker.prevStatus"),
-        nextStatus:        $.i18n.prop("js.datepicker.nextStatus")
+        nextStatus:        $.i18n.prop("js.datepicker.nextStatus"),
+        yearStatus:        $.i18n.prop("js.datepicker.nextStatus"),
+        monthStatus:       $.i18n.prop("js.datepicker.nextStatus")
     });
 
     var default_calendar=$.i18n.prop("default.calendar");
