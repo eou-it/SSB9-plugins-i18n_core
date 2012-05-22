@@ -267,9 +267,13 @@
 		var inst = $.data(target, $.calendars.picker.dataName);
 		var handled = false;
 
-        if (event.keyCode == 9 || event.keyCode == 27) { // Tab/Esc - close
+        if (event.keyCode == 9 ) { // Tab - close
+			$.multicalendar._hideCalendar(target);
+		}
+		else if( event.keyCode == 27) { // Esc - close
 //				$.calendars.picker.hide(target);
             $.multicalendar._hideCalendar(target);
+            handled = true;
         }
         else if (event.keyCode == 13) { // Enter - select
             $('#multiCalendarContainer .activeCalendar a.ui-state-hover').click();
