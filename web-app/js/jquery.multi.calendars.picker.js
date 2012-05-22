@@ -242,8 +242,11 @@ $.extend(MultiCalendarsPicker.prototype, {
                 $("#" + this.calendarContainer).css({top: (instPosition.top + instHeight) + "px"});
             }
 
-            if(instPosition.left >= firstPickerOuterWidth && $('.hasCalendarsPicker').length > 1){
+            if(instPosition.left >= firstPickerOuterWidth && $('.hasCalendarsPicker').length > 1 && screenWidthAvailable-instPosition.left >= lastPickerOuterWidth){
                 $("#" + this.calendarContainer).css({left: (instPosition.left - firstPickerOuterWidth) + "px"});
+            }
+            else if(instPosition.left >= pickerContainerWidth ){
+                $("#" + this.calendarContainer).css({right: (screenWidthAvailable - instPosition.left -instWidth ) + "px"});
             }
             else{
                 $("#" + this.calendarContainer).css({left: (instPosition.left ) + "px"});
