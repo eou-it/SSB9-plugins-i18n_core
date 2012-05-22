@@ -1043,7 +1043,7 @@ input.hasMultiCalendarPicker + span {
 
 input.hasMultiCalendarPicker {
     margin:0 -22px 0 0 !important; /* leave space for button width */
-    padding:0 0;
+    padding:0 25px 0 0 !important;
     height:20px !important;
     border:1px solid #778FA0;
     border-radius: 0 3px 3px 0;

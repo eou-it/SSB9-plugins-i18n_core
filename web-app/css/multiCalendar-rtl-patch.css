@@ -1,5 +1,6 @@
 input.hasMultiCalendarPicker {
     margin: 0 0 0 -22px!important;
+    padding:0 0 0 25px !important;
 }
 input.hasMultiCalendarPicker + span {
     background: url('images/date-picker-sprites-flip.png') no-repeat scroll 0px 1px transparent!important;: ;
