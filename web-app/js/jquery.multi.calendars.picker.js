@@ -535,6 +535,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 
                     if(input) {
                         $.multicalendar._showCalendar(input);
+                        input.focus();
                     }
                 }
             });
