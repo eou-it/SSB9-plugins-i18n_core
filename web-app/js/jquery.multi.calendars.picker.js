@@ -257,8 +257,10 @@ $.extend(MultiCalendarsPicker.prototype, {
     toggleCalendar: function(inst){
         if($.multicalendar._isCalendarShown)
             $.multicalendar._hideCalendar(inst);
-        else
+        else {
             $.multicalendar._showCalendar(inst);
+            $.multicalendar._showDateInCalendar(inst);
+        }
     },
 
     _hideCalendar : function (inst) {

@@ -106,7 +106,7 @@ class DateAndDecimalUtils {
 
             for(int i = 0; i < calendars.size(); i++) {
                String calendar = calendars.get(i);
-               String uLocale = messageSource.getMessage("default.calendar." + calendar + ".ulocale" , null, locale)
+               String uLocale = messageSource.getMessage("default.calendar." + calendar + ".translation" , null, locale)
 
                propertyMap.put("default." + calendar + ".monthNames", convertToCommaDelimited(dateConverterService.getMonths(uLocale)))
                propertyMap.put("default." + calendar + ".monthNamesShort", convertToCommaDelimited(dateConverterService.getShortMonths(uLocale)))

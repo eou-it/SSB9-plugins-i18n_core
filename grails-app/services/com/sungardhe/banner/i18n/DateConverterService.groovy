@@ -114,31 +114,43 @@ class DateConverterService {
     }
 
     public String getDefaultULocaleString() {
-           return getULocaleStringForCalendar("gregorian")
-    }
+               return getULocaleStringForCalendar("gregorian")
+        }
 
-    public String getULocaleStringForCalendar(String calendar) {
-       String uLocaleCode = "default.calendar." + calendar + ".ulocale";
-       String property = localizerService(code: uLocaleCode)
-       if (!property) log.error("message property key: " + uLocaleCode + " is missing")
-       return property
-    }
+        public String getULocaleStringForCalendar(String calendar) {
+           String uLocaleCode = "default.calendar." + calendar + ".ulocale";
+           String property = localizerService(code: uLocaleCode)
+           if (!property) log.error("message property key: " + uLocaleCode + " is missing")
+           return property
+        }
 
-    public convertGregorianToDefaultCalendar(date) {
-        return convert(date,
-                getDefaultULocaleString(),
-                getULocaleStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
-                localizerService(code: "default.date.format") ,
-                localizerService(code: "default.date.format.display"))
-    }
+        public String getDefaultTranslationULocaleString() {
+               return getULocaleTranslationStringForCalendar("gregorian")
+        }
 
-    public convertDefaultCalendarToGregorian(date) {
-        return convert(date ,
-                getULocaleStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
-                getDefaultULocaleString(),
-                localizerService(code: "default.date.format.display"),
-                localizerService(code: "default.date.format"));
-    }
+        public String getULocaleTranslationStringForCalendar(String calendar) {
+           String uLocaleCode = "default.calendar." + calendar + ".translation";
+           String property = localizerService(code: uLocaleCode)
+           if (!property) log.error("message property key: " + uLocaleCode + " is missing")
+           return property
+        }
+
+        public convertGregorianToDefaultCalendar(date) {
+            return convert(date,
+                    getDefaultTranslationULocaleString(),
+                    getULocaleStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                    localizerService(code: "default.date.format") ,
+                    localizerService(code: "default.date.format.display"))
+        }
+
+        public convertDefaultCalendarToGregorian(date) {
+            return convert(date ,
+                    getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                    getDefaultULocaleString(),
+                    localizerService(code: "default.date.format.display"),
+                    localizerService(code: "default.date.format"));
+        }
+
 
     private Calendar adjustDate(Calendar calendar, String adjustDays) {
 
