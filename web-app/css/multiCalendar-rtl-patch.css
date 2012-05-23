@@ -18,5 +18,19 @@ input.hasMultiCalendarPicker:focus + span{
     background-position:0px -49px !important;
 }
 
+.ui-datepicker-cmd-prev {
+	float: right;
+}
 
+.ui-datepicker-cmd-next {
+	float: left;
+}
+
+.ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
+    background: url("images/datepicker-arrow-back.png") no-repeat scroll 0 0 transparent;
+}
+
+.ui-widget-header .ui-icon.ui-icon-circle-triangle-w {
+    background: url("images/datepicker-arrow-next.png") no-repeat scroll 0 0 transparent;
+}
 
