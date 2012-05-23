@@ -74,18 +74,21 @@
         color-stop(1, rgba(0, 54, 89, 1)));
 }
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
-    background-color: #194F85;
+    background: none !important;
+    background-color: #194F85 !important;
     color: #FFFFFF !important;
     background:-moz-linear-gradient(50% 11.8085% -90deg,
-	rgba(27, 86, 145, 1) 0%,
-	rgba(16, 73, 122, 1) 24.633%,
-	rgba(4, 59, 98, 1) 57.0096%,
-	rgba(0, 54, 89, 1) 76.9302%);
+                rgba(27, 86, 145, 1) 0%,
+                rgba(16, 73, 122, 1) 24.633%,
+                rgba(4, 59, 98, 1) 57.0096%,
+                rgba(0, 54, 89, 1) 76.9302%) !important;
     background:-webkit-gradient(linear,50% 11.8085%,50% 79.654%,
         color-stop(0, rgba(27, 86, 145, 1)),
         color-stop(0.3202, rgba(16, 73, 122, 1)),
         color-stop(0.741057, rgba(4, 59, 98, 1)),
-        color-stop(1, rgba(0, 54, 89, 1)));
+        color-stop(1, rgba(0, 54, 89, 1))) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1B5691', endColorstr='##1B5691');
+
 }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #ffffff; text-decoration: none; }
 .ui-widget :active { outline: none; }
@@ -587,18 +590,21 @@ display:block;
         color-stop(1, rgba(0, 54, 89, 1))) !important;
 }
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+    background: none !important;
     background-color: #194F85 !important;
     color: #FFFFFF !important;
     background:-moz-linear-gradient(50% 11.8085% -90deg,
-	rgba(27, 86, 145, 1) 0%,
-	rgba(16, 73, 122, 1) 24.633%,
-	rgba(4, 59, 98, 1) 57.0096%,
-	rgba(0, 54, 89, 1) 76.9302%) !important;
+                rgba(27, 86, 145, 1) 0%,
+                rgba(16, 73, 122, 1) 24.633%,
+                rgba(4, 59, 98, 1) 57.0096%,
+                rgba(0, 54, 89, 1) 76.9302%) !important;
     background:-webkit-gradient(linear,50% 11.8085%,50% 79.654%,
         color-stop(0, rgba(27, 86, 145, 1)),
         color-stop(0.3202, rgba(16, 73, 122, 1)),
         color-stop(0.741057, rgba(4, 59, 98, 1)),
         color-stop(1, rgba(0, 54, 89, 1))) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1B5691', endColorstr='##1B5691');
+
 }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #ffffff; text-decoration: none; }
 .ui-widget :active { outline: none; }

@@ -232,9 +232,9 @@ $.extend(MultiCalendarsPicker.prototype, {
 			var instHeight = $(inst).outerHeight();
 			var instWidth = $(inst).outerWidth();
             var pickerContainerHeight = $("#" + this.calendarContainer + "> #multiCalendar1").height();
-            var pickerContainerWidth =  $("#" + this.calendarContainer).width();
             var firstPickerOuterWidth = $("#" + this.calendarContainer + " .hasCalendarsPicker:first .ui-datepicker").outerWidth();
             var lastPickerOuterWidth = $("#" + this.calendarContainer + " .hasCalendarsPicker:first .ui-datepicker").outerWidth();
+            var pickerContainerWidth = $('.hasCalendarsPicker').length > 1 ? firstPickerOuterWidth + lastPickerOuterWidth : firstPickerOuterWidth;
             if(instPosition.top + instHeight + pickerContainerHeight >= screenHeightAvailable && instPosition.top > pickerContainerHeight){
                 $("#" + this.calendarContainer).css({top: (instPosition.top - pickerContainerHeight) + "px"});
             }
@@ -245,12 +245,13 @@ $.extend(MultiCalendarsPicker.prototype, {
             if(instPosition.left >= firstPickerOuterWidth && $('.hasCalendarsPicker').length > 1 && screenWidthAvailable-instPosition.left >= lastPickerOuterWidth){
                 $("#" + this.calendarContainer).css({left: (instPosition.left - firstPickerOuterWidth) + "px"});
             }
-            else if(instPosition.left >= pickerContainerWidth ){
+            else if(instPosition.left + pickerContainerWidth >= screenWidthAvailable){
                 $("#" + this.calendarContainer).css({right: (screenWidthAvailable - instPosition.left -instWidth ) + "px"});
             }
-            else{
+            else {
                 $("#" + this.calendarContainer).css({left: (instPosition.left ) + "px"});
             }
+
 	},
 
     toggleCalendar: function(inst){
