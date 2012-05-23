@@ -408,7 +408,7 @@ $.extend(MultiCalendarsPicker.prototype, {
     },
 
     _extractFullDate : function (dateString) {
-        var format = $.i18n.prop('js.datepicker.dateFormat.display');
+        var format = $.i18n.prop('js.datepicker.dateFormat');
 
         var separator = '';
 
@@ -462,7 +462,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 
                 var calendar = $.calendars.instance(defaultCalendar);
 
-                var displayFormat = $.i18n.prop("js.datepicker.dateFormat.display");
+                var displayFormat = $.i18n.prop("js.datepicker.dateFormat");
 
                 if (valEntered.length == 1 && isNaN(valEntered)){
                     // put system date

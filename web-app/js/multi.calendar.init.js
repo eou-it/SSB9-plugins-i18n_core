@@ -63,8 +63,8 @@ $(document).ready(function() {
                 nameOfDateParam: 'date',
                 extraParams: {
                     calendar: 'islamic-civil',
-                    fromDateFormat: $.i18n.prop("default.date.format"),
-                    toDateFormat: $.i18n.prop("default.date.format"),
+                    fromDateFormat: 'MM/dd/yyyy',
+                    toDateFormat: 'MM/dd/yyyy',
                     toULocale: $.i18n.prop("default.calendar.islamic.ulocale"),
                     fromULocale: $.i18n.prop("default.calendar.gregorian.translation")
                 }
@@ -77,8 +77,8 @@ $(document).ready(function() {
                 nameOfDateParam: 'date',
                 extraParams: {
                     calendar: 'islamic-civil',
-                    fromDateFormat: $.i18n.prop("default.date.format"),
-                    toDateFormat: $.i18n.prop("default.date.format"),
+                    fromDateFormat: 'MM/dd/yyyy',
+                    toDateFormat: 'MM/dd/yyyy',
                     toULocale: $.i18n.prop("default.calendar.gregorian.translation"),
                     fromULocale: $.i18n.prop("default.calendar.islamic.ulocale")
                 }
@@ -89,8 +89,8 @@ $(document).ready(function() {
     $.multicalendar.setDefaults({
         defaultCalendar: default_calendar,
         converters: converters,
-        defaultDateFormat: $.i18n.prop("js.datepicker.dateFormat"),
-        displayDateFormat: $.i18n.prop("js.datepicker.dateFormat.display"),
+        defaultDateFormat: 'mm/dd/yyyy',
+        displayDateFormat: $.i18n.prop("js.datepicker.dateFormat"),
         calendars:[ default_calendar1, default_calendar2 ],
         isRTL: $.i18n.prop("default.language.direction"),
         calendarLocaleProps: calendarLocaleProps,
