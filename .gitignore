@@ -24,3 +24,5 @@ out/
 plugin.xml
 grails-i18n-core*.zip
 stacktrace.log
+src/java/web
+src/java/web/**/*
