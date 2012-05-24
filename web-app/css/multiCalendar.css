@@ -58,7 +58,7 @@
     font-weight: normal;
     background-color: #194F85;
 }
-.ui-state-hover a, .ui-state-hover a:hover {
+#multiCalendarContainer .ui-state-hover a, #multiCalendarContainer .ui-state-hover a:hover {
     color: #FFFFFF;
     text-decoration: none;
     background-color: #194F85;
@@ -73,7 +73,7 @@
         color-stop(0.741057, rgba(4, 59, 98, 1)),
         color-stop(1, rgba(0, 54, 89, 1)));
 }
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+#multiCalendarContainer .ui-state-active, #multiCalendarContainer .ui-widget-content .ui-state-active, #multiCalendarContainer .ui-widget-header .ui-state-active {
     background: none !important;
     background-color: #194F85 !important;
     color: #FFFFFF !important;
@@ -110,7 +110,7 @@
 /* states and images */
 .datePicker-img-pre-loader {visibility:hidden; height:0px; width:0px; background:  url("images/ui-icons_003366_256x240.png") no-repeat;}
 .ui-icon { width: 16px; height: 16px; background-image: url(images/ui-icons_222222_256x240.png); }
-.ui-widget-content .ui-icon {background-image: url(images/ui-icons_222222_256x240.png); }
+#multiCalendarContainer .ui-widget-content .ui-icon {background-image: url(images/ui-icons_222222_256x240.png); }
 .ui-widget-header .ui-icon {background-image: url(images/ui-icons_003366_256x240.png); }
 #multiCalendar1 .ui-widget-header .ui-icon { margin:0px 2px; }
 .ui-state-default .ui-icon { background-image: url(images/ui-icons_888888_256x240.png); }
@@ -541,8 +541,8 @@ display:block;
 .ui-widget { font-family: Arial,sans-serif; font-size: 1.2em; }
 .ui-widget .ui-widget { font-size: 1em; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Arial,sans-serif; font-size: 1em; }
-.ui-widget-content { border: 1px solid #cccccc; background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #333333; }
-.ui-widget-content a { color: #333333; }
+#multiCalendarContainer .ui-widget-content { border: 1px solid #cccccc; background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #333333; }
+#multiCalendarContainer .ui-widget-content a { color: #333333; }
 .ui-widget-header a { color: #222222; }
 .ui-datepicker-div .ui-widget-header {
     background-color: #EDF0F4 !important;
@@ -569,12 +569,12 @@ display:block;
 }
 
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #333333; text-decoration: none; }
-.ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+#multiCalendarContainer .ui-state-focus, #multiCalendarContainer .ui-widget-content .ui-state-focus, #multiCalendarContainer .ui-widget-header .ui-state-focus {
     color: #FFFFFF;
     font-weight: normal;
     background-color: #194F85 !important;
 }
-.ui-state-hover a, .ui-state-hover a:hover {
+#multiCalendarContainer .ui-state-hover a, #multiCalendarContainer .ui-state-hover a:hover {
     color: #FFFFFF;
     text-decoration: none;
     background-color: #194F85 !important;
@@ -589,7 +589,7 @@ display:block;
         color-stop(0.741057, rgba(4, 59, 98, 1)),
         color-stop(1, rgba(0, 54, 89, 1))) !important;
 }
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+#multiCalendarContainer .ui-state-active, #multiCalendarContainer .ui-widget-content .ui-state-active,#multiCalendarContainer .ui-widget-header .ui-state-active {
     background: none !important;
     background-color: #194F85 !important;
     color: #FFFFFF !important;

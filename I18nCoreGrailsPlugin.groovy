@@ -17,7 +17,7 @@ class I18nCoreGrailsPlugin {
 
     String groupId = "com.sungardhe"
 
-    def version = "0.0.12"
+    def version = "0.0.16"
 
     def grailsVersion = "1.3.7 > *"
 
