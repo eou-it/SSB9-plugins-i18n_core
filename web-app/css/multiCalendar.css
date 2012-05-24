@@ -110,9 +110,9 @@
 /* states and images */
 .datePicker-img-pre-loader {visibility:hidden; height:0px; width:0px; background:  url("images/ui-icons_003366_256x240.png") no-repeat;}
 .ui-icon { width: 16px; height: 16px; background-image: url(images/ui-icons_222222_256x240.png); }
-#multiCalendarContainer .ui-widget-content .ui-icon {background-image: url(images/ui-icons_222222_256x240.png); }
+.ui-widget-content .ui-icon {background-image: url(images/ui-icons_222222_256x240.png); }
 .ui-widget-header .ui-icon {background-image: url(images/ui-icons_003366_256x240.png); }
-#multiCalendar1 .ui-widget-header .ui-icon { margin:0px 2px; }
+.ui-widget-header .ui-icon { margin:0px 2px; }
 .ui-state-default .ui-icon { background-image: url(images/ui-icons_888888_256x240.png); }
 .ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(images/ui-icons_454545_256x240.png); }
 .ui-state-active .ui-icon {background-image: url(images/ui-icons_ffffff_256x240.png); }
