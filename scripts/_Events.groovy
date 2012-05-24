@@ -18,7 +18,7 @@ eventCompileEnd = {
      **/
     println "i18n-core.. Verifying ZK framework" 
     def zkFile = "${basedir}/web-app/WEB-INF/zk.xml"
-    def targetLocation = "${basedir}/plugins/i18n-core.git/src/java/web"
+    def targetLocation = "${basedir}/plugins/i18n_core.git/src/java/web"
     
     
     if ((new File(zkFile).exists())) {
@@ -29,12 +29,12 @@ eventCompileEnd = {
         }
     
         ant.copy(todir: targetLocation + "/js") {
-            fileset(dir: "${basedir}/plugins/i18n-core.git/web-app/js")
+            fileset(dir: "${basedir}/plugins/i18n_core.git/web-app/js")
         }
         ant.copy(todir: targetLocation + "/css") {
-            fileset(dir: "${basedir}/plugins/i18n-core.git/web-app/css")
+            fileset(dir: "${basedir}/plugins/i18n_core.git/web-app/css")
         }
-        ant.copy(file: "${basedir}/plugins/i18n-core.git/web-app/i18n_properties.gsp", toFile:"${basedir}/web-app/i18n_properties.gsp")
-        ant.copy(file: "${basedir}/plugins/i18n-core.git//src/java/metainfo/zk/lang-addon.xml", tofile: "${basedir}/web-app/WEB-INF/i18n-core-lang-addon.xml", overwrite: "true")
+        ant.copy(file: "${basedir}/plugins/i18n_core.git/web-app/i18n_properties.gsp", toFile:"${basedir}/web-app/i18n_properties.gsp")
+        ant.copy(file: "${basedir}/plugins/i18n_core.git//src/java/metainfo/zk/lang-addon.xml", tofile: "${basedir}/web-app/WEB-INF/i18n-core-lang-addon.xml", overwrite: "true")
     }    
 }
