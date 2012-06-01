@@ -29,21 +29,35 @@ class JavaScriptMessagesTagLib {
     }
 
     private def resourceModuleNames(request) {
-        def names = []
+	def names = []
 
-        if (request.resourceDependencyTracker != null) {
-            // resources plugin <= 1.0.2
-            request.resourceDependencyTracker.each { names << it }
-        } else if (request.resourceModuleTracker != null) {
-            // resources plugin >= 1.0.3
-            request.resourceModuleTracker.each {
-                if (it.value) { // todo what does 'false' for this property mean? validate usage
-                    names << it.key
-                }
-            }
-        }
+	if (request.resourceDependencyTracker != null) {
+	    // resources plugin <= 1.0.2
+	    request.resourceDependencyTracker.each {
+		addDependendNames(it, names)
+	    }
+	} else if (request.resourceModuleTracker != null) {
+	    // resources plugin >= 1.0.3
+	    request.resourceModuleTracker.each {
+		if (it.value) { // todo what does 'false' for this property mean? validate usage
+		    addDependendNames(it.key, names)
+		}
+	    }
+	}
 
-        names
+	names
+    }
+    
+    void addDependendNames(name, list) {
+	     // After moving to submodule, the dependent resources where not picked for bundling the message properties
+	     // We are explicitly adding all the dependend modules to the list so that all the properties defined in the
+	     // JS file gets picked.
+	     list << name
+	     if(resourceService.getModule(name)?.dependsOn) {
+		 resourceService.getModule(name)?.dependsOn.each {
+		      addDependendNames(it, list)
+		 }
+	     }
     }
 
     def i18nJavaScript = { attrs ->
