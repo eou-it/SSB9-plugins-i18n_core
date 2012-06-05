@@ -255,11 +255,17 @@ $.extend(MultiCalendarsPicker.prototype, {
 	},
 
     toggleCalendar: function(inst){
-        if($.multicalendar._isCalendarShown)
-            $.multicalendar._hideCalendar(inst);
+        if($.multicalendar._isCalendarShown && $.multicalendar._currentObj && $.multicalendar._currentObj.get(0) === inst) {
+            $.multicalendar._hideCalendar();
+        }
         else {
-            $.multicalendar._showCalendar(inst);
+            $.multicalendar._createDatePickerDOMStructure(inst);
+            $.multicalendar._addCalendarsToDOM(inst);
             $.multicalendar._showDateInCalendar(inst);
+
+            if(inst) {
+                $.multicalendar._showCalendar(inst);
+            }
         }
     },
 
