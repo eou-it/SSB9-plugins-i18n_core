@@ -26,3 +26,4 @@ grails-i18n-core*.zip
 stacktrace.log
 src/java/web
 src/java/web/**/*
+*-rtl.css
