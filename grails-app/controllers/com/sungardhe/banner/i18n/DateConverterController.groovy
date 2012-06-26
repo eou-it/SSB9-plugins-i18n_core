@@ -17,10 +17,10 @@ package com.sungardhe.banner.i18n
  */
 class DateConverterController {
 
-    static defaultAction = "dateConverter"
+    static defaultAction = "data"
     def DateConverterService
 
-    def dateConverter = {
+    def data = {
 
         assert params.date, "Date must be supplied"
         render dateConverterService.convert(params.date, params?.fromULocale, params?.toULocale, params?.fromDateFormat, params?.toDateFormat, params.adjustDays)
