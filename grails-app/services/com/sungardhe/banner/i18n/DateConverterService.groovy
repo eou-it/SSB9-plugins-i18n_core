@@ -16,6 +16,11 @@ import com.ibm.icu.util.Calendar
 import com.ibm.icu.util.ULocale
 import org.apache.log4j.Logger
 import org.codehaus.groovy.grails.plugins.web.taglib.ValidationTagLib
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import grails.converters.JSON
 
 /**
  * This utility class is used to convert Calendars supported by ICU4J for the UI.
@@ -113,43 +118,47 @@ class DateConverterService {
           return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortWeekdays();
     }
 
-    public String getDefaultULocaleString() {
-               return getULocaleStringForCalendar("gregorian")
-        }
+    public String getGregorianULocaleString() {
+        return getULocaleStringForCalendar("gregorian")
+    }
 
-        public String getULocaleStringForCalendar(String calendar) {
-           String uLocaleCode = "default.calendar." + calendar + ".ulocale";
-           String property = localizerService(code: uLocaleCode)
-           if (!property) log.error("message property key: " + uLocaleCode + " is missing")
-           return property
-        }
+    public String getDefaultCalendarULocaleString() {
+        return getULocaleStringForCalendar(localizerService(code: "default.calendar"))
+    }
 
-        public String getDefaultTranslationULocaleString() {
-               return getULocaleTranslationStringForCalendar("gregorian")
-        }
+    public String getULocaleStringForCalendar(String calendar) {
+       String uLocaleCode = "default.calendar." + calendar + ".ulocale";
+       String property = localizerService(code: uLocaleCode)
+       if (!property) log.error("message property key: " + uLocaleCode + " is missing")
+       return property
+    }
 
-        public String getULocaleTranslationStringForCalendar(String calendar) {
-           String uLocaleCode = "default.calendar." + calendar + ".translation";
-           String property = localizerService(code: uLocaleCode)
-           if (!property) log.error("message property key: " + uLocaleCode + " is missing")
-           return property
-        }
+    public String getGregorianTranslationULocaleString() {
+           return getULocaleTranslationStringForCalendar("gregorian")
+    }
 
-        public convertGregorianToDefaultCalendar(date) {
-            return convert(date,
-                    getDefaultTranslationULocaleString(),
-                    getULocaleStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
-                    "MM/dd/yyyy" ,
-                    localizerService(code: "default.date.format"))
-        }
+    public String getULocaleTranslationStringForCalendar(String calendar) {
+       String uLocaleCode = "default.calendar." + calendar + ".translation";
+       String property = localizerService(code: uLocaleCode)
+       if (!property) log.error("message property key: " + uLocaleCode + " is missing")
+       return property
+    }
 
-        public convertDefaultCalendarToGregorian(date) {
-            return convert(date ,
-                    getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
-                    getDefaultULocaleString(),
-                    localizerService(code: "default.date.format"),
-                    "MM/dd/yyyy");
-        }
+    public convertGregorianToDefaultCalendar(date) {
+        return convert(date,
+                getGregorianULocaleString(),
+                getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                "MM/dd/yyyy" ,
+                localizerService(code: "default.date.format"))
+    }
+
+    public convertDefaultCalendarToGregorian(date) {
+        return convert(date ,
+                getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                getGregorianULocaleString(),
+                localizerService(code: "default.date.format"),
+                "MM/dd/yyyy");
+    }
 
 
     private Calendar adjustDate(Calendar calendar, String adjustDays) {
@@ -159,4 +168,214 @@ class DateConverterService {
         return calendar
     }
 
+    public JSONDateMarshaller(data, dateFields) {
+        try {
+           if(data instanceof JSONArray) {
+               //collection
+               JSONArray newArray = new JSONArray()
+               data.each { entry ->
+                   newArray.add(JSONDateMarshaller(entry, dateFields));
+               }
+               data = newArray
+           }
+           else if(data instanceof JSONObject) {
+               JSONObject jsonObj = new JSONObject();
+               data.each { key, value ->
+                  if(value instanceof String && dateFields.contains(key) && value != JSONObject.NULL) {
+                       value = parseGregorianToDefaultCalendar(value)
+                       jsonObj.put(key, value);
+                  }
+                  else if(data instanceof JSONObject){
+                       jsonObj.put(key, JSONDateMarshaller(value, dateFields))
+                  }
+               }
+               jsonObj.each {key, value ->
+                   data.put(key, value)
+               }
+           }
+           else if(data instanceof String) {
+               if(dateFields.contains(data)) {
+                data =  parseGregorianToDefaultCalendar(data)
+               }
+           }
+        }
+        catch (Exception e) {
+           //If an exception occurs ignore and return original data.
+        }
+        return data
+    }
+
+    private JSONObject marshallDateForJSONObject(data, dateFields) {
+           JSONObject jsonObj = new JSONObject();
+           data.each { key, value ->
+              if(dateFields.contains(key) && value != JSONObject.NULL) {
+                   value = parseGregorianToDefaultCalendar(value)
+              }
+              jsonObj.put(key, value);
+           }
+           return jsonObj
+    }
+
+    public JSONDateUnmarshaller(data, dateFields) {
+        try {
+
+           if(data instanceof JSONArray) {
+               //collection
+               JSONArray newArray = new JSONArray()
+               data.each { entry ->
+                   newArray.add(unmarshallDateForJSONObject(entry, dateFields));
+               }
+               data = newArray
+           }
+           else if(data instanceof JSONObject) {
+               //Single data
+               data = unmarshallDateForJSONObject(data, dateFields)
+           }
+        }
+        catch (Exception e) {
+            //If an exception occurs ignore and return original data.
+        }
+           return data
+    }
+
+    private JSONObject unmarshallDateForJSONObject(data, dateFields) {
+        JSONObject jsonObj = new JSONObject();
+        data.each { key, value ->
+           if(dateFields.contains(key) && value != JSONObject.NULL) {
+                   value = parseDefaultCalendarToGregorian(value)
+           }
+           jsonObj.put(key, value);
+        }
+        return jsonObj
+    }
+
+    public parseDefaultCalendarToGregorian(value) {
+       try {
+          String defaultDateFormat = localizerService(code: "default.date.format")
+          def tempValue = convert(value,
+                               getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                               getULocaleStringForCalendar('gregorian'),
+                               defaultDateFormat ,
+                               defaultDateFormat)
+          if(tempValue != "error") {
+              value = tempValue
+          }
+       } catch (Exception e) {
+           //If an exception occurs ignore and return original value.
+       }
+       return value
+    }
+
+   public parseGregorianToDefaultCalendar(value) {
+       try {
+           String defaultDateFormat = localizerService(code: "default.date.format")
+          def tempValue = convert(value,
+                               getULocaleStringForCalendar('gregorian'),
+                               getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                               defaultDateFormat ,
+                               defaultDateFormat)
+          if(tempValue != "error") {
+              value = tempValue
+          }
+       } catch (Exception e) {
+           //If an exception occurs ignore and return original value.
+       }
+       return value
+   }
+
+   public formatDateInObjectsToDefaultCalendar(key, obj, dateFields) {
+        if(obj != null) {
+
+            if(obj instanceof ArrayList) {
+                List newList = new ArrayList()
+                int listSize = obj.size()
+                for (int i = 0; i < listSize; i ++) {
+                    newList.add(formatDateInObjectsToDefaultCalendar(key, obj.get(i), dateFields))
+                }
+                obj = newList;
+            }
+            else if(obj instanceof Map) {
+                def modifiedMap = [:]
+                obj.each { innerKey, innerValue ->
+                    if(dateFields.contains(innerKey)) {
+                        if(innerValue instanceof java.sql.Date){
+                            innerValue = new Date(innerValue.getTime())
+                        }
+                        modifiedMap.put(innerKey, formatDateInObjectsToDefaultCalendar(innerKey, innerValue,dateFields))
+                    }
+                    else if(innerValue instanceof Map) {
+                        modifiedMap.put(innerKey, formatDateInObjectsToDefaultCalendar(innerKey, innerValue,dateFields))
+                    }
+                }
+                modifiedMap.each {newKey, newValue ->
+                    obj.put(newKey, newValue)
+                }
+            }
+            else if(obj instanceof String) {
+                if(dateFields.contains(key)) {
+                    obj = parseGregorianToDefaultCalendar(obj)
+                }
+            }
+            else if(obj instanceof Timestamp) {
+                SimpleDateFormat sdf = new SimpleDateFormat(localizerService(code: "default.date.format"));
+                String date = sdf.format(new Date(obj.getTime()));
+                obj = parseGregorianToDefaultCalendar(date)
+            }
+            else if(obj instanceof java.sql.Date){
+                obj = new Date(obj.getTime())
+                obj = parseGregorianToDefaultCalendar(obj)
+            }
+            else if(obj instanceof java.util.Date){
+                obj = parseGregorianToDefaultCalendar(obj)
+            }
+            else if( obj instanceof JSON) {
+                //Do nothing to JSON
+                //May need to add code to handle inner JSON data
+                if(obj != null && obj.target) {
+                    obj.target = formatDateInObjectsToDefaultCalendar(key, obj.target, dateFields)
+                }
+            }
+            else if(obj.metaClass) {
+                obj = convertClassToMap(obj, dateFields)
+            }
+        }
+        return obj;
+    }
+
+    public convertClassToMap(obj, dateFields) {
+        Object returnObj = null
+
+        if(obj != null) {
+            if(obj instanceof java.sql.Date){
+                obj = new Date(obj.getTime())
+                returnObj = parseGregorianToDefaultCalendar(obj)
+            }
+            else if(obj instanceof Timestamp) {
+                SimpleDateFormat sdf = new SimpleDateFormat(localizerService(code: "default.date.format"));
+                String date = sdf.format(new Date(obj.getTime()));
+                returnObj = parseGregorianToDefaultCalendar(date)
+            }
+            else if(obj instanceof java.util.Date){
+                returnObj = parseGregorianToDefaultCalendar(obj)
+            }
+            else if(obj.metaClass) {
+               Map objMap = new HashMap()
+
+               if(obj == null || obj.metaClass == null || obj.metaClass.properties == null) {
+                   println obj
+               }
+               obj.metaClass.properties.each {
+                   def newValue = obj.properties[it.name];
+                   if(newValue != null && dateFields.contains(it.name)) {
+                        newValue = formatDateInObjectsToDefaultCalendar(it.name, newValue, dateFields)
+                   }
+                   objMap.put(it.name, newValue)
+               }
+
+               returnObj = objMap
+            }
+        }
+
+        return returnObj
+    }
 }

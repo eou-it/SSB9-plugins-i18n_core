@@ -22,23 +22,7 @@ $(document).ready(function() {
     var default_calendar1=$.i18n.prop("default.calendar1");
     var default_calendar2=$.i18n.prop("default.calendar2");
 
-    /*var islamicCalendarLocaleProps = {
-        monthNames: $.i18n.prop("default.calendar1.monthNames"),
-		monthNamesShort: $.i18n.prop("default.calendar1.monthNamesShort"),
-		dayNames: $.i18n.prop("default.calendar1.dayNames"),
-		dayNamesShort: $.i18n.prop("default.calendar1.dayNamesShort"),
-        dayNamesMin: $.i18n.prop("default.calendar1.dayNamesMin")
-    };
-
-    var gregorianCalendarLocaleProps = {
-        monthNames: $.i18n.prop("default.calendar2.monthNames"),
-		monthNamesShort: $.i18n.prop("default.calendar2.monthNamesShort"),
-		dayNames: $.i18n.prop("default.calendar2.dayNames"),
-		dayNamesShort: $.i18n.prop("default.calendar2.dayNamesShort"),
-        dayNamesMin: $.i18n.prop("default.calendar2.dayNamesMin")
-    };
-    */
-     var islamicCalendarLocaleProps = {
+    var islamicCalendarLocaleProps = {
         monthNames: $.i18n.prop("default.islamic.monthNames"),
 		monthNamesShort: $.i18n.prop("default.islamic.monthNamesShort"),
 		dayNames: $.i18n.prop("default.islamic.dayNames"),
@@ -56,10 +40,15 @@ $(document).ready(function() {
 
     var calendarLocaleProps = {islamic: islamicCalendarLocaleProps, gregorian: gregorianCalendarLocaleProps};
 
+    var dateConverterURL = "dateConverter"
+    if($('meta[name=menuBaseURL]').attr("content")){
+           dateConverterURL = $('meta[name=menuBaseURL]').attr("content") + '/' + dateConverterURL;
+    }
+
     var converters = {
         gregorianToIslamic: {
             format: {
-                url: 'dateConverter',
+                url: dateConverterURL,
                 nameOfDateParam: 'date',
                 extraParams: {
                     calendar: 'islamic-civil',
@@ -73,7 +62,7 @@ $(document).ready(function() {
 
         islamicToGregorian: {
             format: {
-                url: 'dateConverter',
+                url: dateConverterURL,
                 nameOfDateParam: 'date',
                 extraParams: {
                     calendar: 'islamic-civil',
@@ -94,10 +83,6 @@ $(document).ready(function() {
         calendars:[ default_calendar1, default_calendar2 ],
         isRTL: $.i18n.prop("default.language.direction"),
         calendarLocaleProps: calendarLocaleProps,
-        //buttonImage:'/TestBannerUiSs/plugins/i18n-core-0.0.4/css/images/calendar.gif',
-        //buttonImage: '${resource(dir:'css',file:'images/calendar.gif')}',
-        //buttonImage: calendarImg,
-        //buttonImage:'../css/images/calendar.gif',
         buttonClass: 'calendar-img',
         showOn: 'both'
     });
