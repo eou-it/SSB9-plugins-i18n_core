@@ -21,6 +21,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import grails.converters.JSON
+import com.ibm.icu.text.DateFormat
 
 /**
  * This utility class is used to convert Calendars supported by ICU4J for the UI.
@@ -29,6 +30,9 @@ class DateConverterService {
 
     static transactional = false
     Logger logger = Logger.getLogger(this.getClass())
+
+    public static int FIRST_DAY_OF_MONTH = -1
+    public static int LAST_DAY_OF_MONTH = -2
 
     def localizerService = { mapToLocalize ->
         new ValidationTagLib().message(mapToLocalize)
@@ -142,6 +146,24 @@ class DateConverterService {
        String property = localizerService(code: uLocaleCode)
        if (!property) log.error("message property key: " + uLocaleCode + " is missing")
        return property
+    }
+
+    public Date getGregorianFromDefaultCalendar(int year, int month, int day) {
+        String uLocaleString = getDefaultCalendarULocaleString()
+        ULocale uLocale = new ULocale(uLocaleString)
+        Calendar defaultCalendar = Calendar.getInstance(uLocale);
+
+        defaultCalendar.set(year, month, 1)
+
+        if(day == FIRST_DAY_OF_MONTH) {
+            day = 1
+        }
+        else if(day == LAST_DAY_OF_MONTH){
+            defaultCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        }
+        defaultCalendar.set(Calendar.DATE, day);
+
+        return defaultCalendar.getTime()
     }
 
     public convertGregorianToDefaultCalendar(date) {
