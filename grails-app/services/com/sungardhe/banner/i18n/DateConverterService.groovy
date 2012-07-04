@@ -137,6 +137,11 @@ class DateConverterService {
        return property
     }
 
+    public String getDefaultTranslationULocaleString() {
+       return getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar"))
+    }
+
+
     public String getGregorianTranslationULocaleString() {
            return getULocaleTranslationStringForCalendar("gregorian")
     }

@@ -26,8 +26,8 @@ class I18nDateTagLib {
 
            formattedDate = dateConverterService.convert(
                    formattedDate,
-                   dateConverterService.getDefaultCalendarULocaleString(),
-                   dateConverterService.getDefaultCalendarULocaleString(),
+                   dateConverterService.getDefaultTranslationULocaleString(),
+                   dateConverterService.getDefaultTranslationULocaleString(),
                    "${g.message(code: 'default.date.format')}", dateFormat)
        }
 
