@@ -650,9 +650,9 @@ $.extend(MultiCalendarsPicker.prototype, {
         return splitArr;
     },
 
-    parse: function (dateString, calendar) {
-         var calendar = $.calendars.calendars[calendar].prototype;
-         var fromFormat = $.multicalendar._getDateFormat(selectedCalendar);
+    parse: function (dateString, calendarType) {
+         var calendar = $.calendars.calendars[calendarType].prototype;
+         var fromFormat = $.multicalendar._getDateFormat(calendarType);
          var cDateObj = calendar.parseDate(dateFormat, dateString, calendar.regional['']);
          return cDateObj;
     },
