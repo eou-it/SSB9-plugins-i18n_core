@@ -383,9 +383,6 @@ class DateConverterService {
             else if(obj.metaClass) {
                Map objMap = new HashMap()
 
-               if(obj == null || obj.metaClass == null || obj.metaClass.properties == null) {
-                   println obj
-               }
                obj.metaClass.properties.each {
                    def newValue = obj.properties[it.name];
                    if(newValue != null && dateFields.contains(it.name)) {

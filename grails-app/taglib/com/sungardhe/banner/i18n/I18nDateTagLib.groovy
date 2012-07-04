@@ -19,7 +19,6 @@ class I18nDateTagLib {
        if(attrs.date) {
            formattedDate = attrs.date
            def dateFormat = "${g.message(code: 'default.date.format')}"
-           println(dateFormat)
 
            if(attrs.format) {
                 dateFormat = attrs.format
