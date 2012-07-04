@@ -652,7 +652,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 
     parse: function (dateString, calendarType) {
          var calendar = $.calendars.calendars[calendarType].prototype;
-         var fromFormat = $.multicalendar._getDateFormat(calendarType);
+         var dateFormat = $.multicalendar._getDateFormat(calendarType);
          var cDateObj = calendar.parseDate(dateFormat, dateString, calendar.regional['']);
          return cDateObj;
     },
