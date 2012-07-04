@@ -9,7 +9,7 @@ import org.codehaus.groovy.grails.plugins.web.taglib.ValidationTagLib
  * Time: 2:13 PM
  * To change this template use File | Settings | File Templates.
  */
-class I18nDateFormatterTagLib {
+class I18nDateTagLib {
 
    def dateConverterService
 
