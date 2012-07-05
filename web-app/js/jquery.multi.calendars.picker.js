@@ -401,6 +401,14 @@ $.extend(MultiCalendarsPicker.prototype, {
 		}
     },
 
+
+    getCalendar : function(calendarName){
+        var calendarObj = $.calendars.calendars[calendarName].prototype;
+        var calLocalProps = $.calendars._localCals[calendarName + '-'].local;
+        $.extend(calendarObj, calendarObj.local? {} : {local: calLocalProps});
+        return calendarObj;
+    },
+
     _storeTodaysDateSuccessCallback : function (calendarOptions, calendar) {
 		return function(date) {
             var calendarObj = $.calendars.calendars[calendar].prototype;
