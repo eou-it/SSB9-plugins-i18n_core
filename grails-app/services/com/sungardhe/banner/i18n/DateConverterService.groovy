@@ -164,7 +164,7 @@ class DateConverterService {
             day = 1
         }
         else if(day == LAST_DAY_OF_MONTH){
-            defaultCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+            day = defaultCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
         }
         defaultCalendar.set(Calendar.DATE, day);
 
