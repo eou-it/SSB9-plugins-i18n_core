@@ -401,6 +401,14 @@ $.extend(MultiCalendarsPicker.prototype, {
 		}
     },
 
+
+    getCalendar : function(calendarName){
+        var calendarObj = $.calendars.calendars[calendarName].prototype;
+        var calLocalProps = $.calendars._localCals[calendarName + '-'].local;
+        $.extend(calendarObj, calendarObj.local? {} : {local: calLocalProps});
+        return calendarObj;
+    },
+
     _storeTodaysDateSuccessCallback : function (calendarOptions, calendar) {
 		return function(date) {
             var calendarObj = $.calendars.calendars[calendar].prototype;
@@ -650,6 +658,21 @@ $.extend(MultiCalendarsPicker.prototype, {
         return splitArr;
     },
 
+    parse: function (dateString, calendarType) {
+         var calendar = $.calendars.calendars[calendarType].prototype;
+         var dateFormat = $.multicalendar._getDateFormat(calendarType);
+         var cDateObj = calendar.parseDate(dateFormat, dateString, calendar.regional['']);
+         return cDateObj;
+    },
+
+    formatCDateObject:function (cDateObj, dateFormat, calendar) {
+        var calendarObj = $.calendars.calendars[calendar].prototype;
+        var calLocalProps = $.calendars._localCals[calendar + '-'].local;
+        $.extend(calendarObj, calendarObj.local? {} : {local: calLocalProps});
+        var formattedDate = calendarObj.formatDate(dateFormat, cDateObj);
+        return formattedDate;
+    },
+
     _processCalendarLocaleProps : function (options) {
         if(options.calendars && options.calendarLocaleProps) {
             for(var i = 0; i < options.calendars.length; i++) {
@@ -715,6 +738,7 @@ $.extend(MultiCalendarsPicker.prototype, {
         }
         span.insertAfter($(inst));
     },
+
     _getCentury: function(val) {
         var century = 0;
         try{
