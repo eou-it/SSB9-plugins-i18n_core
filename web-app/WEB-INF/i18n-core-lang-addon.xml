@@ -15,7 +15,7 @@
     <!--Commenting this out as a part of upgrade to zk-grails version 1.0.6-->
     <!--<javascript src="~./js/zk/spinner_bugfix.js"/>-->
     <version>
-        <version-class>com.sungardhe.common.ui.zk.inp.Version</version-class>
+        <version-class>net.hedtech.common.ui.zk.inp.Version</version-class>
         <version-uid>0.0.1</version-uid>
     </version>
 

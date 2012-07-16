@@ -1,4 +1,4 @@
-package com.sungardhe.banner.i18n
+package net.hedtech.banner.i18n
 
 import org.codehaus.groovy.grails.plugins.web.taglib.ValidationTagLib
 

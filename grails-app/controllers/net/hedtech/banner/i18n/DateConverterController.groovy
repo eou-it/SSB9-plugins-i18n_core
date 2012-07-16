@@ -10,7 +10,7 @@
  Education in the U.S.A. and/or other regions and/or countries.
  ********************************************************************************* */
 
-package com.sungardhe.banner.i18n
+package net.hedtech.banner.i18n
 
 /**
  * Controller focused on providing Conversion of Calendars supported by ICU4J

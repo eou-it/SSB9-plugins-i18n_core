@@ -10,7 +10,7 @@
  Education in the U.S.A. and/or other regions and/or countries.
  ********************************************************************************* */
 
-package com.sungardhe.banner.i18n
+package net.hedtech.banner.i18n
 
 import com.ibm.icu.util.Calendar
 import com.ibm.icu.util.ULocale
