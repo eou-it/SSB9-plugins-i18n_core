@@ -647,10 +647,10 @@ $.extend(MultiCalendarsPicker.prototype, {
 		return this;
 	},
 
-    _splitString: function(string , char) {
-        var splitArr = string;
-        if(typeof string == "string") {
-            splitArr = string.split(char)
+    _splitString: function(stringToSplit, charIdentifier) {
+        var splitArr = stringToSplit;
+        if(typeof stringToSplit == "string") {
+            splitArr = stringToSplit.split(charIdentifier);
             for(var i = 0; i < splitArr.length; i++) {
                  splitArr[i] = $.trim(splitArr[i]);
             }
