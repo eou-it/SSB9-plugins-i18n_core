@@ -38,3 +38,6 @@ input.hasMultiCalendarPicker:focus + span{
     background: url("images/datepicker-arrow-next.png") no-repeat scroll 0 0 transparent;
 }
 
+.ui-datepicker-row-break{
+    float: left;
+}
