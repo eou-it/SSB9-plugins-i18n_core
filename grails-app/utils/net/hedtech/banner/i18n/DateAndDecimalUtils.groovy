@@ -14,7 +14,7 @@ package net.hedtech.banner.i18n
 import java.text.DateFormatSymbols
 import java.text.DecimalFormatSymbols
 import org.codehaus.groovy.grails.commons.ApplicationHolder
-import net.hedtech.banner.MessageUtility
+import org.springframework.context.i18n.LocaleContextHolder as LCH
 
 /**
  * This utility class is used to generate the default date and decimal formats used by
@@ -121,7 +121,10 @@ class DateAndDecimalUtils {
     }
 
     def static formatDate = {
-        def pattern = MessageUtility.message("default.date.format")
+        def messageSource =  ApplicationHolder.application.mainContext.getBean('messageSource')
+        //def pattern = MessageUtility.message("default.date.format")
+        Locale locale = LCH.getLocale()
+        def pattern = messageSource.getMessage("default.date.format", null, locale)
         def value = it
         try {
             try {
