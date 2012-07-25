@@ -14,6 +14,7 @@ package net.hedtech.banner.i18n
 import java.text.DateFormatSymbols
 import java.text.DecimalFormatSymbols
 import org.codehaus.groovy.grails.commons.ApplicationHolder
+import net.hedtech.banner.MessageUtility
 
 /**
  * This utility class is used to generate the default date and decimal formats used by
@@ -117,5 +118,26 @@ class DateAndDecimalUtils {
         }
         //propertyMap.put("js.datepicker.dateFormat", "mm/dd/yyyy")
         propertyMap.put("js.datepicker.dateFormat", messageSource.getMessage("js.datepicker.dateFormat", null, locale))
+    }
+
+    def static formatDate = {
+        def pattern = MessageUtility.message("default.date.format")
+        def value = it
+        try {
+            try {
+                value = it?.format(pattern)
+            }
+            catch (IllegalArgumentException x) {
+                x.printStackTrace()
+                value = it?.format('yyyy-MM-dd')
+            }
+        }
+        catch (Exception x) {
+            x.printStackTrace()
+            //Logger.getLogger( LocalizeUtil ).debug( "Unexpected exception formatting date", x )
+            // Eat the exception and do nothing
+        }
+
+        return value
     }
 }
