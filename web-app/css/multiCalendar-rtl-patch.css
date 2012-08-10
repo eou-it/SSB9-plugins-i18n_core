@@ -7,11 +7,13 @@ input.hasMultiCalendarPicker {
     padding:0 0 0 25px !important;
 }
 input.hasMultiCalendarPicker + span {
-    background: url('images/date-picker-sprites-flip.png') no-repeat scroll 0px 1px transparent!important;: ;
+    background: url('images/date-picker-sprites-flip.png') no-repeat scroll 0px 1px transparent!important;
+    float:right;
 }
 
 input.hasMultiCalendarPicker {
     border-radius: 3px  0  0 3px;
+    float:right;
 }
 
 input.hasMultiCalendarPicker:focus + span{
