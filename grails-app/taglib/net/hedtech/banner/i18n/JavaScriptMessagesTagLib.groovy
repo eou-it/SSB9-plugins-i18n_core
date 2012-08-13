@@ -121,9 +121,14 @@ class JavaScriptMessagesTagLib {
                             msg = value
                         }
                     }
-                    if (it != msg){
-                        msg = encodeHTML(msg)
-                        javaScriptProperties << "\"$it\": \"$msg\""
+                    if (msg && it != msg){
+                        try{
+                            msg = encodeHTML(msg as String)
+                            javaScriptProperties << "\"$it\": \"$msg\""
+                        } catch (Exception e){
+                            log.error("Unable to load property Key: $it, Value: $msg", e)
+                        }
+
                     }
                 }
 
