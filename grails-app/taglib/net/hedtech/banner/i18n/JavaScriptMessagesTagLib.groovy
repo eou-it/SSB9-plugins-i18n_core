@@ -111,7 +111,7 @@ class JavaScriptMessagesTagLib {
             if (keys) {
                 def javaScriptProperties = []
                 keys.sort().each {
-                    def msg = "${g.message(code: it)}"
+                    String msg = "${g.message(code: it)}"
 
                     // Assume the key was not found.  Look to see if it exists in the bundle
                     if (msg == it) {
@@ -122,13 +122,8 @@ class JavaScriptMessagesTagLib {
                         }
                     }
                     if (msg && it != msg){
-                        try{
-                            msg = encodeHTML(msg as String)
-                            javaScriptProperties << "\"$it\": \"$msg\""
-                        } catch (Exception e){
-                            log.error("Unable to load property Key: $it, Value: $msg", e)
-                        }
-
+                        msg = encodeHTML(msg)
+                        javaScriptProperties << "\"$it\": \"$msg\""
                     }
                 }
 
