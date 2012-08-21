@@ -295,7 +295,12 @@ $.extend(MultiCalendarsPicker.prototype, {
 		return function(date) {
 
             date = $.multicalendar._convertDateBetweenCalendarFormats(selectedCalendar, fromFormat, toFormat, date);
-           	$.calendars.picker.setDate($('#' + $.multicalendar.calendarIdPrefix + (calendarIndex + 1) )[0], date, null, true);
+            try {
+                $.calendars.picker.setDate($('#' + $.multicalendar.calendarIdPrefix + (calendarIndex + 1) )[0], date, null, true);
+            }
+            catch (e) {
+                //do nothing
+            }
 			$('#' + inputElementId).val(originalDate);
 		}
 	},
@@ -315,7 +320,12 @@ $.extend(MultiCalendarsPicker.prototype, {
 			if(calendars && numberOfCalendars > 0) {
 				for(var i = 0; i < numberOfCalendars; i++) {
 					if(calendars[i] == defaultCalendar) {
-						$.calendars.picker.setDate($('#' + $.multicalendar.calendarIdPrefix + (i + 1) )[0], originalDate, null, true);
+						try {
+                            $.calendars.picker.setDate($('#' + $.multicalendar.calendarIdPrefix + (i + 1) )[0], originalDate, null, true);
+                        }
+                        catch(e) {
+                            //do nothing
+                        }
 						$(inst).val(originalDate);
 					}
 					else {
@@ -516,7 +526,14 @@ $.extend(MultiCalendarsPicker.prototype, {
                                 day = matches[i];
                             }
                         }
-                        cDateObj = cDateObj.newDate(year, month, day);
+
+                        try {
+                            cDateObj = cDateObj.newDate(year, month, day);
+                        }
+                        catch(e) {
+                            cDateObj = null;
+                            return;
+                        }
                     }
                 }
 
