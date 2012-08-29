@@ -143,4 +143,25 @@ class DateAndDecimalUtils {
 
         return value
     }
+
+    def static parseDate = {
+       def value = it
+
+       if (value) {
+           try {
+               def messageSource =  ApplicationHolder.application.mainContext.getBean('messageSource')
+               Locale locale = LCH.getLocale()
+               def pattern = messageSource.getMessage("default.date.format", null, locale)
+               value = Date.parse(pattern, it)
+               if (value.format(pattern) != it) {
+                   throw new ParseException(it, 0)
+               }
+           }
+           catch (Exception x) {
+               throw new ParseException("", x)
+           }
+       }
+
+       return value
+   }
 }
