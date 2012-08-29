@@ -15,6 +15,7 @@ import java.text.DateFormatSymbols
 import java.text.DecimalFormatSymbols
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.springframework.context.i18n.LocaleContextHolder as LCH
+import java.text.ParseException
 
 /**
  * This utility class is used to generate the default date and decimal formats used by
@@ -158,7 +159,7 @@ class DateAndDecimalUtils {
                }
            }
            catch (Exception x) {
-               throw new ParseException("", x)
+               throw new ParseException(x)
            }
        }
 
