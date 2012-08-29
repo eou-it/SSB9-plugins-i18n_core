@@ -292,8 +292,19 @@ class DateConverterService {
                                getULocaleStringForCalendar('gregorian'),
                                defaultDateFormat ,
                                defaultDateFormat)
+
+          //Check if date passed is valid or not.
+          def checkValue = convert(tempValue,
+                               getULocaleStringForCalendar('gregorian'),
+                               getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                               defaultDateFormat ,
+                               defaultDateFormat)
+
           if(tempValue != "error") {
-              value = tempValue
+            if(value.equals(checkValue)) {
+                //Date is valid
+                value = tempValue
+            }
           }
        } catch (Exception e) {
            //If an exception occurs ignore and return original value.
@@ -303,15 +314,30 @@ class DateConverterService {
 
    public parseGregorianToDefaultCalendar(value) {
        try {
+           if(value instanceof Date) {
+                SimpleDateFormat sdf = new SimpleDateFormat(localizerService(code: "default.date.format"));
+                value = sdf.format(new Date(value.getTime()));
+           }
            String defaultDateFormat = localizerService(code: "default.date.format")
-          def tempValue = convert(value,
-                               getULocaleStringForCalendar('gregorian'),
+           def tempValue = convert(value,
+                              getULocaleStringForCalendar('gregorian'),
+                              getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                              defaultDateFormat ,
+                              defaultDateFormat)
+
+           //Check if date passed is valid or not.
+           def checkValue = convert(tempValue,
                                getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                               getULocaleStringForCalendar('gregorian'),
                                defaultDateFormat ,
                                defaultDateFormat)
-          if(tempValue != "error") {
-              value = tempValue
-          }
+
+           if(tempValue != "error") {
+              if(value.equals(checkValue)) {
+                //Date is valid
+                value = tempValue
+              }
+           }
        } catch (Exception e) {
            //If an exception occurs ignore and return original value.
        }
