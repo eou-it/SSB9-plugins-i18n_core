@@ -178,6 +178,135 @@
 
 
     $.extend($.calendars.picker,{
+	/* Generate the datepicker content for this control.
+	   @param  target  (element) the control to affect
+	   @param  inst    (object) the current instance settings
+	   @return  (jQuery) the datepicker content */
+	_generateContent: function(target, inst) {
+		var calendar = inst.get('calendar');
+		var renderer = inst.get('renderer');
+		var monthsToShow = inst.get('monthsToShow');
+		monthsToShow = ($.isArray(monthsToShow) ? monthsToShow : [1, monthsToShow]);
+		inst.drawDate = this._checkMinMax(
+			inst.drawDate || inst.get('defaultDate') || calendar.today(), inst);
+		var drawDate = inst.drawDate.newDate().add(-inst.get('monthsOffset'), 'm');
+		// Generate months
+		var monthRows = '';
+		for (var row = 0; row < monthsToShow[0]; row++) {
+			var months = '';
+			for (var col = 0; col < monthsToShow[1]; col++) {
+				months += this._generateMonth(target, inst, drawDate.year(),
+					drawDate.month(), calendar, renderer, (row == 0 && col == 0));
+				drawDate.add(1, 'm');
+			}
+			monthRows += this._prepare(renderer.monthRow, inst).replace(/\{months\}/, months);
+		}
+		var picker = this._prepare(renderer.picker, inst).replace(/\{months\}/, monthRows).
+			replace(/\{weekHeader\}/g, this._generateDayHeaders(inst, calendar, renderer)) +
+			($.browser.msie && parseInt($.browser.version, 10) < 7 && !inst.inline ?
+			'<iframe src="javascript:void(0);" class="' + this._coverClass + '"></iframe>' : '');
+		// Add commands
+		var commands = inst.get('commands');
+		var asDateFormat = inst.get('commandsAsDateFormat');
+		var addCommand = function(type, open, close, name, classes) {
+			if (picker.indexOf('{' + type + ':' + name + '}') == -1) {
+				return;
+			}
+			var command = commands[name];
+			var date = (asDateFormat ? command.date.apply(target, [inst]) : null);
+			picker = picker.replace(new RegExp('\\{' + type + ':' + name + '\\}', 'g'),
+				'<' + open +
+				(command.status ? ' title="' + inst.get(command.status) + '"' : '') +
+				' class="' + renderer.commandClass + ' ' +
+				renderer.commandClass + '-' + name + ' ' + classes +
+				(command.enabled(inst) ? '' : ' ' + renderer.disabledClass) + '">' +
+				(date ? date.formatDate(inst.get(command.text)) : inst.get(command.text)) +
+				'</' + close + '>');
+		};
+		for (var name in commands) {
+			addCommand('button', 'button type="button"', 'button', name,
+				renderer.commandButtonClass);
+			addCommand('link', 'a href="javascript:void(0)"', 'a', name,
+				renderer.commandLinkClass);
+		}
+		picker = $(picker);
+		if (monthsToShow[1] > 1) {
+			var count = 0;
+			$(renderer.monthSelector, picker).each(function() {
+				var nth = ++count % monthsToShow[1];
+				$(this).addClass(nth == 1 ? 'first' : (nth == 0 ? 'last' : ''));
+			});
+		}
+		// Add calendar behaviour
+		var self = this;
+		picker.find(renderer.daySelector + ' a').hover(
+				function() { $(this).addClass(renderer.highlightedClass); },
+				function() {
+					(inst.inline ? $(this).parents('.' + self.markerClass) : inst.div).
+						find(renderer.daySelector + ' a').
+						removeClass(renderer.highlightedClass);
+				}).
+			click(function() {
+				self.selectDate(target, this);
+			}).end().
+			find('select.' + this._monthYearClass + ':not(.' + this._anyYearClass + ')').change(function() {
+				var monthYear = $(this).val().split('/');
+				self.showMonth(target, parseInt(monthYear[1], 10), parseInt(monthYear[0], 10));
+			}).end().
+			find('select.' + this._anyYearClass).click(function() {
+				$(this).next('input').css({left: this.offsetLeft, top: this.offsetTop,
+					width: this.offsetWidth, height: this.offsetHeight}).show().focus();
+			}).end().
+			find('input.' + self._monthYearClass).change(function() {
+				try {
+					var year = parseInt($(this).val(), 10);
+					year = (isNaN(year) ? inst.drawDate.year() : year);
+					self.showMonth(target, year, inst.drawDate.month(), inst.drawDate.day());
+				}
+				catch (e) {
+					alert(e);
+				}
+			}).keydown(function(event) {
+				if (event.keyCode == 27) { // Escape
+					$(event.target).hide();
+					inst.target.focus();
+				}
+			});
+		// Add command behaviour
+		picker.find('.' + renderer.commandClass).click(function() {
+				if (!$(this).hasClass(renderer.disabledClass)) {
+					var action = this.className.replace(
+						new RegExp('^.*' + renderer.commandClass + '-([^ ]+).*$'), '$1');
+					$.calendars.picker.performAction(target, action);
+				}
+            return false;
+			});
+		// Add classes
+		if (inst.get('isRTL')) {
+			picker.addClass(renderer.rtlClass);
+		}
+		if (monthsToShow[0] * monthsToShow[1] > 1) {
+			picker.addClass(renderer.multiClass);
+		}
+		var pickerClass = inst.get('pickerClass');
+		if (pickerClass) {
+			picker.addClass(pickerClass);
+		}
+		// Resize
+		$('body').append(picker);
+		var width = 0;
+		picker.find(renderer.monthSelector).each(function() {
+			width += $(this).outerWidth();
+		});
+		picker.width(width / monthsToShow[0]);
+		// Pre-show customisation
+		var onShow = inst.get('onShow');
+		if (onShow) {
+			onShow.apply(target, [picker, calendar, inst]);
+		}
+		return picker;
+	},
+
     _generateMonth : function(target, inst, year, month, calendar, renderer, first) {
 		var daysInMonth = calendar.daysInMonth(year, month);
 		var monthsToShow = inst.get('monthsToShow');
@@ -228,7 +357,7 @@
 				var selectable = (selectOtherMonths || drawDate.month() == month) &&
 					this._isSelectable(target, drawDate, dateInfo.selectable, minDate, maxDate);
 				days += this._prepare(renderer.day, inst).replace(/\{day\}/g,
-					(selectable ? '<a href="javascript:void(0)"' : '<span') +
+					(selectable ? '<a href="javascript:void(0)" onclick="return false;"' : '<span') +
 					' class="jd' + jd + ' ' + (dateInfo.dateClass || '') +
 					(selected && (selectOtherMonths || drawDate.month() == month) ?
 					' ' + renderer.selectedClass : '') +
