@@ -76,6 +76,8 @@ $.extend(MultiCalendarsPicker.prototype, {
 					dateFormat: dateFormat,
 					onSelect: function ( target ) {
 					if(target[0]) {
+                        $(inst).focus();
+
 						var settings = inst.settings;
 						var calendarOrder = $.multicalendar._getCalendarOrder(this.id);
                         var onSelectExt = inst.settings.onSelect? inst.settings.onSelect : null;
