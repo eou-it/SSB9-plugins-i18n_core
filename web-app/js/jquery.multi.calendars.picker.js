@@ -590,6 +590,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 
         $(inst).dblclick(function (evt) {
             $.multicalendar.toggleCalendar(evt.target);
+            if (evt.stop) evt.stop();
         });
 
         $(inst).bind('keydown keypress', function (evt) {
