@@ -590,7 +590,6 @@ $.extend(MultiCalendarsPicker.prototype, {
 
         $(inst).dblclick(function (evt) {
             $.multicalendar.toggleCalendar(evt.target);
-            if (evt.stop) evt.stop();
         });
 
         $(inst).bind('keydown keypress', function (evt) {
@@ -774,18 +773,22 @@ $.extend(MultiCalendarsPicker.prototype, {
 });
 
 $.fn.multiCalendarPicker = function(opts) {
-	var options = $.extend([], $.multicalendar._defaults, opts);
-
 	var inst = $(this)[0];
-	inst.settings = options;
 
-	$(inst).addClass($.multicalendar._markerClass);
+    if (!inst.isInstantiated) {
+        var options = $.extend([], $.multicalendar._defaults, opts);
 
-    if((options.buttonImage && options.buttonImage != '') || options.buttonClass && options.buttonClass != '') {
-        $.multicalendar._addCalendarImage(inst);
+        inst.settings = options;
+
+        $(inst).addClass($.multicalendar._markerClass);
+
+        if((options.buttonImage && options.buttonImage != '') || options.buttonClass && options.buttonClass != '') {
+            $.multicalendar._addCalendarImage(inst);
+        }
+
+        $.multicalendar._registerEvents(inst);
+        inst.isInstantiated = true;
     }
-
-    $.multicalendar._registerEvents(inst);
 }
 
 $.multicalendar = new MultiCalendarsPicker(); // singleton instance
