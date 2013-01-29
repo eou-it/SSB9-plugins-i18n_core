@@ -21,6 +21,7 @@ $(document).ready(function() {
     var default_calendar=$.i18n.prop("default.calendar");
     var default_calendar1=$.i18n.prop("default.calendar1");
     var default_calendar2=$.i18n.prop("default.calendar2");
+    var firstDayOfTheWeek=$.i18n.prop("default.firstDayOfTheWeek");
 
     var islamicCalendarLocaleProps = {
         monthNames: $.i18n.prop("default.islamic.monthNames"),
@@ -84,6 +85,7 @@ $(document).ready(function() {
         isRTL: $.i18n.prop("default.language.direction"),
         calendarLocaleProps: calendarLocaleProps,
         buttonClass: 'calendar-img',
-        showOn: 'both'
+        showOn: 'both',
+        firstDayOfTheWeek: firstDayOfTheWeek
     });
 });

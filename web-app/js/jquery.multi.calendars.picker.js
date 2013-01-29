@@ -72,7 +72,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 					altField: '#' + inst.id,
 					calendar: $.calendars.instance(calendars[i]),
                     isRTL: isRTL,
-                    firstDay: calendarOptions.firstDayOfTheWeek,
+                    firstDay: parseInt(calendarOptions.firstDayOfTheWeek),
 					dateFormat: dateFormat,
 					onSelect: function ( target ) {
 					if(target[0]) {
@@ -638,6 +638,10 @@ $.extend(MultiCalendarsPicker.prototype, {
 	},
 
     setDefaults: function(settings) {
+        if(settings.firstDayOfTheWeek && isNaN(settings.firstDayOfTheWeek)) {
+           settings.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
+        }
+
 		$.extend(this._defaults, settings || {});
 
         settings.calendars=this._defaults.calendars;
@@ -776,6 +780,9 @@ $.fn.multiCalendarPicker = function(opts) {
 	var inst = $(this)[0];
 
     if (!inst.isInstantiated) {
+        if(opts.firstDayOfTheWeek && isNaN(opts.firstDayOfTheWeek)) {
+            opts.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
+        }
         var options = $.extend([], $.multicalendar._defaults, opts);
 
         inst.settings = options;
