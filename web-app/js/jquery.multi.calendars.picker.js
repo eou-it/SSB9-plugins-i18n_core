@@ -780,7 +780,7 @@ $.fn.multiCalendarPicker = function(opts) {
 	var inst = $(this)[0];
 
     if (!inst.isInstantiated) {
-        if(opts.firstDayOfTheWeek && isNaN(opts.firstDayOfTheWeek)) {
+        if(opts && opts.firstDayOfTheWeek && isNaN(opts.firstDayOfTheWeek)) {
             opts.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
         }
         var options = $.extend([], $.multicalendar._defaults, opts);
