@@ -11,7 +11,7 @@ class I18nCoreGrailsPlugin {
 
     def version = "2.3.0"
 
-    def grailsVersion = "1.3.7 > *"
+    def grailsVersion = "2.2.1 > *"
 
     def dependsOn = [:]
 

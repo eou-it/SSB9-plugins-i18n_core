@@ -17,4 +17,8 @@ class DateConverterController {
         assert params.date, "Date must be supplied"
         render dateConverterService.convert(params.date, params?.fromULocale, params?.toULocale, params?.fromDateFormat, params?.toDateFormat, params.adjustDays)
     }
+
+    def i18nProperties = {
+        render(view:"i18nProperties")
+    }
 }
