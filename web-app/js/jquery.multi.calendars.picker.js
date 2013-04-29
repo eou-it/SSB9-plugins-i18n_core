@@ -27,7 +27,8 @@ function MultiCalendarsPicker() {
         todaysDates:[],
         buttonImage: '',
         buttonClass: '',
-        showOn: 'focus'
+        showOn: 'focus',
+        showTimeBox: false
 
 	};
 
@@ -477,6 +478,10 @@ $.extend(MultiCalendarsPicker.prototype, {
         $(inst).change( function (evt) {
             try {
                 var valEntered = $(inst).val();
+                if (evt.target.settings.showTimeBox) {
+                    $(inst).val(valEntered);
+                    return;
+                }
                 var cDateObj;
 
                 valEntered = $.multicalendar._extractFullDate(valEntered);
@@ -773,7 +778,32 @@ $.extend(MultiCalendarsPicker.prototype, {
         if(!Number(century))
             century = 0;
         return century;
-    }
+    },
+
+    _interpretTimeConfigOptions : function(inst) {
+            var n = inst.timeFormatInTimeConfig.split(":");
+            var timeConfig = {};
+            for (var i = 0; i < n.length; i++) {
+                switch (n[i]) {
+                    case 'hh':
+                        timeConfig.show24Hours = false;
+                        break;
+                    case 'HH':
+                        timeConfig.show24Hours = true;
+                        break;
+    //                case 'MM':
+    //                    timeConfig.show24Hours = true;
+    //                    break;
+                    case 'ss':
+                        timeConfig.showSeconds = true;
+                        break;
+    //                case 'TT':
+    //                    $("#demo").append('TT');
+    //                    break;
+                }
+            }
+            inst.timeBoxConfig = timeConfig;
+        }
 });
 
 $.fn.multiCalendarPicker = function(opts) {
@@ -794,6 +824,13 @@ $.fn.multiCalendarPicker = function(opts) {
         }
 
         $.multicalendar._registerEvents(inst);
+        if (inst.settings.showTimeBox == true) {
+            var format = $.i18n.prop('js.datepicker.datetimeFormat');
+            var timeFormat = format.substr(format.lastIndexOf(' ') + 1, format.length);
+            var dateFormat = format.substr(0, format.lastIndexOf(' '));
+            inst.dateFormatInTimeConfig = dateFormat;
+            inst.timeFormatInTimeConfig = timeFormat;
+        }
         inst.isInstantiated = true;
     }
 }
