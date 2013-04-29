@@ -27,7 +27,8 @@ function MultiCalendarsPicker() {
         todaysDates:[],
         buttonImage: '',
         buttonClass: '',
-        showOn: 'focus'
+        showOn: 'focus',
+        showTimeBox: false
 
 	};
 
@@ -72,7 +73,7 @@ $.extend(MultiCalendarsPicker.prototype, {
 					altField: '#' + inst.id,
 					calendar: $.calendars.instance(calendars[i]),
                     isRTL: isRTL,
-                    firstDay: calendarOptions.firstDayOfTheWeek,
+                    firstDay: parseInt(calendarOptions.firstDayOfTheWeek),
 					dateFormat: dateFormat,
 					onSelect: function ( target ) {
 					if(target[0]) {
@@ -477,6 +478,10 @@ $.extend(MultiCalendarsPicker.prototype, {
         $(inst).change( function (evt) {
             try {
                 var valEntered = $(inst).val();
+                if (evt.target.settings.showTimeBox) {
+                    $(inst).val(valEntered);
+                    return;
+                }
                 var cDateObj;
 
                 valEntered = $.multicalendar._extractFullDate(valEntered);
@@ -638,6 +643,10 @@ $.extend(MultiCalendarsPicker.prototype, {
 	},
 
     setDefaults: function(settings) {
+        if(settings.firstDayOfTheWeek && isNaN(settings.firstDayOfTheWeek)) {
+           settings.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
+        }
+
 		$.extend(this._defaults, settings || {});
 
         settings.calendars=this._defaults.calendars;
@@ -769,13 +778,41 @@ $.extend(MultiCalendarsPicker.prototype, {
         if(!Number(century))
             century = 0;
         return century;
-    }
+    },
+
+    _interpretTimeConfigOptions : function(inst) {
+            var n = inst.timeFormatInTimeConfig.split(":");
+            var timeConfig = {};
+            for (var i = 0; i < n.length; i++) {
+                switch (n[i]) {
+                    case 'hh':
+                        timeConfig.show24Hours = false;
+                        break;
+                    case 'HH':
+                        timeConfig.show24Hours = true;
+                        break;
+    //                case 'MM':
+    //                    timeConfig.show24Hours = true;
+    //                    break;
+                    case 'ss':
+                        timeConfig.showSeconds = true;
+                        break;
+    //                case 'TT':
+    //                    $("#demo").append('TT');
+    //                    break;
+                }
+            }
+            inst.timeBoxConfig = timeConfig;
+        }
 });
 
 $.fn.multiCalendarPicker = function(opts) {
 	var inst = $(this)[0];
 
     if (!inst.isInstantiated) {
+        if(opts && opts.firstDayOfTheWeek && isNaN(opts.firstDayOfTheWeek)) {
+            opts.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
+        }
         var options = $.extend([], $.multicalendar._defaults, opts);
 
         inst.settings = options;
@@ -787,6 +824,13 @@ $.fn.multiCalendarPicker = function(opts) {
         }
 
         $.multicalendar._registerEvents(inst);
+        if (inst.settings.showTimeBox == true) {
+            var format = $.i18n.prop('js.datepicker.datetimeFormat');
+            var timeFormat = format.substr(format.lastIndexOf(' ') + 1, format.length);
+            var dateFormat = format.substr(0, format.lastIndexOf(' '));
+            inst.dateFormatInTimeConfig = dateFormat;
+            inst.timeFormatInTimeConfig = timeFormat;
+        }
         inst.isInstantiated = true;
     }
 }

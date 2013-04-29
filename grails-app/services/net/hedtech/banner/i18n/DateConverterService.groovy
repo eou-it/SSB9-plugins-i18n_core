@@ -428,4 +428,21 @@ class DateConverterService {
 
         return returnObj
     }
+
+    public convertGregorianToDefaultCalendarWithTime(date, format) {
+       return convert(date,
+                  getDefaultTranslationULocaleString(),
+                  getULocaleStringForCalendar(localizerService(code: "default.calendar", default: 'gregorian')),
+                  "MM/dd/yyyy HH:mm:ss",
+                  format)
+      }
+
+
+    public convertDefaultCalendarToGregorianWithTime(date) {
+           return convert(date ,
+                   getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                   getGregorianULocaleString(),
+                   localizerService(code: "default.datetime.format"),
+                   "MM/dd/yyyy HH:mm:ss");
+       }
 }
