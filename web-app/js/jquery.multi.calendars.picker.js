@@ -9,9 +9,11 @@ function MultiCalendarsPicker() {
     this.JAVA_DATE_FORMAT = 'MM/dd/yyyy';
     this._CAL_LOCALE_PARAMS_THAT_ARE_ARRAYS = ['epochs', 'monthNames', 'monthNamesShort', 'dayNames', 'dayNamesShort', 'dayNamesMin'];
     this._isCalendarShown = false;
+    this._isTimeBoxShown = false;
     this._currentObj = null;
     this.activeCalendar = 1;
     this.numberOfCalendars;
+    this.timeBoxContainer = 'timeBoxContainer';
 
 	this._defaults = {
 		defaultCalendar: this.CALENDAR_GREGORIAN,
@@ -28,11 +30,13 @@ function MultiCalendarsPicker() {
         buttonImage: '',
         buttonClass: '',
         showOn: 'focus',
-        showTimeBox: false
+        showTime: false
 
 	};
 
 	$(document).mousedown(this._checkExternalClick);
+    $(document).mousedown(this._checkExternalClickForTimeBox);
+
 }
 
 $.extend(MultiCalendarsPicker.prototype, {
@@ -478,7 +482,7 @@ $.extend(MultiCalendarsPicker.prototype, {
         $(inst).change( function (evt) {
             try {
                 var valEntered = $(inst).val();
-                if (evt.target.settings.showTimeBox) {
+                if (evt.target.settings.showTime) {
                     $(inst).val(valEntered);
                     return;
                 }
@@ -584,6 +588,19 @@ $.extend(MultiCalendarsPicker.prototype, {
                 }
             });
 
+            if(settings.showTime) {
+                  var timeSpan = $(inst).nextAll('.time-icon');
+                  $(timeSpan).click(function(evt) {
+                      var input = $(this).prevAll('input.' + $.multicalendar._markerClass);
+                      if($.multicalendar._isTimeBoxShown && $.multicalendar._currentObj && $.multicalendar._currentObj.get(0) === input.get(0)) {
+                          $.multicalendar._hideTimeBox();
+                      }
+                      else {
+                          $.multicalendar._showTimeBox(input);
+                      }
+                  });
+              }
+
             if(showOn == "button") {
                 $(inst).focus( function (evt) {
                     if($.multicalendar._currentObj && $.multicalendar._currentObj.get(0) !== $(evt.target).get(0)) {
@@ -610,6 +627,10 @@ $.extend(MultiCalendarsPicker.prototype, {
                 if(evt.type == 'keydown') $.calendars.picker.keyDownMultipicker( evt, activeCalendar);
                 else $.calendars.picker.keyPressMultipicker( evt, activeCalendar);
             }
+            else if($.multicalendar._isTimeBoxShown && evt.keyCode == 27){
+                $.multicalendar._hideTimeBox();
+                return false;
+            }
         });
 
 
@@ -620,6 +641,71 @@ $.extend(MultiCalendarsPicker.prototype, {
         });
 
 	},
+
+    _setTimeToInputBox : function(inst) {
+		if(!$(inst).value) {
+			inst = $(inst).get(0);
+		}
+        $(inst).val($(inst).val() + " " + $('#_timebox_').val());
+    },
+
+    _showTimeBox: function(inst) {
+        this._createTimeBoxDOMStructure(inst);
+        this._adjustPositionOfTimeBox(inst);
+
+        $("#" + this.timeBoxContainer).show("slow");
+        $.multicalendar._isTimeBoxShown = true;
+
+        $.multicalendar._currentObj = $(inst);
+        $('#_timebox_select_btn').click(function() {
+            $.multicalendar._setTimeToInputBox($.multicalendar._currentObj);
+        });
+    },
+
+    _hideTimeBox : function () {
+       $.multicalendar._isTimeBoxShown = false;
+       $("#" + this.timeBoxContainer).hide("slow");
+    },
+
+    _createTimeBoxDOMStructure: function(inst) {
+        $('#' + this.timeBoxContainer).remove();
+        var DOMStructure = '<div id="' + this.timeBoxContainer + '"><div id="sceenReaderText" aria-live="rude" aria-atomic="true"></div>';
+        DOMStructure += 'Time: <input type="text" id="_timebox_"/>&nbsp;<input type="button" value="Select" id="_timebox_select_btn"/>';
+
+        DOMStructure += '</div>';
+
+        $(document).find('body').append(DOMStructure);
+    },
+
+    _adjustPositionOfTimeBox : function(inst) {
+            var screenHeightAvailable = $(window).height() - $('#footerApplicationBar').outerHeight();
+            var screenWidthAvailable = $(window).width();
+            var instPosition = $(inst).offset();
+            var instHeight = $(inst).outerHeight();
+            var instWidth = $(inst).outerWidth();
+            var timeBoxContainerHeight = $("#" + this.timeBoxContainer).height();
+            //var firstPickerOuterWidth = $("#" + this.calendarContainer + " .hasCalendarsPicker:first .ui-datepicker").outerWidth();
+            //var lastPickerOuterWidth = $("#" + this.calendarContainer + " .hasCalendarsPicker:first .ui-datepicker").outerWidth();
+            var timeBoxContainerWidth = $("#" + this.timeBoxContainer).outerWidth();
+            if(instPosition.top + instHeight + timeBoxContainerHeight >= screenHeightAvailable && instPosition.top > timeBoxContainerHeight){
+                $("#" + this.timeBoxContainer).css({top: (instPosition.top - timeBoxContainerHeight) + "px"});
+            }
+            else{
+                $("#" + this.timeBoxContainer).css({top: (instPosition.top + instHeight) + "px"});
+            }
+
+           /* if(instPosition.left >= timeBoxContainerWidth && screenWidthAvailable-instPosition.left >= lastPickerOuterWidth){
+                $("#" + this.timeBoxContainer).css({left: (instPosition.left - firstPickerOuterWidth) + "px"});
+            }
+            else*/
+            if(instPosition.left + timeBoxContainerWidth >= screenWidthAvailable){
+                $("#" + this.timeBoxContainer).css({right: (screenWidthAvailable - instPosition.left -instWidth ) + "px"});
+            }
+            else {
+                $("#" + this.timeBoxContainer).css({left: (instPosition.left ) + "px"});
+            }
+
+    },
 
 	_checkExternalClick: function(event) {
 		var clickedOutsideCalendar = $(event.target).parents('#' + $.multicalendar.calendarContainer).length == 0
@@ -637,6 +723,30 @@ $.extend(MultiCalendarsPicker.prototype, {
             $.multicalendar._hideCalendar();
         }
 	},
+
+    _checkExternalClickForTimeBox: function(event) {
+        var clickedOutsideTimeBox = true;
+
+        if($(event.target).is('#' + $.multicalendar.timeBoxContainer)) {
+            clickedOutsideTimeBox = false;
+        }
+
+        if(clickedOutsideTimeBox && $(event.target).parents('#timeBoxContainer').length > 0) {
+            clickedOutsideTimeBox = false;
+        }
+
+        if(clickedOutsideTimeBox) {
+            //if($(event.target).is('img')
+            if($(event.target).is('span') && $(event.target).hasClass('time-icon')
+                && $(event.target).prevAll('input').hasClass($.multicalendar._markerClass)) {
+                clickedOutsideTimeBox = false;
+            }
+        }
+
+        if(clickedOutsideTimeBox) {
+            $.multicalendar._hideTimeBox();
+        }
+    },
 
 	_getCalendarOrder: function (id) {
 		return parseInt(id.replace($.multicalendar.calendarIdPrefix,'')) - 1;
@@ -765,6 +875,19 @@ $.extend(MultiCalendarsPicker.prototype, {
             $(span).addClass(options.buttonClass);
         }
         span.insertAfter($(inst));
+
+        if(options.showTime) {
+            var timeSpan = $('<span>');
+            timeSpan.attr('class', 'calendar-icon');
+            if(options.buttonImage && options.buttonImage != '') {
+                timeSpan.attr('style', 'background-image: url("' + options.buttonImage + '");');
+            }
+            else if(options.buttonClass && options.buttonClass != '') {
+                $(timeSpan).addClass(options.buttonClass);
+            }
+            $(timeSpan).addClass('time-icon');
+            timeSpan.insertAfter(span);
+        }
     },
 
     _getCentury: function(val) {
@@ -824,7 +947,7 @@ $.fn.multiCalendarPicker = function(opts) {
         }
 
         $.multicalendar._registerEvents(inst);
-        if (inst.settings.showTimeBox == true) {
+        if (inst.settings.showTime == true) {
             var format = $.i18n.prop('js.datepicker.datetimeFormat');
             var timeFormat = format.substr(format.lastIndexOf(' ') + 1, format.length);
             var dateFormat = format.substr(0, format.lastIndexOf(' '));

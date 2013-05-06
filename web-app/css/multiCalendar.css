@@ -1018,7 +1018,7 @@ display:block;
     font-size:0px;
 }
 
-input.hasMultiCalendarPicker + span{
+.calendar-img{
     background: url('images/date-picker-sprites.png') no-repeat scroll -7px 1px transparent!important;
 }
 
@@ -1030,15 +1030,15 @@ input.hasMultiCalendarPicker:focus{
     border-color:#4282B3 !important;
 }
 
- input.hasMultiCalendarPicker:hover + span, input.hasMultiCalendarPicker + span:hover{
+input.hasMultiCalendarPicker:hover .calendar-img, .calendar-img:hover{
     background-position:-7px -49px !important;
 }
 
-input.hasMultiCalendarPicker:focus + span{
+.calendar-img{
     background-position:-7px -87px;
 }
 
-input.hasMultiCalendarPicker + span {
+.calendar-img {
     height: 22px;
     margin: 0px !important;
     padding: 0;
@@ -1053,4 +1053,13 @@ input.hasMultiCalendarPicker {
     height:20px !important;
     border:1px solid #778FA0;
     border-radius: 0 3px 3px 0;
+}
+
+#timeBoxContainer {
+  z-index: 3000;
+  position: absolute;
+  background-color: #FFFFFF;
+  padding: 10px;
+  border: 1px solid #CCCCCC;
+    box-shadow: 1px 1px 4px 0;
 }
