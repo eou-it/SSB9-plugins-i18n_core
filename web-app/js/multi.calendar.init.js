@@ -39,6 +39,10 @@ $(document).ready(function() {
     };
 
     var calendarLocaleProps = {islamic: islamicCalendarLocaleProps, gregorian: gregorianCalendarLocaleProps};
+    var timeLocaleProps = {
+        ampmNames: [$.i18n.prop('default.time.am'), $.i18n.prop('default.time.pm')],
+    	spinnerTexts: [$.i18n.prop('default.time.increment'), $.i18n.prop('default.time.decrement')]
+    };
 
     var dateConverterURL = "dateConverter"
     if($('meta[name=menuBaseURL]').attr("content")){
@@ -84,6 +88,7 @@ $(document).ready(function() {
         isRTL: $.i18n.prop("default.language.direction"),
         calendarLocaleProps: calendarLocaleProps,
         buttonClass: 'calendar-img',
-        showOn: 'both'
+        showOn: 'both',
+        timeLocaleProps: timeLocaleProps
     });
 });

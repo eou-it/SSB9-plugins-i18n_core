@@ -782,8 +782,16 @@ $.extend(MultiCalendarsPicker.prototype, {
 
         $.multicalendar._processCalendarLocaleProps(settings);
         $.multicalendar._getTodayDates(settings);
+
+        $.multicalendar._processTimeLocaleProps(settings);
 		return this;
 	},
+
+    _processTimeLocaleProps : function(options) {
+        if(options.calendars && options.timeLocaleProps) {
+            $.timeEntry.setDefaults(options.timeLocaleProps);
+        }
+    },
 
     _splitString: function(stringToSplit, charIdentifier) {
         var splitArr = stringToSplit;
