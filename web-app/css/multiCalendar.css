@@ -1058,3 +1058,34 @@ input.hasMultiCalendarPicker {
   border: 1px solid #CCCCCC;
     box-shadow: 1px 1px 4px 0;
 }
+
+.timeEntry_control {
+    background: url("../js/time/spinnerUpDown.png") no-repeat scroll 0 0 transparent !important;
+    position: relative;
+    top: 3px;
+}
+
+.time-calendar-img{
+    background: url('images/date-time-sprite.png') no-repeat scroll -6px 0px transparent!important;
+}
+
+.time-icon{
+    background: url('images/date-time-sprite.png') no-repeat scroll -28px 0px transparent!important;
+}
+
+.calendar-icon {
+    height: 22px;
+    margin: 0px !important;
+    padding: 0;
+    width: 22px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+input.hasMultiCalendarPicker:hover ~ .time-calendar-img, .time-calendar-img:hover{
+    background-position:-6px -50px !important;
+}
+
+input.hasMultiCalendarPicker:hover ~ .time-icon, .time-icon:hover{
+    background-position:-28px -50px !important;
+}

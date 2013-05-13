@@ -91,6 +91,7 @@ $(document).ready(function() {
         buttonClass: 'calendar-img',
         showOn: 'both',
         firstDayOfTheWeek: firstDayOfTheWeek,
+        timeFormat: $.i18n.prop("default.time.format"),
         timeLocaleProps: timeLocaleProps
     });
 });
