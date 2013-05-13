@@ -89,6 +89,7 @@ $(document).ready(function() {
         calendarLocaleProps: calendarLocaleProps,
         buttonClass: 'calendar-img',
         showOn: 'both',
+        timeFormat: $.i18n.prop("default.time.format"),
         timeLocaleProps: timeLocaleProps
     });
 });
