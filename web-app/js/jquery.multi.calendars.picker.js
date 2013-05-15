@@ -698,6 +698,22 @@
 
         },
 
+        extractDateFromDateTime : function(data, dateFormat, timeFormat) {
+            var time = this.extractTimeFromDateTime(data, dateFormat, timeFormat);
+            return data.replace(time, '').trim();
+        },
+
+        extractTimeFromDateTime : function(data, dateFormat, timeFormat) {
+            var timePattern = this.getRegExForTimeFormat(timeFormat);
+            var regEx = new RegExp("" + timePattern + "$", "g");
+            var matches = data.match(regEx);
+            if(matches) {
+                return matches[0].trim();
+            } else {
+                return "";
+            }
+        },
+
         getRegExForTimeFormat : function(timeFormat) {
             var timeFormatToPattern = timeFormat;
             var NUMBER_PATTERN = '\\d{1,2}';
