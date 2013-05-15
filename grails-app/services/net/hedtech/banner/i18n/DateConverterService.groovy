@@ -433,16 +433,16 @@ class DateConverterService {
        return convert(date,
                   getDefaultTranslationULocaleString(),
                   getULocaleStringForCalendar(localizerService(code: "default.calendar", default: 'gregorian')),
-                  "MM/dd/yyyy HH:mm:ss",
+                  format,
                   format)
       }
 
 
-    public convertDefaultCalendarToGregorianWithTime(date) {
+    public convertDefaultCalendarToGregorianWithTime(date, format) {
            return convert(date ,
                    getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
                    getGregorianULocaleString(),
-                   localizerService(code: "default.datetime.format"),
-                   "MM/dd/yyyy HH:mm:ss");
+                   format,
+                   format);
        }
 }
