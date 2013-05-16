@@ -55,6 +55,7 @@
                 for(var i = 0; i < numberOfCalendars; i++) {
                     DOMStructure += '<div id="' + this.calendarIdPrefix  + (i + 1) + '"></div>';
                 }
+<<<<<<< HEAD
             }
             DOMStructure += '</div>';
 
@@ -116,6 +117,32 @@
                                     if(onSelectExt) {
                                         onSelectExt(data ,inst);
                                     }
+=======
+				$('#' + this.calendarIdPrefix + (i + 1)).calendarsPicker({
+					altField: '#' + inst.id,
+					calendar: $.calendars.instance(calendars[i]),
+                    isRTL: isRTL,
+                    firstDay: parseInt(calendarOptions.firstDayOfTheWeek),
+					dateFormat: dateFormat,
+					onSelect: function ( target ) {
+					if(target[0]) {
+                        $(inst).focus();
+
+						var settings = inst.settings;
+						var calendarOrder = $.multicalendar._getCalendarOrder(this.id);
+                        var onSelectExt = inst.settings.onSelect? inst.settings.onSelect : null;
+						if(settings.defaultCalendar != calendars[calendarOrder]) {
+							if($.multicalendar._isFormatDateAServiceCall(calendarOrder, settings)) {
+								$.multicalendar._formatDateAsAService(calendarOrder, inst, target[0].formatDate());
+							}
+							else if($.multicalendar._isFormatDateAFunctionCall(calendarOrder, settings)) {
+								var data = target[0].formatDate();
+								var formatDate = $.multicalendar._getFormatFn(calendarOrder, settings);
+								data = formatDate(data);
+								$(inst).val(data);
+                                if(onSelectExt) {
+                                    onSelectExt(data,inst );
+>>>>>>> master
                                 }
                             }
                             $.multicalendar._hideCalendar(inst);
@@ -854,9 +881,18 @@
                 clickedOutsideTimeBox = false;
             }
 
+<<<<<<< HEAD
             if(clickedOutsideTimeBox && $(event.target).parents('#timeBoxContainer').length > 0) {
                 clickedOutsideTimeBox = false;
             }
+=======
+    setDefaults: function(settings) {
+        if(settings.firstDayOfTheWeek && isNaN(settings.firstDayOfTheWeek)) {
+           settings.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
+        }
+
+		$.extend(this._defaults, settings || {});
+>>>>>>> master
 
             if(clickedOutsideTimeBox) {
                 //if($(event.target).is('img')
@@ -1098,11 +1134,19 @@
     $.fn.multiCalendarPicker = function(opts) {
         var inst = $(this)[0];
 
+<<<<<<< HEAD
         if (!inst.isInstantiated) {
             if(opts && opts.firstDayOfTheWeek && isNaN(opts.firstDayOfTheWeek)) {
                 opts.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
             }
             var options = $.extend([], $.multicalendar._defaults, opts);
+=======
+    if (!inst.isInstantiated) {
+        if(opts && opts.firstDayOfTheWeek && isNaN(opts.firstDayOfTheWeek)) {
+            opts.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
+        }
+        var options = $.extend([], $.multicalendar._defaults, opts);
+>>>>>>> master
 
             inst.settings = options;
 

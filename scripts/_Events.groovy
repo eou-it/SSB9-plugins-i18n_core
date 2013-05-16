@@ -11,7 +11,7 @@ eventCompileEnd = {
 		src/java/web directory since that would be the location where ZK looks for the JS resources
 		Also, the lang addon file needs to be copied on to the module that uses this plugin.
 	     **/
-	    println "i18n-core.. Verifying ZK framework" 
+	    // Verify ZK framework
 	    def zkFile = "${basedir}/web-app/WEB-INF/zk.xml"
 	    def targetLocation = "${i18nCorePluginDir}/src/java/web"
 
