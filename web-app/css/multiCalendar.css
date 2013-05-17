@@ -1060,7 +1060,7 @@ input.hasMultiCalendarPicker {
 }
 
 .timeEntry_control {
-    background: url("../js/time/spinnerUpDown.png") no-repeat scroll 0 0 transparent !important;
+    background: url("images/spinnerUpDown.png") no-repeat scroll 0 0 transparent !important;
     position: relative;
     top: 3px;
 }
