@@ -1,4 +1,4 @@
-﻿(function($) {
+(function($) {
 
     function MultiCalendarsPicker() {
         this.calendarContainer = 'multiCalendarContainer';
@@ -668,6 +668,7 @@
             var date = this.extractDatePart(inst);
             var newDate = date + " " + $('#_timebox_').val();
             $(inst).val(newDate.trim());
+            $(inst).focus();
         },
 
 
@@ -735,36 +736,6 @@
             return timeFormatToPattern;
         },
 
-        /* checkIfOnlyDate : function(inst) {
-         var onlyDate = false;
-         try {
-         var settings = $(inst).settings;
-         var valEntered = $(inst).val();
-         var defaultCalendar = settings.defaultCalendar;
-         $.multicalendar.parse(valEntered, defaultCalendar);
-         onlyDate = true;
-         } catch (e) {
-         onlyDate = false;
-         }
-         return onlyDate;
-
-         },
-
-         checkIfOnlyTime : function(inst) {
-         var onlyDate = false;
-         try {
-         var settings = $(inst).settings;
-         var valEntered = $(inst).val();
-         var defaultCalendar = settings.defaultCalendar;
-         $.multicalendar.parse(valEntered, defaultCalendar);
-         onlyDate = true;
-         } catch (e) {
-         onlyDate = false;
-         }
-         return onlyDate;
-
-         },*/
-
         _showTimeBox: function(inst) {
             this._createTimeBoxDOMStructure(inst);
             this._adjustPositionOfTimeBox(inst);
@@ -817,10 +788,6 @@
                 $("#" + this.timeBoxContainer).css({top: (instPosition.top + instHeight) + "px"});
             }
 
-            /* if(instPosition.left >= timeBoxContainerWidth && screenWidthAvailable-instPosition.left >= lastPickerOuterWidth){
-             $("#" + this.timeBoxContainer).css({left: (instPosition.left - firstPickerOuterWidth) + "px"});
-             }
-             else*/
             if(instPosition.left + timeBoxContainerWidth >= screenWidthAvailable){
                 $("#" + this.timeBoxContainer).css({right: (screenWidthAvailable - instPosition.left -instWidth ) + "px"});
             }
@@ -857,6 +824,14 @@
             if(clickedOutsideTimeBox && $(event.target).parents('#timeBoxContainer').length > 0) {
                 clickedOutsideTimeBox = false;
             }
+        },
+
+        setDefaults: function(settings) {
+            if(settings.firstDayOfTheWeek && isNaN(settings.firstDayOfTheWeek)) {
+               settings.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
+            }
+
+		    $.extend(this._defaults, settings || {});
 
             if(clickedOutsideTimeBox) {
                 //if($(event.target).is('img')
@@ -1057,7 +1032,6 @@
                     case "HH":
                     case "H":
                         options += '"show24Hours": true,';
-                        console.log("HH or H")//;
                         break;
                     case "ss":
                     case "s":
@@ -1117,13 +1091,7 @@
             }
 
             $.multicalendar._registerEvents(inst);
-            /*if (inst.settings.showTime == true) {
-             var format = $.i18n.prop('js.datepicker.datetimeFormat');
-             var timeFormat = format.substr(format.lastIndexOf(' ') + 1, format.length);
-             var dateFormat = format.substr(0, format.lastIndexOf(' '));
-             inst.dateFormatInTimeConfig = dateFormat;
-             inst.timeFormatInTimeConfig = timeFormat;
-             }*/
+
             inst.isInstantiated = true;
         }
     }
