@@ -55,7 +55,6 @@
                 for(var i = 0; i < numberOfCalendars; i++) {
                     DOMStructure += '<div id="' + this.calendarIdPrefix  + (i + 1) + '"></div>';
                 }
-<<<<<<< HEAD
             }
             DOMStructure += '</div>';
 
@@ -117,32 +116,6 @@
                                     if(onSelectExt) {
                                         onSelectExt(data ,inst);
                                     }
-=======
-				$('#' + this.calendarIdPrefix + (i + 1)).calendarsPicker({
-					altField: '#' + inst.id,
-					calendar: $.calendars.instance(calendars[i]),
-                    isRTL: isRTL,
-                    firstDay: parseInt(calendarOptions.firstDayOfTheWeek),
-					dateFormat: dateFormat,
-					onSelect: function ( target ) {
-					if(target[0]) {
-                        $(inst).focus();
-
-						var settings = inst.settings;
-						var calendarOrder = $.multicalendar._getCalendarOrder(this.id);
-                        var onSelectExt = inst.settings.onSelect? inst.settings.onSelect : null;
-						if(settings.defaultCalendar != calendars[calendarOrder]) {
-							if($.multicalendar._isFormatDateAServiceCall(calendarOrder, settings)) {
-								$.multicalendar._formatDateAsAService(calendarOrder, inst, target[0].formatDate());
-							}
-							else if($.multicalendar._isFormatDateAFunctionCall(calendarOrder, settings)) {
-								var data = target[0].formatDate();
-								var formatDate = $.multicalendar._getFormatFn(calendarOrder, settings);
-								data = formatDate(data);
-								$(inst).val(data);
-                                if(onSelectExt) {
-                                    onSelectExt(data,inst );
->>>>>>> master
                                 }
                             }
                             $.multicalendar._hideCalendar(inst);
@@ -695,6 +668,7 @@
             var date = this.extractDatePart(inst);
             var newDate = date + " " + $('#_timebox_').val();
             $(inst).val(newDate.trim());
+            $(inst).focus();
         },
 
 
@@ -762,36 +736,6 @@
             return timeFormatToPattern;
         },
 
-        /* checkIfOnlyDate : function(inst) {
-         var onlyDate = false;
-         try {
-         var settings = $(inst).settings;
-         var valEntered = $(inst).val();
-         var defaultCalendar = settings.defaultCalendar;
-         $.multicalendar.parse(valEntered, defaultCalendar);
-         onlyDate = true;
-         } catch (e) {
-         onlyDate = false;
-         }
-         return onlyDate;
-
-         },
-
-         checkIfOnlyTime : function(inst) {
-         var onlyDate = false;
-         try {
-         var settings = $(inst).settings;
-         var valEntered = $(inst).val();
-         var defaultCalendar = settings.defaultCalendar;
-         $.multicalendar.parse(valEntered, defaultCalendar);
-         onlyDate = true;
-         } catch (e) {
-         onlyDate = false;
-         }
-         return onlyDate;
-
-         },*/
-
         _showTimeBox: function(inst) {
             this._createTimeBoxDOMStructure(inst);
             this._adjustPositionOfTimeBox(inst);
@@ -844,10 +788,6 @@
                 $("#" + this.timeBoxContainer).css({top: (instPosition.top + instHeight) + "px"});
             }
 
-            /* if(instPosition.left >= timeBoxContainerWidth && screenWidthAvailable-instPosition.left >= lastPickerOuterWidth){
-             $("#" + this.timeBoxContainer).css({left: (instPosition.left - firstPickerOuterWidth) + "px"});
-             }
-             else*/
             if(instPosition.left + timeBoxContainerWidth >= screenWidthAvailable){
                 $("#" + this.timeBoxContainer).css({right: (screenWidthAvailable - instPosition.left -instWidth ) + "px"});
             }
@@ -881,18 +821,17 @@
                 clickedOutsideTimeBox = false;
             }
 
-<<<<<<< HEAD
             if(clickedOutsideTimeBox && $(event.target).parents('#timeBoxContainer').length > 0) {
                 clickedOutsideTimeBox = false;
             }
-=======
-    setDefaults: function(settings) {
-        if(settings.firstDayOfTheWeek && isNaN(settings.firstDayOfTheWeek)) {
-           settings.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
-        }
+        },
 
-		$.extend(this._defaults, settings || {});
->>>>>>> master
+        setDefaults: function(settings) {
+            if(settings.firstDayOfTheWeek && isNaN(settings.firstDayOfTheWeek)) {
+               settings.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
+            }
+
+		    $.extend(this._defaults, settings || {});
 
             if(clickedOutsideTimeBox) {
                 //if($(event.target).is('img')
@@ -1093,7 +1032,6 @@
                     case "HH":
                     case "H":
                         options += '"show24Hours": true,';
-                        console.log("HH or H")//;
                         break;
                     case "ss":
                     case "s":
@@ -1134,19 +1072,11 @@
     $.fn.multiCalendarPicker = function(opts) {
         var inst = $(this)[0];
 
-<<<<<<< HEAD
         if (!inst.isInstantiated) {
             if(opts && opts.firstDayOfTheWeek && isNaN(opts.firstDayOfTheWeek)) {
                 opts.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
             }
             var options = $.extend([], $.multicalendar._defaults, opts);
-=======
-    if (!inst.isInstantiated) {
-        if(opts && opts.firstDayOfTheWeek && isNaN(opts.firstDayOfTheWeek)) {
-            opts.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
-        }
-        var options = $.extend([], $.multicalendar._defaults, opts);
->>>>>>> master
 
             inst.settings = options;
 
@@ -1161,13 +1091,7 @@
             }
 
             $.multicalendar._registerEvents(inst);
-            /*if (inst.settings.showTime == true) {
-             var format = $.i18n.prop('js.datepicker.datetimeFormat');
-             var timeFormat = format.substr(format.lastIndexOf(' ') + 1, format.length);
-             var dateFormat = format.substr(0, format.lastIndexOf(' '));
-             inst.dateFormatInTimeConfig = dateFormat;
-             inst.timeFormatInTimeConfig = timeFormat;
-             }*/
+
             inst.isInstantiated = true;
         }
     }
