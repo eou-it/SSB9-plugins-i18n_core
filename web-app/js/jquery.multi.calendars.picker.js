@@ -824,14 +824,6 @@
             if(clickedOutsideTimeBox && $(event.target).parents('#timeBoxContainer').length > 0) {
                 clickedOutsideTimeBox = false;
             }
-        },
-
-        setDefaults: function(settings) {
-            if(settings.firstDayOfTheWeek && isNaN(settings.firstDayOfTheWeek)) {
-               settings.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
-            }
-
-		    $.extend(this._defaults, settings || {});
 
             if(clickedOutsideTimeBox) {
                 //if($(event.target).is('img')
@@ -990,11 +982,11 @@
                 var timeSpan = $('<span>');
                 timeSpan.attr('class', 'calendar-icon');
                 /*if(options.buttonImage && options.buttonImage != '') {
-                    timeSpan.attr('style', 'background-image: url("' + options.buttonImage + '");');
-                }
-                else if(options.buttonClass && options.buttonClass != '') {
-                    $(timeSpan).addClass(options.buttonClass);
-                } */
+                 timeSpan.attr('style', 'background-image: url("' + options.buttonImage + '");');
+                 }
+                 else if(options.buttonClass && options.buttonClass != '') {
+                 $(timeSpan).addClass(options.buttonClass);
+                 } */
                 $(timeSpan).addClass('time-icon');
                 timeSpan.insertAfter(span);
             }
