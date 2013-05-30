@@ -1,6 +1,6 @@
 /*******************************************************************************
 Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
-*******************************************************************************/ 
+*******************************************************************************/
 
 /**
  * A Grails Plugin providing core i18n framework for Self Service Banner application.
@@ -9,7 +9,7 @@ class I18nCoreGrailsPlugin {
 
     String groupId = "net.hedtech"
 
-    def version = "2.3.0"
+    def version = "2.5.0"
 
     def grailsVersion = "2.2.1 > *"
 
@@ -27,7 +27,7 @@ class I18nCoreGrailsPlugin {
     def documentation = ""
 
     def doWithWebDescriptor = { xml ->
-        // TODO Implement additions to web.xml (optional), this event occurs before 
+        // TODO Implement additions to web.xml (optional), this event occurs before
     }
 
     def doWithSpring = {
