@@ -145,6 +145,11 @@
             return isServiceCall;
         },
 
+        unbind : function(inst) {
+            $(inst).nextAll('.calendar-icon').remove();
+            $(inst).get(0).isInstantiated = false;
+        },
+
         _isFormatDateAFunctionCall : function (calendarOrder, calendarOptions) {
             var isFunctionCall = false;
             var defaultCalendar = calendarOptions.defaultCalendar;
