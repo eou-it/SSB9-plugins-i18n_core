@@ -3,7 +3,16 @@ jQuery.expr[':'].focus = function( elem ) {
   return elem === document.activeElement && ( elem.type || elem.href );
 };
 
-$.datepicker._doKeyDown = _.wrap( $.datepicker._doKeyDown, function(func, event) {
+/* _wrap copied from underscore.js to avoid circular dependency on banner_ui_ss */
+var _wrap =  function(func, wrapper) {
+    return function() {
+      var args = [func];
+      push.apply(args, arguments);
+      return wrapper.apply(this, args);
+    };
+  };
+
+$.datepicker._doKeyDown = _wrap( $.datepicker._doKeyDown, function(func, event) {
     if ( !this._pressedKeys && event.keyCode == 13 ) {
         // if ENTER is the first keypress in the open datepicker, just close it
         $.datepicker._hideDatepicker();
