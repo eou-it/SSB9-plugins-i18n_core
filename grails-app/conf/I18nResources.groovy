@@ -15,6 +15,7 @@ modules = {
         resource url:[plugin: 'i18n-core', file: 'js/calendars/jquery.calendars.picker.ext.js']
         resource url:[plugin: 'i18n-core', file: 'js/calendars/jquery.calendars.islamic.js']
 
+        resource url:[plugin: 'i18n-core', file: 'js/time/jquery.timeentry.js']
         resource url:[plugin: 'i18n-core', file: 'js/jquery.multi.calendars.picker.js']
         resource url:[plugin: 'i18n-core', file: 'js/jquery.jeditable.multi.datepicker.js']
         resource url:[plugin: 'i18n-core', file: 'js/jquery.multi.calendars.picker.ext.js']
