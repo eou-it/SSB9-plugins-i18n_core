@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+﻿(function($) {
+=======
 (function($) {
+>>>>>>> grails221-migration
 
     function MultiCalendarsPicker() {
         this.calendarContainer = 'multiCalendarContainer';

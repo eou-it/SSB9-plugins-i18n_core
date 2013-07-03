@@ -11,7 +11,7 @@ Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
 //
 //    ant.mkdir(dir:"${basedir}/grails-app/jobs")
 //
-ant.move(file: "${pluginBasedir}/src/java/metainfo/zk/lang-addon.xml", tofile: "${basedir}/web-app/WEB-INF/i18n-core-lang-addon.xml", overwrite: "true")
+ant.move(file: "${pluginBasedir}/lang-addon/i18n-core-lang-addon.xml", tofile: "${basedir}/web-app/WEB-INF/i18n-core-lang-addon.xml", overwrite: "true")
 
 def zkFile = "${basedir}/web-app/WEB-INF/zk.xml"
 def targetLocation = "${pluginBasedir}/src/java/web"
@@ -29,5 +29,4 @@ if ((new File(zkFile).exists())) {
     ant.move(todir: targetLocation + "/css") {
         fileset(dir: "${pluginBasedir}/web-app/css")
     }
-    ant.move(file: "${pluginBasedir}/web-app/i18n_properties.gsp", toFile:"${basedir}/web-app/i18n_properties.gsp")
 }

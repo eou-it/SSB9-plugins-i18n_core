@@ -90,6 +90,8 @@ $(document).ready(function() {
         calendarLocaleProps: calendarLocaleProps,
         buttonClass: 'calendar-img',
         showOn: 'both',
-        firstDayOfTheWeek: firstDayOfTheWeek
+        firstDayOfTheWeek: firstDayOfTheWeek,
+        timeFormat: $.i18n.prop("default.time.format"),
+        timeLocaleProps: timeLocaleProps
     });
 });

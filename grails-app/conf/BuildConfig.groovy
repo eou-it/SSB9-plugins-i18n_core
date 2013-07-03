@@ -13,22 +13,27 @@ grails.project.dependency.resolution = {
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
-        grailsPlugins()
-        grailsHome()
-        grailsCentral()
-
-        // uncomment the below to enable remote dependency resolution
-        // from public Maven repositories
-        //mavenLocal()
-        //mavenCentral()
-        //mavenRepo "http://snapshots.repository.codehaus.org"
-        //mavenRepo "http://repository.codehaus.org"
-        //mavenRepo "http://download.java.net/maven/2/"
-        //mavenRepo "http://repository.jboss.com/maven2/"
+        if (System.properties['PROXY_SERVER_NAME']) {
+            mavenRepo "${System.properties['PROXY_SERVER_NAME']}"
+        } else
+        {
+            grailsPlugins()
+            grailsHome()
+            grailsCentral()
+            mavenCentral()
+            mavenRepo "http://repository.jboss.org/maven2/"
+            mavenRepo "http://repository.codehaus.org"
+        }
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.5'
+    }
+
+    plugins {
+        compile ":hibernate:$grailsVersion"
+        compile ":tomcat:$grailsVersion"
+        test ':code-coverage:1.2.5'
     }
 }

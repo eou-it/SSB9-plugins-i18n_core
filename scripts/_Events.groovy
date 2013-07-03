@@ -29,8 +29,7 @@ eventCompileEnd = {
 		ant.copy(todir: targetLocation + "/css") {
 		    fileset(dir: "${i18nCorePluginDir}/web-app/css")
 		}
-		ant.copy(file: "${i18nCorePluginDir}/web-app/i18n_properties.gsp", toFile:"${basedir}/web-app/i18n_properties.gsp")
-		ant.copy(file: "${i18nCorePluginDir}/src/java/metainfo/zk/lang-addon.xml", tofile: "${basedir}/web-app/WEB-INF/i18n-core-lang-addon.xml", overwrite: "true")
+		ant.copy(file: "${i18nCorePluginDir}/lang-addon/i18n-core-lang-addon.xml", tofile: "${basedir}/web-app/WEB-INF/i18n-core-lang-addon.xml", overwrite: "true")
 	    }    
     }
 }

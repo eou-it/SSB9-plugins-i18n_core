@@ -10,7 +10,7 @@
     <javascript src="~./js/time/jquery.timeentry.js" />
 
     <javascript src="~./js/jquery.i18n.properties.js" />
-    <javascript src="i18n_properties.gsp" />
+    <javascript src="/dateConverter/i18nProperties"/>
 
     <javascript src="~./js/jquery.multi.calendars.picker.js" />
     <javascript src="~./js/jquery.multi.calendars.picker.ext.js" />
