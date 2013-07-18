@@ -107,6 +107,7 @@ class DateAndDecimalUtils {
                propertyMap.put("default." + calendar + ".dayNames", convertToCommaDelimited(dateConverterService.getWeekdays(uLocale)))
                propertyMap.put("default." + calendar + ".dayNamesShort", convertToCommaDelimited(dateConverterService.getShortWeekdays(uLocale)))
                propertyMap.put("default." + calendar + ".dayNamesMin", convertToCommaDelimited(dateConverterService.getShortWeekdays(uLocale)))
+               propertyMap.put("default." + calendar + ".amPm", convertToCommaDelimited(dateConverterService.getAmPmStrings(uLocale)))
             }
         }
         //propertyMap.put("js.datepicker.dateFormat", "mm/dd/yyyy")

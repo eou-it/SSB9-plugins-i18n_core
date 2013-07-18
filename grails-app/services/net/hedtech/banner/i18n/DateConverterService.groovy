@@ -114,6 +114,10 @@ class DateConverterService {
           return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortWeekdays();
     }
 
+    public String[] getAmPmStrings(String uLocaleString) {
+          return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getAmPmStrings();
+    }
+
     public String getGregorianULocaleString() {
         return getULocaleStringForCalendar("gregorian")
     }
