@@ -1089,3 +1089,16 @@ input.hasMultiCalendarPicker:hover ~ .time-calendar-img, .time-calendar-img:hove
 input.hasMultiCalendarPicker:hover ~ .time-icon, .time-icon:hover{
     background-position:-28px -50px !important;
 }
+
+.ui-helper-clearfix:after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default {
+    border: 1px solid #D3D3D3;
+    font-weight: normal;
+}
