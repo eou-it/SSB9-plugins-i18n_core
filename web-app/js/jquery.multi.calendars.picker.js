@@ -81,6 +81,8 @@
                         isRTL: isRTL,
                         firstDay: parseInt(calendarOptions.firstDayOfTheWeek),
                         dateFormat: dateFormat,
+                        minDate: calendarOptions.minDate,
+                        maxDate: calendarOptions.maxDate,
                         onSelect: function ( target ) {
                             if(target[0]) {
                                 $(inst).focus();
