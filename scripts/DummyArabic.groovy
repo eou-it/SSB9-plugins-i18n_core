@@ -52,6 +52,10 @@ def processPlugin(plugin, mainArabicProperties, arabicCharacterList) {
 
 }
 
+/**
+ * Takes all of the missing arabic strings from the application and all of its plugins and adds those strings to the
+ * applications messages_ar.properties file.
+ */
 target(main: "Provides fake translations of missing Arabic properties. Used for RTL testing.") {
     // Load up the main arabic properties file from the grails app
     File mainArabicMessageFile = new File("grails-app/i18n/messages_ar.properties")
