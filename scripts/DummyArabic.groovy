@@ -87,7 +87,7 @@ target(main: "Provides fake translations of missing Arabic properties. Used for 
     }
 
     println "Generating new grails-app/i18n/messages_ar.properties"
-    mainArabicMessageFile.write("#GENERATED FILE!!! DO NOt CHECK IN!!!")
+    mainArabicMessageFile.write("#GENERATED FILE!!! DO NOt CHECK IN!!!\n")
 
     mainArabicProperties.propertyNames().each { propertyName ->
         def arabicString = propertyName + "=" + mainArabicProperties.getProperty(propertyName)
