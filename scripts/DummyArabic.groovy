@@ -6,14 +6,17 @@ def dummyArabicCharacters = ["\u0645", "\u0639", "\u0644", "\u062D", "\u062F", "
 def mainArabicProperties = new Properties()
 
 def generateFakeProperty(def fromThis, def arabicCharacterList) {
-    String arabicString = ""
+    String arabicString = fromThis == "" ? "" : "0"
+    Integer wordNumber = 1
     def random = new Random()
     def chars = fromThis.getChars()
     for (int i=0;i<chars.size();i++)
     {
         def currentChar = chars[i]
-        if (currentChar.isWhitespace())
-            arabicString += " "
+        if (currentChar.isWhitespace()) {
+            arabicString += " " + wordNumber
+            wordNumber++
+        }
         else
         {
             arabicString += arabicCharacterList[random.nextInt(10)]

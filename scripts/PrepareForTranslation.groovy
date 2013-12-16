@@ -84,7 +84,10 @@ def copyFile(def pluginName) {
 
 target(main: "Creates translation folder and copies the messages.properteis file from the app and plugins that have changes") {
 
-    def output = new File( "target/translation-report.html" )
+    def translationFolder = new File("target/translation")
+    translationFolder.mkdir();
+
+    def output = new File( "target/translation/translation-report.html" )
 
     processPlugin(".")
 
