@@ -1,35 +1,32 @@
 .hasCalendarsPicker .ui-datepicker {
-    width: auto !important;
+    width: auto;
 }
 
 input.hasMultiCalendarPicker {
-    margin: 0 0 0 -22px!important;
-    padding:0 0 0 25px !important;
+    margin: 0 0 0 -22px;
+    padding: 0 0 0 25px;
 }
+
 input.hasMultiCalendarPicker + span {
-    background: url('images/date-picker-sprites-flip.png') no-repeat scroll 0px 1px transparent!important;
-    float:right;
+    background: url('images/date-picker-sprites-flip.png') no-repeat scroll 0px 1px transparent;
+
 }
 
 input.hasMultiCalendarPicker {
-    border-radius: 3px  0  0 3px;
-    float:right;
+    border-radius: 3px 0 0 3px;
+    float: right;
 }
 
-input.hasMultiCalendarPicker:focus + span{
-    background-position:0px -99px !important;
-}
-
- input.hasMultiCalendarPicker:hover + span, input.hasMultiCalendarPicker + span:hover{
-    background-position:0px -49px !important;
+input.hasMultiCalendarPicker:hover + span, input.hasMultiCalendarPicker + span:hover {
+    background-position: 0px -49px;
 }
 
 .ui-datepicker-cmd-prev {
-	float: right;
+    float: right;
 }
 
 .ui-datepicker-cmd-next {
-	float: left;
+    float: left;
 }
 
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
@@ -40,7 +37,25 @@ input.hasMultiCalendarPicker:focus + span{
     background: url("images/datepicker-arrow-next.png") no-repeat scroll 0 0 transparent;
 }
 
-.ui-datepicker-row-break{
+.ui-datepicker-row-break {
     float: left;
 }
+
+input.hasMultiCalendarPicker.hasTimePicker+ span {
+    background: url('images/date-time-sprite.png') no-repeat scroll -7px 0px transparent;
+}
+
+input.hasMultiCalendarPicker.hasTimePicker ~ .time-icon {
+    background: url('images/date-time-sprite.png') no-repeat scroll -28px 0px transparent;
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    /*-ms-transform: rotate(180deg);*/
+    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+}
+
+input.hasMultiCalendarPicker.hasTimePicker:hover ~ .time-icon, input.hasMultiCalendarPicker.hasTimePicker ~ .time-icon:hover {
+    background-position: -28px -50px;
+}
+
+
 

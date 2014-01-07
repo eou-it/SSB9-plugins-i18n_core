@@ -31,7 +31,7 @@
             buttonImage: '',
             buttonClass: '',
             showOn: 'focus',
-            showTime: false,
+            showTime: true,
             timeFormat: 'kk:mm:ss'
 
         };
