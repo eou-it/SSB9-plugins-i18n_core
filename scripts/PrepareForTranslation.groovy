@@ -55,7 +55,6 @@ def processPlugin = { plugin ->
             translationFileMapList.each { it ->
                 def value = it.properties.get(propertyName)
                 if (null == value) {
-                    //println "   Q### Plugin " + plugin + " missing " + propertyName + " for locale " + it.locale
                     missingFromThese.add(it.locale)
                 }
             }
@@ -83,6 +82,12 @@ def copyFile(def pluginName) {
 }
 
 target(main: "Creates translation folder and copies the messages.properteis file from the app and plugins that have changes") {
+    if (args) {
+        supportedLocales = []
+        args?.tokenize().each {  token ->
+            supportedLocales << token
+        }
+    }
 
     def translationFolder = new File("target/translation")
     translationFolder.mkdir();
@@ -133,7 +138,8 @@ target(main: "Creates translation folder and copies the messages.properteis file
 	                </style>
 	            </head>
 	            <h2>Translation Report</h2>
-	            Generated: ${new Date()}
+	            Generated: ${new Date()}<br/>
+                Created for Locales ${supportedLocales}
 """
 
     translationsResults.each { result ->

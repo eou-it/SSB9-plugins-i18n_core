@@ -26,10 +26,20 @@ def generateFakeProperty(def fromThis, def arabicCharacterList) {
 }
 
 
+def toUnicode(def thisString) {
+    def returnString = ""
+    thisString.each{ c ->
+        returnString += String.format ("\\u%04x", (int)c)
+    }
+    return returnString
+}
+
+
 def processPlugin(plugin, mainArabicProperties, arabicCharacterList) {
 
     // Load up the main arabic properties file from the grails app
     def arabicProperties = new Properties()
+    Boolean needReplacing = false
     File arabicMessageFile = new File(plugin, "grails-app/i18n/messages_ar.properties")
     if (arabicMessageFile.exists()) {
         arabicMessageFile.withInputStream { stream ->
@@ -48,11 +58,25 @@ def processPlugin(plugin, mainArabicProperties, arabicCharacterList) {
 
     messagesProperties.propertyNames().each { propertyName ->
         if (!arabicProperties.getProperty(propertyName)) {
-            mainArabicProperties.setProperty(propertyName,
+            needReplacing = true
+            arabicProperties.setProperty(propertyName,
                     generateFakeProperty(messagesProperties.getProperty(propertyName), arabicCharacterList))
         }
     }
 
+    if (needReplacing) {
+        println "Generating new grails-app/i18n/messages_ar.properties for plugin: " + plugin
+
+
+        arabicMessageFile.write("#GENERATED FILE!!! DO NOT CHECK IN!!!\n")
+
+        arabicProperties.propertyNames().each { propertyName ->
+            String arabicString = propertyName + "=" + toUnicode(arabicProperties.getProperty(propertyName))
+            arabicMessageFile.append(arabicString)
+            arabicMessageFile.append("\n")
+        }
+
+    }
 }
 
 /**
@@ -93,7 +117,7 @@ target(main: "Provides fake translations of missing Arabic properties. Used for 
     mainArabicMessageFile.write("#GENERATED FILE!!! DO NOt CHECK IN!!!\n")
 
     mainArabicProperties.propertyNames().each { propertyName ->
-        def arabicString = propertyName + "=" + mainArabicProperties.getProperty(propertyName)
+        def arabicString = propertyName + "=" + toUnicode(mainArabicProperties.getProperty(propertyName))
         mainArabicMessageFile.append(arabicString)
         mainArabicMessageFile.append("\n")
     }
