@@ -1,3 +1,7 @@
+/*******************************************************************************
+Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
+*******************************************************************************/
+
 .hasCalendarsPicker .ui-datepicker {
     width: auto;
 }
@@ -49,13 +53,14 @@ input.hasMultiCalendarPicker.hasTimePicker ~ .time-icon {
     background: url('images/date-time-sprite.png') no-repeat scroll -28px 0px transparent;
     transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
-    /*-ms-transform: rotate(180deg);*/
-    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+    -ms-transform: rotate(180deg);
 }
 
 input.hasMultiCalendarPicker.hasTimePicker:hover ~ .time-icon, input.hasMultiCalendarPicker.hasTimePicker ~ .time-icon:hover {
     background-position: -28px -50px;
 }
 
-
+.ie8 input.hasMultiCalendarPicker.hasTimePicker ~ .time-icon {
+    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+}
 

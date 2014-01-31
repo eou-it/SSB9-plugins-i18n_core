@@ -8,7 +8,7 @@ Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
 /* Interaction Cues
 ----------------------------------*/
 .ui-state-disabled {
-    cursor: default !important;
+    cursor: default;
 }
 
 /* Icons
@@ -1289,7 +1289,7 @@ button.ui-datepicker-cmd {
 /* Interaction Cues
 ----------------------------------*/
 .ui-state-disabled {
-    cursor: default !important;
+    cursor: default;
 }
 
 /* Icons
