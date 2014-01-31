@@ -1,3 +1,8 @@
+/*******************************************************************************
+Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
+*******************************************************************************/
+
+
 /* Default styles for datepicker.css */
 
 /* Interaction Cues
@@ -84,7 +89,7 @@
 }
 
 .ui-datepicker-div .ui-widget-header {
-    background-color: #EDF0F4; /*works*/
+    background-color: #EDF0F4;
     color: #333333;
     font-weight: bold;
     height: 25px;
@@ -1053,7 +1058,7 @@
 }
 
 .ui-datepicker table {
-    border: none; /*works*/
+    border: none;
     border-collapse: collapse;
     font-size: 0.95em;
     margin: 0;
@@ -1343,18 +1348,13 @@ button.ui-datepicker-cmd {
     background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
     color: #333333;
 }
-/*
-#multiCalendarContainer .ui-widget-content a {
-    color: #333333;
-    background: none;
-}*/
 
 .ui-widget-header a {
     color: #222222;
 }
 
 .ui-datepicker-div .ui-widget-header {
-    background-color: #EDF0F4; /*works*/
+    background-color: #EDF0F4;
     color: #333333;
     font-weight: bold;
     height: 25px;
@@ -1375,7 +1375,7 @@ button.ui-datepicker-cmd {
 
 #multiCalendarContainer .ui-datepicker-other-month {
     opacity: 0.3;
-    filter: Alpha(Opacity = 30)
+    filter: Alpha(Opacity = 30);
 }
 
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
@@ -1490,14 +1490,14 @@ button.ui-datepicker-cmd {
 
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w {
     background: url(images/datepicker-arrow-back.png) no-repeat 0 0 transparent;
-    height: 19px; /*works*/
-    width: 20px; /*works*/
+    height: 19px;
+    width: 20px;
 }
 
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
     background: url(images/datepicker-arrow-next.png) no-repeat 0 0 transparent;
-    height: 19px; /*works*/
-    width: 19px; /*works*/
+    height: 19px;
+    width: 19px;
 }
 
 /* positioning */
@@ -2258,8 +2258,8 @@ button.ui-datepicker-cmd {
 .ui-datepicker {
     box-shadow: 2px 2px 3px #666666;
     display: none;
-    height: auto !important;
-    padding: 0 !important;
+    height: auto;
+    padding: 0;
     width: auto !important;
 }
 
@@ -2539,7 +2539,7 @@ button.ui-datepicker-cmd {
 
 .ui-datepicker-group {
     float: left;
-    width: auto; /*works*/
+    width: auto;
 }
 
 #multiCalendarContainer {
@@ -2558,12 +2558,12 @@ button.ui-datepicker-cmd {
 
 #multiCalendarContainer .hasCalendarsPicker > div {
     opacity: 0.5;
-    filter: Alpha(Opacity = 50)
+    filter: Alpha(Opacity = 50);
 }
 
 #multiCalendarContainer .hasCalendarsPicker.activeCalendar > div {
     opacity: 1;
-    filter: Alpha(Opacity = 100)
+    filter: Alpha(Opacity = 100);
 }
 
 #sceenReaderText {
@@ -2604,7 +2604,7 @@ input.hasMultiCalendarPicker:hover .calendar-img, .calendar-img:hover {
 input.hasMultiCalendarPicker {
     margin: 0 -22px 0 0; /* leave space for button width */
     padding: 0 25px 0 0;
-    height: 20px !important;
+    height: 20px;
     border: 1px solid #778FA0;
     border-radius: 0 3px 3px 0;
 }
@@ -2669,7 +2669,6 @@ input.hasMultiCalendarPicker + span {
 
 input.hasMultiCalendarPicker.hasTimePicker + span {
     background-position: -7px 0px;
-    margin-top: 0px;
 }
 
 input.hasMultiCalendarPicker:hover +span {

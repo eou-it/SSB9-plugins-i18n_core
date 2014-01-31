@@ -1,3 +1,7 @@
+/*******************************************************************************
+ Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
+*******************************************************************************/
+
 (function($) {
 
     function MultiCalendarsPicker() {
@@ -31,7 +35,7 @@
             buttonImage: '',
             buttonClass: '',
             showOn: 'focus',
-            showTime: true,
+            showTime: false,
             timeFormat: 'kk:mm:ss'
 
         };

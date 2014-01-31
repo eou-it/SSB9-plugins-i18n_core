@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2014 Ellucian Company L.P. and its affiliates.
  ****************************************************************************** */
 
 eventCompileEnd = {
@@ -23,7 +23,7 @@ eventCompileEnd = {
                 ant.delete(dir: targetLocation)
             }
 
-            ant.copy(todir: targetLocation + "/js") {
+            ant.copy(todir: targetLocation + "/js", overwrite: "true") {
                 fileset(dir: "${i18nCorePluginDir}/web-app/js")
             }
             ant.copy(todir: targetLocation + "/css", overwrite: "true") {
