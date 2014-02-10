@@ -97,8 +97,8 @@
                                         var formatDate = $.multicalendar._getFormatFn(calendarOrder, settings);
                                         data = formatDate(data);
                                         var timeEntered = $.multicalendar.extractTimePart(inst);
-                                        data = data + " " + timeEntered;
-                                        $(inst).val(data.trim());
+                                        data = (data + " " + timeEntered).trim();
+                                        $(inst).val(data);
                                         if(onSelectExt) {
                                             onSelectExt(data,inst );
                                         }
@@ -110,8 +110,8 @@
                                 else{
                                     var data = target[0].formatDate();
                                     var timeEntered = $.multicalendar.extractTimePart(inst);
-                                    data = data + " " + timeEntered;
-                                    $(inst).val(data.trim());
+                                    data = (data + " " + timeEntered).trim();
+                                    $(inst).val(data);
 
                                     if(onSelectExt) {
                                         onSelectExt(data ,inst);
@@ -239,8 +239,8 @@
                 date = $.multicalendar._convertDateBetweenCalendarFormats(selectedCalendar, fromFormat, toFormat, date);
 
                 var timeEntered = $.multicalendar.extractTimePart(inst);
-                date = date + " " + timeEntered;
-                $(inst).val(date.trim());
+                date = (date + " " + timeEntered).trim();
+                $(inst).val(date);
 
                 if(onSelectExt) {
                     onSelectExt(date ,inst );
