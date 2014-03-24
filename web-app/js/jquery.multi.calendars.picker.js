@@ -1,6 +1,6 @@
 /*******************************************************************************
  Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
-*******************************************************************************/
+ *******************************************************************************/
 
 (function($) {
 
@@ -489,11 +489,15 @@
                     }
                 }
 
-                var year = dateArray[yearIndex];
-                if(year.length == 2) {
-                    year = Number($.multicalendar._getCentury(parseInt(year))) + parseInt(year);
-                    dateArray[yearIndex] = year;
-                    dateString = dateArray.join(separator);
+                if(dateArray.length > yearIndex)
+                {
+                    var year = dateArray[yearIndex];
+                    if(year.length == 2) {
+                        var yearEntered= parseInt(year);
+                        year = Number($.multicalendar._getCentury(yearEntered)) + yearEntered;
+                        dateArray[yearIndex] = year;
+                        dateString = dateArray.join(separator);
+                    }
                 }
             }
             return dateString;
@@ -554,7 +558,13 @@
                             var year = cDateObj.year();
                             for (i = 0; i < matches.length; i++){
                                 if(sortable[i][0] == "y"){
-                                    year = Number(matches[i]) + Number($.multicalendar._getCentury(Number(matches[i])));
+                                    if(matches[i].length == 2) {
+                                        var yearEntered= Number(matches[i]);
+                                        year = yearEntered + Number($.multicalendar._getCentury(yearEntered));
+                                    }
+                                    else{
+                                        year= matches[i];
+                                    }
                                 } else if (sortable[i][0] == "m") {
                                     month = matches[i];
                                 } else {
