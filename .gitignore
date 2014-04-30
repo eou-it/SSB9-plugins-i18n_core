@@ -27,3 +27,4 @@ stacktrace.log
 src/java/web
 src/java/web/**/*
 *-rtl.css
+messages_ar_SA.properties
