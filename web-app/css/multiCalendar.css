@@ -2425,10 +2425,8 @@ button.ui-datepicker-cmd {
 .ui-datepicker-row-break {
     clear: both;
     width: 100%;
-}
-
-#multiCalendarContainer .ui-datepicker-row-break {
     font-size: 0.95em;
+
 }
 
 /* RTL support */
