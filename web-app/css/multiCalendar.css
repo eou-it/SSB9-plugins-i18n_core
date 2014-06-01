@@ -2638,7 +2638,7 @@ input.hasMultiCalendarPicker {
     margin: 0px;
     padding: 0;
     width: 22px;
-    vertical-align: top;
+    vertical-align: bottom;
     display: inline-block;
 }
 
