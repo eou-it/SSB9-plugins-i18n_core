@@ -2425,6 +2425,8 @@ button.ui-datepicker-cmd {
 .ui-datepicker-row-break {
     clear: both;
     width: 100%;
+    font-size: 0.95em;
+
 }
 
 /* RTL support */
