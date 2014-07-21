@@ -65,6 +65,12 @@
             $(document).find('body').append(DOMStructure);
         },
 
+        concatTimePart: function (inst, data) {
+            var timeEntered = $.multicalendar.extractTimePart(inst);
+            data = data + " " + timeEntered;
+            return data.trim();
+        },
+
         _addCalendarsToDOM : function (inst) {
             var calendarOptions = inst.settings;
             var calendars = calendarOptions.calendars;
@@ -102,9 +108,8 @@
                                         var data = target[0].formatDate();
                                         var formatDate = $.multicalendar._getFormatFn(calendarOrder, settings);
                                         data = formatDate(data);
-                                        var timeEntered = $.multicalendar.extractTimePart(inst);
-                                        data = data + " " + timeEntered;
-                                        $(inst).val(data.trim());
+                                        data = $.multicalendar.concatTimePart(inst, data);
+                                        $(inst).val(data);
                                         if(onSelectExt) {
                                             onSelectExt(data,inst );
                                         }
@@ -115,9 +120,8 @@
                                 }
                                 else{
                                     var data = target[0].formatDate();
-                                    var timeEntered = $.multicalendar.extractTimePart(inst);
-                                    data = data + " " + timeEntered;
-                                    $(inst).val(data.trim());
+                                    data = $.multicalendar.concatTimePart(inst, data);
+                                    $(inst).val(data);
 
                                     if(onSelectExt) {
                                         onSelectExt(data ,inst);
@@ -244,8 +248,7 @@
 
                 date = $.multicalendar._convertDateBetweenCalendarFormats(selectedCalendar, fromFormat, toFormat, date);
 
-                var timeEntered = $.multicalendar.extractTimePart(inst);
-                date = date + " " + timeEntered;
+                date = $.multicalendar.concatTimePart(inst, date);
                 $(inst).val(date.trim());
 
                 if(onSelectExt) {
