@@ -249,7 +249,7 @@
                 date = $.multicalendar._convertDateBetweenCalendarFormats(selectedCalendar, fromFormat, toFormat, date);
 
                 date = $.multicalendar.concatTimePart(inst, date);
-                $(inst).val(date.trim());
+                $(inst).val(date);
 
                 if(onSelectExt) {
                     onSelectExt(date ,inst );
