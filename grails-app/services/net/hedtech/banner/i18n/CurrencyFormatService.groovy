@@ -41,7 +41,7 @@ class CurrencyFormatService {
         List<String> lstValidCurrencyCode = Currency.getAvailableCurrencyCodes()
         currencyCode = currencyCode?.toUpperCase()
         boolean bResult = true
-        if(currencyCode?.length() !=0 && lstValidCurrencyCode.contains(currencyCode)) {
+        if(lstValidCurrencyCode.contains(currencyCode)) {
             bResult = false
         }
         return bResult

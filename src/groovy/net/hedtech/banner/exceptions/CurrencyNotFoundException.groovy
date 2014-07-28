@@ -10,11 +10,11 @@ import net.hedtech.banner.ui.zk.i18n.MessageHelper
  **/
 public class CurrencyNotFoundException extends RuntimeException {
 
-    public static final String MESSAGE_KEY_CURRCODE_INVALID = "default.invalid.currcode"
+    public static final String MESSAGE_KEY_CURRENCY_CODE_INVALID = "default.invalid.currency.format.code"
     def currencyCode
 
     public String getMessage() {
-        return MessageHelper.message(MESSAGE_KEY_CURRCODE_INVALID, [currencyCode]?.toArray() )
+        return MessageHelper.message(MESSAGE_KEY_CURRENCY_CODE_INVALID, [currencyCode]?.toArray() )
     }
 
     String toString() {
