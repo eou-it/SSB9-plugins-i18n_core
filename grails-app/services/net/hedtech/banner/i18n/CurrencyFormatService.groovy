@@ -10,7 +10,7 @@ import com.ibm.icu.util.Currency
 import net.hedtech.banner.exceptions.CurrencyNotFoundException
 import org.apache.log4j.Logger
 
-import org.zkoss.util.Locales
+import org.springframework.context.i18n.LocaleContextHolder as LCH
 
 /**
  * This utility class is used to format the amount based on the locale format and the amount will
@@ -26,7 +26,7 @@ class CurrencyFormatService {
         if(isInvalidCurrencyCode(currencyCode))   {
             throw new CurrencyNotFoundException(currencyCode:currencyCode)
         }
-        Locale locale = Locales.getCurrent()
+        Locale locale = LCH.getLocale()
         String fmtMonetaryValue;
         ArabicShaping shaping = new ArabicShaping(ArabicShaping.DIGITS_AN2EN)
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale)
