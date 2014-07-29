@@ -72,16 +72,16 @@ class MessageHelper {
         String localizedMessage
 
         if (map.error) {
-            localizedMessage = getMessageSource().getMessage(map.error, LCH.locale)
+            localizedMessage = getMessageSource().getMessage(map.error, LCH.getLocale())
         }
 
         else if (map.code) {
             def defaultMessage = map.default != null ? map.default : map.code
-            localizedMessage = getMessageSource().getMessage(map.code, map.args instanceof List? map.args?.toArray():map.args, defaultMessage, LCH.locale)
+            localizedMessage = getMessageSource().getMessage(map.code, map.args instanceof List? map.args?.toArray():map.args, defaultMessage, LCH.getLocale())
         }
 
         if (!localizedMessage) {
-            localizedMessage = getMessageSource().getMessage("default.unknown.banner.api.exception", LCH.locale)
+            localizedMessage = getMessageSource().getMessage("default.unknown.banner.api.exception", LCH.getLocale())
         }
 
         localizedMessage
@@ -89,7 +89,7 @@ class MessageHelper {
 
 
     private static def getMessage(resourceCode, args = null) {
-        def foundCode = getMessageSource().resolveCode(resourceCode, LCH.locale)
+        def foundCode = getMessageSource().resolveCode(resourceCode, LCH.getLocale())
         Object[] substitutionParameters = args ?: []
         def result = foundCode?.format(substitutionParameters)
         return result ?: resourceCode
