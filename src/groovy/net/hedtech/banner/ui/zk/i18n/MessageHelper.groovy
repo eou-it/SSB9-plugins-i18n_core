@@ -6,7 +6,8 @@ package net.hedtech.banner.ui.zk.i18n
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import org.springframework.context.ApplicationContext
-import org.zkoss.util.Locales
+import org.springframework.context.i18n.LocaleContextHolder as LCH
+
 
 /**
  * Helper class to retrieve getMessage values from the resource bundle managed by grails.
@@ -71,16 +72,16 @@ class MessageHelper {
         String localizedMessage
 
         if (map.error) {
-            localizedMessage = getMessageSource().getMessage(map.error, Locales.getCurrent())
+            localizedMessage = getMessageSource().getMessage(map.error, LCH.locale)
         }
 
         else if (map.code) {
             def defaultMessage = map.default != null ? map.default : map.code
-            localizedMessage = getMessageSource().getMessage(map.code, map.args instanceof List? map.args?.toArray():map.args, defaultMessage, Locales.getCurrent())
+            localizedMessage = getMessageSource().getMessage(map.code, map.args instanceof List? map.args?.toArray():map.args, defaultMessage, LCH.locale)
         }
 
         if (!localizedMessage) {
-            localizedMessage = getMessageSource().getMessage("default.unknown.banner.api.exception", Locales.getCurrent())
+            localizedMessage = getMessageSource().getMessage("default.unknown.banner.api.exception", LCH.locale)
         }
 
         localizedMessage
@@ -88,7 +89,7 @@ class MessageHelper {
 
 
     private static def getMessage(resourceCode, args = null) {
-        def foundCode = getMessageSource().resolveCode(resourceCode, Locales.getCurrent())
+        def foundCode = getMessageSource().resolveCode(resourceCode, LCH.locale)
         Object[] substitutionParameters = args ?: []
         def result = foundCode?.format(substitutionParameters)
         return result ?: resourceCode
