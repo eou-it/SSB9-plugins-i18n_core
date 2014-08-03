@@ -183,6 +183,14 @@ class DateConverterService {
                 "MM/dd/yyyy");
     }
 
+    public convertDefaultCalendarToGregorian(date, fromDateFormat) {
+        return convert(date ,
+                getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                getGregorianULocaleString(),
+                fromDateFormat,
+                "MM/dd/yyyy");
+    }
+
     public convertGregorianToDefaultCalendar(date, format) {
         return convert(date,
                 getDefaultTranslationULocaleString(),
