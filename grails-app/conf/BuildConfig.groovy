@@ -15,25 +15,31 @@ grails.project.dependency.resolution = {
     repositories {
         if (System.properties['PROXY_SERVER_NAME']) {
             mavenRepo "${System.properties['PROXY_SERVER_NAME']}"
-        } else
-        {
+        }
+        mavenRepo "http://repo.grails.org/grails/repo"
             grailsPlugins()
             grailsHome()
             grailsCentral()
             mavenCentral()
+
+
+
             mavenRepo "http://repository.jboss.org/maven2/"
             mavenRepo "http://repository.codehaus.org"
-        }
+
+
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.5'
+        compile 'com.ibm.icu:icu4j:4.8.1.1'
     }
 
     plugins {
         runtime  ":hibernate:3.6.10.10"
         build ":tomcat:7.0.52.1"
         test ':code-coverage:1.2.5'
+
     }
 }
