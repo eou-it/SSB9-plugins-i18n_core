@@ -4,16 +4,19 @@ Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
 
 package net.hedtech.banner.i18n
 
+import com.ibm.icu.text.DateFormat
 import com.ibm.icu.util.Calendar
 import com.ibm.icu.util.ULocale
 import org.apache.log4j.Logger
 import org.codehaus.groovy.grails.plugins.web.taglib.ValidationTagLib
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.springframework.util.ClassUtils
+
 import java.sql.Timestamp
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import grails.converters.JSON
-import com.ibm.icu.text.DateFormat
 
 /**
  * This utility class is used to convert Calendars supported by ICU4J for the UI.
@@ -289,34 +292,47 @@ class DateConverterService {
     }
 
     public parseDefaultCalendarToGregorian(value) {
-       try {
-          String defaultDateFormat = localizerService(code: "default.date.format")
-          def tempValue = convert(value,
-                               getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
-                               getULocaleStringForCalendar('gregorian'),
-                               defaultDateFormat ,
-                               defaultDateFormat)
-
-          //Check if date passed is valid or not.
-          def checkValue = convert(tempValue,
-                               getULocaleStringForCalendar('gregorian'),
-                               getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
-                               defaultDateFormat ,
-                               defaultDateFormat)
-
-          if(tempValue != "error") {
-            if(value.equals(checkValue)) {
-                //Date is valid
-                value = tempValue
+        String defaultDateFormat = localizerService(code: "default.date.format")
+        if (! isGregorianDate(value, defaultDateFormat)) {
+            try {
+                def tempValue = convert(value,
+                        getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar", default: 'gregorian')),
+                        getULocaleStringForCalendar('gregorian'),
+                        defaultDateFormat,
+                        defaultDateFormat)
+                //Check if date passed is valid or not.
+                def checkValue = convert(tempValue,
+                        getULocaleStringForCalendar('gregorian'),
+                        getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar", default: 'gregorian')),
+                        defaultDateFormat,
+                        defaultDateFormat)
+                if (tempValue != "error") {
+                    if (value.equals(checkValue)) {
+                        //Date is valid
+                        value = tempValue
+                    }
+                }
+            } catch (Exception e ) {
+                //If an exception occurs ignore and return original value.
             }
-          }
-       } catch (Exception e) {
-           //If an exception occurs ignore and return original value.
-       }
-       return value
+        }
+        return value
     }
 
-   public parseGregorianToDefaultCalendar(value) {
+    public boolean isGregorianDate(String value, String defaultDateFormat) {
+        boolean isGregorianCalendarDate = true
+        try {
+            ULocale fromULocale = new ULocale(value)
+            Calendar fromCalendar = Calendar.getInstance(fromULocale);
+            DateFormat fromDateFormat = fromCalendar.handleGetDateFormat(defaultDateFormat, fromULocale)
+            fromDateFormat.parse(value)
+        } catch (ParseException e) {
+            isGregorianCalendarDate = false
+        }
+        return isGregorianCalendarDate
+    }
+
+    public parseGregorianToDefaultCalendar(value) {
        try {
            if(value instanceof Date) {
                 SimpleDateFormat sdf = new SimpleDateFormat(localizerService(code: "default.date.format"));
@@ -348,7 +364,7 @@ class DateConverterService {
        return value
    }
 
-   public formatDateInObjectsToDefaultCalendar(key, obj, dateFields) {
+   public formatDateInObjectsToDefaultCalendar(key, Object obj, List<String> dateFields) {
         if(obj != null) {
 
             if(obj instanceof ArrayList) {
@@ -400,45 +416,27 @@ class DateConverterService {
                     obj.target = formatDateInObjectsToDefaultCalendar(key, obj.target, dateFields)
                 }
             }
-            else if(obj.metaClass) {
-                obj = convertClassToMap(obj, dateFields)
+            else if(! ClassUtils.isPrimitiveWrapper(obj.class)) {
+                obj = convertNonWrapperObjectIntoPropertyMap(obj, dateFields)
             }
         }
         return obj;
     }
 
-    public convertClassToMap(obj, dateFields) {
-        Object returnObj = null
-
-        if(obj != null) {
-            if(obj instanceof java.sql.Date){
-                obj = new Date(obj.getTime())
-                returnObj = parseGregorianToDefaultCalendar(obj)
-            }
-            else if(obj instanceof Timestamp) {
-                SimpleDateFormat sdf = new SimpleDateFormat(localizerService(code: "default.date.format"));
-                String date = sdf.format(new Date(obj.getTime()));
-                returnObj = parseGregorianToDefaultCalendar(date)
-            }
-            else if(obj instanceof java.util.Date){
-                returnObj = parseGregorianToDefaultCalendar(obj)
-            }
-            else if(obj.metaClass) {
-               Map objMap = new HashMap()
-
-               obj.metaClass.properties.each {
-                   def newValue = obj.properties[it.name];
-                   if(newValue != null && dateFields.contains(it.name)) {
-                        newValue = formatDateInObjectsToDefaultCalendar(it.name, newValue, dateFields)
-                   }
-                   objMap.put(it.name, newValue)
-               }
-
-               returnObj = objMap
+    private Map<String, Object> convertNonWrapperObjectIntoPropertyMap(Object nonWrapperObject, List<String> dateFields) {
+        Map propertyCollectedMap = null
+        if(nonWrapperObject != null) {
+            propertyCollectedMap = [:]
+            nonWrapperObject.metaClass.properties.each {
+                String propertyName = it.name
+                def propertyValue = nonWrapperObject.properties[propertyName];
+                if(propertyValue != null && dateFields.contains(propertyName)) {
+                    propertyValue = formatDateInObjectsToDefaultCalendar(propertyName, propertyValue, dateFields)
+                }
+                propertyCollectedMap[propertyName] = propertyValue
             }
         }
-
-        return returnObj
+        return propertyCollectedMap
     }
 
     public convertGregorianToDefaultCalendarWithTime(date, format) {
