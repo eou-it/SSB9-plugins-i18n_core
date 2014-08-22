@@ -1,7 +1,7 @@
 /*******************************************************************************
 Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/ 
-package net.hedtech.banner.ui.zk.i18n
+package net.hedtech.banner.i18n
 
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
@@ -88,10 +88,10 @@ class MessageHelper {
     }
 
 
-    private static def getMessage(resourceCode, args = null) {
+    private static String getMessage(resourceCode, args = null) {
         def foundCode = getMessageSource().resolveCode(resourceCode, LCH.getLocale())
         Object[] substitutionParameters = args ?: []
-        def result = foundCode?.format(substitutionParameters)
+        String result = foundCode?.format(substitutionParameters)
         return result ?: resourceCode
     }
 
