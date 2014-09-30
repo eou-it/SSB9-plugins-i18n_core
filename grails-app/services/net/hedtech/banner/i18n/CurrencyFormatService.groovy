@@ -22,7 +22,7 @@ class CurrencyFormatService {
 
     Logger logger = Logger.getLogger(this.getClass())
 
-    public String format(String currencyCode, BigDecimal amount) throws CurrencyFormatService {
+    public String format(String currencyCode, BigDecimal amount) throws CurrencyNotFoundException {
         if(isInvalidCurrencyCode(currencyCode))   {
             throw new CurrencyNotFoundException(currencyCode:currencyCode)
         }
