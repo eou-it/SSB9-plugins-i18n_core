@@ -1099,8 +1099,11 @@
 
     $.fn.multiCalendarPicker = function(opts) {
         var inst = $(this)[0];
-        var dateariaLabel = $(inst).attr('aria-label')
-        dateariaLabel=dateariaLabel+" "+$.i18n.prop("js.input.datepicker.info")+" "+$.i18n.prop("js.input.datepicker.dateformatinfo")+$.i18n.prop("default.date.format");
+        var dateariaLabel = $(inst).attr('aria-label');
+        var dateFormat = $.i18n.prop("default.date.format");
+        //Aria workaround:Introduce blank space so that reader reads as abbreviations
+        dateFormat = dateFormat.split("").join(" ");
+        dateariaLabel=dateariaLabel+" "+$.i18n.prop("js.input.datepicker.info")+" "+$.i18n.prop("js.input.datepicker.dateformatinfo")+" "+dateFormat;
         $(inst).attr('aria-label',dateariaLabel);
 
         if (!inst.isInstantiated) {
