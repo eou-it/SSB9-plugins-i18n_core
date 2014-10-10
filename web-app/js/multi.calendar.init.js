@@ -11,7 +11,7 @@ $(document).ready(function() {
         selectOtherMonths: true,
         prevText:          "<span class=\"ui-icon ui-icon-circle-triangle-w\"> </span>",
         nextText:          "<span class=\"ui-icon ui-icon-circle-triangle-e\"> </span>",
-        dayStatus:         $.i18n.prop("js.datepicker.selectText") + ' DD, M d, yyyy',
+        dayStatus:         $.i18n.prop("js.datepicker.selectText") + ' DD, MMMM d, yyyy',
         prevStatus:        $.i18n.prop("js.datepicker.prevStatus"),
         nextStatus:        $.i18n.prop("js.datepicker.nextStatus"),
         yearStatus:        $.i18n.prop("js.datepicker.yearStatus"),

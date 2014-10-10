@@ -303,6 +303,7 @@
 
         _hideCalendar : function (inst) {
             $.multicalendar._isCalendarShown = false;
+            $.multicalendar._removeAriaDescriptionFromCalendar();
             $("#" + this.calendarContainer).hide("slow");
             $.multicalendar.activeCalendar = null;
         },
@@ -314,6 +315,7 @@
                 $.multicalendar._addCalendarsToDOM(inst);
                 $.multicalendar._showDateInCalendar(inst);
             }
+            $.multicalendar._addAriaDescriptionToCalendar();
             $("#" + this.calendarContainer).show("slow");
             $.multicalendar.activeCalendar = 1;
             $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar ).addClass('activeCalendar');
@@ -322,6 +324,16 @@
             $.multicalendar._currentObj = $(inst);
         },
 
+        _addAriaDescriptionToCalendar: function() {
+            var calendarariaInfo = "<span id='calendarInfo' aria-live='polite' aria-atomic='false'>";
+            calendarariaInfo += $.i18n.prop("js.datepicker.info");
+            calendarariaInfo +="</span>";
+            $('#' + this.calendarContainer).append(calendarariaInfo);
+        },
+
+        _removeAriaDescriptionFromCalendar: function() {
+            $('#' + this.calendarContainer).children('#calendarInfo').remove();
+        },
 
         _showDateInCalendarSuccessCallback : function (selectedCalendar, fromFormat, toFormat, calendarIndex, inputElementId, originalDate) {
             return function(date) {
@@ -1087,6 +1099,9 @@
 
     $.fn.multiCalendarPicker = function(opts) {
         var inst = $(this)[0];
+        var dateariaLabel = $(inst).attr('aria-label')
+        dateariaLabel=dateariaLabel+" "+$.i18n.prop("js.input.datepicker.info")+" "+$.i18n.prop("js.input.datepicker.dateformatinfo")+$.i18n.prop("default.date.format");
+        $(inst).attr('aria-label',dateariaLabel);
 
         if (!inst.isInstantiated) {
             if(opts && opts.firstDayOfTheWeek && isNaN(opts.firstDayOfTheWeek)) {
