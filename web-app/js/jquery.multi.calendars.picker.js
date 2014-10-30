@@ -1101,11 +1101,12 @@
         var inst = $(this)[0];
         var dateariaLabel = $(inst).attr('aria-label');
         var dateFormat = $.i18n.prop("default.date.format");
+        var datepickerInfo = $.i18n.prop("js.input.datepicker.info");
         //Aria workaround:Introduce blank space so that reader reads as abbreviations
         dateFormat = dateFormat.split("").join(" ");
-        dateariaLabel=dateariaLabel+" "+$.i18n.prop("js.input.datepicker.info")+" "+$.i18n.prop("js.input.datepicker.dateformatinfo")+" "+dateFormat;
+        dateariaLabel=dateariaLabel+" "+datepickerInfo+" "+$.i18n.prop("js.input.datepicker.dateformatinfo")+" "+dateFormat;
         $(inst).attr('aria-label',dateariaLabel);
-
+        $(inst).attr('title',datepickerInfo);
         if (!inst.isInstantiated) {
             if(opts && opts.firstDayOfTheWeek && isNaN(opts.firstDayOfTheWeek)) {
                 opts.firstDayOfTheWeek = $.multicalendar._defaults.firstDayOfTheWeek;
