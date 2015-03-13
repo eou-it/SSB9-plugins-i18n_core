@@ -465,7 +465,7 @@ class DateConverterService {
             ArrayList dateParts = dateString.tokenize(SLASH_SEPARATOR)
             return [year: dateParts[0], month: dateParts[1], day: dateParts[2]]
         }
-        return[:]
+        return [:]
     }
 
     private Date autoCompleteDateAndConvertToGregorianEquivalent(int year, int month, int day){

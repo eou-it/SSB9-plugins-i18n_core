@@ -4,10 +4,8 @@
 package net.hedtech.banner.i18n
 
 import grails.converters.JSON
-import org.codehaus.groovy.grails.plugins.testing.GrailsMockHttpServletRequest
+import net.hedtech.banner.i18n.utils.LocaleUtilities
 import org.junit.Test
-import org.spockframework.mock.runtime.MockObject
-import org.springframework.web.context.request.RequestContextHolder
 
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -96,7 +94,7 @@ class DateConverterIntegrationTests   {
 
     @Test
     void testExtractDatePartsInEnglishLocale(){
-        setLocale("en_US")
+        LocaleUtilities.setLocale("en_US")
         Map dateParts = dateConverterService.convertGregorianToDefaultCalendarAndExtractDateParts(new GregorianCalendar(2000,1,3).time)
         assertEquals dateParts["year"], "2000"
         assertEquals dateParts["month"], "02"
@@ -105,7 +103,7 @@ class DateConverterIntegrationTests   {
 
     @Test
     void testExtractDatePartsInArabicLocale(){
-        setLocale("ar")
+        LocaleUtilities.setLocale("ar")
         Map dateParts = dateConverterService.convertGregorianToDefaultCalendarAndExtractDateParts(new GregorianCalendar(2005,1,3).time)
         assertEquals dateParts["year"], "1425"
         assertEquals dateParts["month"], "12"
@@ -114,7 +112,7 @@ class DateConverterIntegrationTests   {
 
     @Test
     void testExtractDatePartsInFrenchLocale(){
-        setLocale("fr_CA")
+        LocaleUtilities.setLocale("fr_CA")
         Map dateParts = dateConverterService.convertGregorianToDefaultCalendarAndExtractDateParts(new GregorianCalendar(2000,1,3).time)
         assertEquals dateParts["year"], "2000"
         assertEquals dateParts["month"], "02"
@@ -122,14 +120,14 @@ class DateConverterIntegrationTests   {
     }
 
     @Test
-       void testExtractDatePartsWithNullDate(){
-           Map dateParts = dateConverterService.convertGregorianToDefaultCalendarAndExtractDateParts(null)
-           assertEquals dateParts.size(), 0
-       }
+    void testExtractDatePartsWithNullDate(){
+       Map dateParts = dateConverterService.convertGregorianToDefaultCalendarAndExtractDateParts(null)
+       assertEquals dateParts.size(), 0
+    }
 
     @Test
     void testGetStartDateInGregorianCalendarFromEnglishLocale(){
-        setLocale("en_US")
+        LocaleUtilities.setLocale("en_US")
         String gregorianStartDateForYear = formatDate(dateConverterService.getStartDateInGregorianCalendar(2010))
         assertEquals gregorianStartDateForYear, "2010/01/01"
 
@@ -139,7 +137,7 @@ class DateConverterIntegrationTests   {
 
     @Test
     void testGetStartDateInGregorianCalendarFromArabicLocale(){
-        setLocale("ar")
+        LocaleUtilities.setLocale("ar")
         String gregorianStartDateForYear = formatDate(dateConverterService.getStartDateInGregorianCalendar(1433))
         assertEquals gregorianStartDateForYear, "2011/11/27"
 
@@ -149,7 +147,7 @@ class DateConverterIntegrationTests   {
 
     @Test
     void testGetStartDateInGregorianCalendarFromFrenchLocale(){
-        setLocale("fr_CA")
+        LocaleUtilities.setLocale("fr_CA")
         String gregorianStartDateForYear = formatDate(dateConverterService.getStartDateInGregorianCalendar(2010))
         assertEquals gregorianStartDateForYear, "2010/01/01"
 
@@ -159,7 +157,7 @@ class DateConverterIntegrationTests   {
 
     @Test
     void testGetEndDateInGregorianCalendarFromEnglishLocale(){
-        setLocale("en_US")
+        LocaleUtilities.setLocale("en_US")
         String endDateFromYear = formatDate(dateConverterService.getEndDateInGregorianCalendar(2010))
         assertEquals endDateFromYear, "2010/12/31"
 
@@ -169,7 +167,7 @@ class DateConverterIntegrationTests   {
 
     @Test
     void testGetEndDateInGregorianCalendarFromArabicLocale(){
-        setLocale("ar")
+        LocaleUtilities.setLocale("ar")
         String endDateFromYear = formatDate(dateConverterService.getEndDateInGregorianCalendar(1433))
         assertEquals endDateFromYear, "2012/11/14"
 
@@ -179,7 +177,7 @@ class DateConverterIntegrationTests   {
 
     @Test
     void testGetEndDateInGregorianCalendarFromFrenchLocale(){
-        setLocale("fr_CA")
+        LocaleUtilities.setLocale("fr_CA")
         String endDateFromYear = formatDate(dateConverterService.getEndDateInGregorianCalendar(2010))
         assertEquals endDateFromYear, "2010/12/31"
 
@@ -201,21 +199,17 @@ class DateConverterIntegrationTests   {
     }
 
     @Test
-     void testGetMonthNameFromCodeInFrenchLocale(){
-         Map monthNamesWithCode = dateConverterService.getMonthNamesWithCode("fr_CA")
-         String uniCodeForSecondMonthInFrench = "\u0066"+"\u00e9"+"\u0076"+"\u0072"+"\u0069"+"\u0065"+"\u0072"
-         assertEquals monthNamesWithCode.get(1), uniCodeForSecondMonthInFrench
-     }
-
-    private void setLocale(locale) {
-        GrailsMockHttpServletRequest request = RequestContextHolder.currentRequestAttributes().request
-        request.addPreferredLocale(new Locale(locale))
+    void testGetMonthNameFromCodeInFrenchLocale(){
+     Map monthNamesWithCode = dateConverterService.getMonthNamesWithCode("fr_CA")
+     String uniCodeForSecondMonthInFrench = "\u0066"+"\u00e9"+"\u0076"+"\u0072"+"\u0069"+"\u0065"+"\u0072"
+     assertEquals monthNamesWithCode.get(1), uniCodeForSecondMonthInFrench
     }
 
     private String formatDate(date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         dateFormat.format(date);
     }
+
 }
 class MockDomain {}
 
