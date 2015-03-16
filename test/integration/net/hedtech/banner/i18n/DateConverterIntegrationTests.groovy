@@ -121,8 +121,8 @@ class DateConverterIntegrationTests   {
 
     @Test
     void testExtractDatePartsWithNullDate(){
-       Map dateParts = dateConverterService.convertGregorianToDefaultCalendarAndExtractDateParts(null)
-       assertEquals dateParts.size(), 0
+        Map dateParts = dateConverterService.convertGregorianToDefaultCalendarAndExtractDateParts(null)
+        assertEquals dateParts.size(), 0
     }
 
     @Test
@@ -187,22 +187,25 @@ class DateConverterIntegrationTests   {
 
     @Test
     void testGetMonthNameFromCodeInEnglishLocale(){
+        LocaleUtilities.setLocale("en_US")
         Map monthNamesWithCode = dateConverterService.getMonthNamesWithCode("en_US")
         assertEquals monthNamesWithCode.get(2), "March"
     }
 
     @Test
     void testGetMonthNameFromCodeInArabicLocale(){
+        LocaleUtilities.setLocale("ar")
         Map monthNamesWithCode = dateConverterService.getMonthNamesWithCode("ar")
-        String uniCodeForThirdIslamicMonth = "\u0645"+"\u0627"+"\u0631"+"\u0633"
+        String uniCodeForThirdIslamicMonth = "\u0631"+"\u0628"+"\u064a"+"\u0639 "+"\u0627"+"\u0644"+"\u0623"+"\u0648"+"\u0644"
         assertEquals monthNamesWithCode.get(2), uniCodeForThirdIslamicMonth
     }
 
     @Test
     void testGetMonthNameFromCodeInFrenchLocale(){
-     Map monthNamesWithCode = dateConverterService.getMonthNamesWithCode("fr_CA")
-     String uniCodeForSecondMonthInFrench = "\u0066"+"\u00e9"+"\u0076"+"\u0072"+"\u0069"+"\u0065"+"\u0072"
-     assertEquals monthNamesWithCode.get(1), uniCodeForSecondMonthInFrench
+        LocaleUtilities.setLocale("fr_CA")
+        Map monthNamesWithCode = dateConverterService.getMonthNamesWithCode("fr_CA")
+        String uniCodeForSecondMonthInFrench = "\u0066"+"\u00e9"+"\u0076"+"\u0072"+"\u0069"+"\u0065"+"\u0072"
+        assertEquals monthNamesWithCode.get(1), uniCodeForSecondMonthInFrench
     }
 
     private String formatDate(date){

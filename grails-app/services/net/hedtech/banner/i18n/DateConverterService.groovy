@@ -14,6 +14,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import org.springframework.util.ClassUtils
 
 import java.sql.Timestamp
+import com.ibm.icu.text.DateFormatSymbols
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import grails.converters.JSON
@@ -506,9 +507,10 @@ class DateConverterService {
         autoCompleteDateAndConvertToGregorianEquivalent(year,month,day)
     }
 
-    public Map getMonthNamesWithCode(String locale){
+    public Map getMonthNamesWithCode(String locale=getDefaultTranslationULocaleString()){
         Map monthNamesWithCode = [:]
-        getMonths(locale).eachWithIndex{ String monthName, int monthCode ->
+        String[] monthNames = new DateFormatSymbols(getDefaultCalendarInstance(),new ULocale(locale)).getMonths()
+        monthNames.eachWithIndex{ String monthName, int monthCode ->
             monthNamesWithCode.put(monthCode,monthName);
         }
         return monthNamesWithCode
