@@ -507,6 +507,11 @@ class DateConverterService {
         autoCompleteDateAndConvertToGregorianEquivalent(year,month,day)
     }
 
+    /**
+     *
+     * @param locale : Defaulted to browser locale if not passed
+     * @return : Map of Month names with code which is zero based index
+     */
     public Map getMonthNamesWithCode(String locale=getDefaultTranslationULocaleString()){
         Map monthNamesWithCode = [:]
         String[] monthNames = new DateFormatSymbols(getDefaultCalendarInstance(),new ULocale(locale)).getMonths()
