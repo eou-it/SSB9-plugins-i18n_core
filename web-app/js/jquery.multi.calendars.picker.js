@@ -288,7 +288,7 @@
 
         toggleCalendar: function(inst){
             if($.multicalendar._isCalendarShown && $.multicalendar._currentObj && $.multicalendar._currentObj.get(0) === inst) {
-                $.multicalendar._hideCalendar();
+                $.multicalendar._hideCalendar(inst);
             }
             else {
                 $.multicalendar._createDatePickerDOMStructure(inst);
@@ -306,6 +306,10 @@
             $.multicalendar._removeAriaDescriptionFromCalendar();
             $("#" + this.calendarContainer).hide("slow");
             $.multicalendar.activeCalendar = null;
+
+            var onClose = inst.settings.onClose || function(){};
+            onClose.apply((inst.input ? inst.input[0] : null),
+                          [(inst.input ? inst.input.val() : ''), inst]);
         },
 
 
@@ -623,7 +627,7 @@
                 $(span).click( function (evt) {
                     var input = $(this).prev('input.' + $.multicalendar._markerClass);
                     if($.multicalendar._isCalendarShown && $.multicalendar._currentObj && $.multicalendar._currentObj.get(0) === input.get(0)) {
-                        $.multicalendar._hideCalendar();
+                        $.multicalendar._hideCalendar(inst);
                     }
                     else {
                         $.multicalendar.currentDateBoxValue = input.val();
@@ -657,7 +661,7 @@
                 if(showOn == "button") {
                     $(inst).focus( function (evt) {
                         if($.multicalendar._currentObj && $.multicalendar._currentObj.get(0) !== $(evt.target).get(0)) {
-                            $.multicalendar._hideCalendar();
+                            $.multicalendar._hideCalendar(inst);
                         }
                     });
                 }
@@ -834,19 +838,22 @@
         },
 
         _checkExternalClick: function(event) {
-            var clickedOutsideCalendar = $(event.target).parents('#' + $.multicalendar.calendarContainer).length == 0
-                && !$(event.target).hasClass($.multicalendar._markerClass);//,
+            var inst = $.multicalendar._isCalendarShown && $.multicalendar._currentObj && $.multicalendar._currentObj.get(0);
+            if (inst) {
+                var clickedOutsideCalendar = $(event.target).parents('#' + $.multicalendar.calendarContainer).length == 0
+                    && !$(event.target).hasClass($.multicalendar._markerClass);//,
 
-            if(clickedOutsideCalendar) {
-                //if($(event.target).is('img')
-                if($(event.target).is('span')
-                    && $(event.target).prev('input').hasClass($.multicalendar._markerClass)) {
-                    clickedOutsideCalendar = false;
+                if(clickedOutsideCalendar) {
+                    //if($(event.target).is('img')
+                    if($(event.target).is('span')
+                        && $(event.target).prev('input').hasClass($.multicalendar._markerClass)) {
+                        clickedOutsideCalendar = false;
+                    }
                 }
-            }
 
-            if(clickedOutsideCalendar) {
-                $.multicalendar._hideCalendar();
+                if(clickedOutsideCalendar) {
+                    $.multicalendar._hideCalendar(inst);
+                }
             }
         },
 

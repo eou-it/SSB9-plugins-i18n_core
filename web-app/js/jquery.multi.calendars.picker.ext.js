@@ -395,13 +395,14 @@
 		var target = activeCalendar;
 		var inst = $.data(target, $.calendars.picker.dataName);
 		var handled = false;
+        var visibleInstance = $.multicalendar._isCalendarShown && $.multicalendar._currentObj && $.multicalendar._currentObj.get(0);
 
         if (event.keyCode == 9 ) { // Tab - close
-			$.multicalendar._hideCalendar(target);
+			$.multicalendar._hideCalendar(visibleInstance);
 		}
 		else if( event.keyCode == 27) { // Esc - close
 //				$.calendars.picker.hide(target);
-            $.multicalendar._hideCalendar(target);
+            $.multicalendar._hideCalendar(visibleInstance);
             handled = true;
         }
         else if (event.keyCode == 13) { // Enter - select
