@@ -364,7 +364,7 @@
                 var defaultCalendar = calendarOptions.defaultCalendar;
                 var calendars = calendarOptions.calendars;
                 var numberOfCalendars = calendars.length;
-                var originalDate = date;
+                var originalDate = $.multicalendar.currentDateBoxValue = date;
 
                 if(calendars && numberOfCalendars > 0) {
                     for(var i = 0; i < numberOfCalendars; i++) {
@@ -375,7 +375,6 @@
                             catch(e) {
                                 //do nothing
                             }
-                            //$(inst).val(originalDate);
                             $(inst).val($.multicalendar.currentDateBoxValue);
                         }
                         else {
