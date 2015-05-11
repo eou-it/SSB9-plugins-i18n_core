@@ -5,6 +5,8 @@ package net.hedtech.banner.i18n
 
 import grails.converters.JSON
 import net.hedtech.banner.i18n.utils.LocaleUtilities
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.junit.Test
 
 import java.sql.Timestamp
@@ -215,6 +217,32 @@ class DateConverterIntegrationTests   {
         String uniCodeForSecondMonthInFrench = "\u0066"+"\u00e9"+"\u0076"+"\u0072"+"\u0069"+"\u0065"+"\u0072"
         assertEquals monthNamesWithCode.get(1), uniCodeForSecondMonthInFrench
     }
+
+    @Test
+    void testJSONDateUnmarshallerWithValidDate(){
+        JSONObject data = new JSONObject(startDate: "01/01/2010")
+        def dateFields = ["startDate"]
+        def dateParts = dateConverterService.JSONDateUnmarshaller(data, dateFields)
+        assertEquals dateParts.startDate, "01/01/2010"
+    }
+
+
+    @Test
+    void testJSONDateUnmarshallerWithEmptyString(){
+        JSONObject data = new JSONObject(startDate: "")
+        def dateFields = ["startDate"]
+        def dateParts = dateConverterService.JSONDateUnmarshaller(data, dateFields)
+        assertEquals dateParts.startDate, ""
+    }
+
+    @Test
+    void testJSONDateUnmarshallerWithnull(){
+        JSONObject data = new JSONObject(startDate: null)
+        def dateFields = ["startDate"]
+        def dateParts = dateConverterService.JSONDateUnmarshaller(data, dateFields)
+        assertEquals dateParts.startDate, null
+    }
+
 
     private String formatDate(date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");

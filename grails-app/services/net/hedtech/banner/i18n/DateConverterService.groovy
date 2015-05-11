@@ -287,7 +287,7 @@ class DateConverterService {
     private JSONObject unmarshallDateForJSONObject(data, dateFields) {
         JSONObject jsonObj = new JSONObject();
         data.each { key, value ->
-           if(dateFields.contains(key) && value != JSONObject.NULL) {
+           if(dateFields.contains(key) && value != JSONObject.NULL && value != "") {
                    value = parseDefaultCalendarToGregorian(value)
            }
            jsonObj.put(key, value);
