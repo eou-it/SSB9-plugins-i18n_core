@@ -839,6 +839,7 @@ $.extend(CalendarsPicker.prototype, {
 	                      (object) the current instance settings
 	   @param  immediate  (boolean) true to close immediately without animation */
 	hide: function(target, immediate) {
+                if ( !target ) { return; }
 		var inst = $.data(target, this.dataName) || target;
 		if (inst && inst == $.calendars.picker.curInst) {
 			var showAnim = (immediate ? '' : inst.get('showAnim'));
