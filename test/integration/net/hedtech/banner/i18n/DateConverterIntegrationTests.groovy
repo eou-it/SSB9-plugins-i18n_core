@@ -1,13 +1,16 @@
 /*******************************************************************************
-Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
-*******************************************************************************/
+ Copyright 2009-2015 Ellucian Company L.P. and its affiliates.
+ *******************************************************************************/
 package net.hedtech.banner.i18n
 
 import grails.converters.JSON
+import net.hedtech.banner.i18n.utils.LocaleUtilities
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.junit.Test
-import org.spockframework.mock.runtime.MockObject
 
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
@@ -89,6 +92,161 @@ class DateConverterIntegrationTests   {
         assertEquals map.startDate, defaultCalendarStringDate
         assertEquals map.prop2, Boolean.FALSE
         assertEquals map.endDate, defaultCalendarStringDate3
+    }
+
+    @Test
+    void testExtractDatePartsInEnglishLocale(){
+        LocaleUtilities.setLocale("en_US")
+        Map dateParts = dateConverterService.convertGregorianToDefaultCalendarAndExtractDateParts(new GregorianCalendar(2000,1,3).time)
+        assertEquals dateParts["year"], "2000"
+        assertEquals dateParts["month"], "02"
+        assertEquals dateParts["day"], "03"
+    }
+
+    @Test
+    void testExtractDatePartsInArabicLocale(){
+        LocaleUtilities.setLocale("ar")
+        Map dateParts = dateConverterService.convertGregorianToDefaultCalendarAndExtractDateParts(new GregorianCalendar(2005,1,3).time)
+        assertEquals dateParts["year"], "1425"
+        assertEquals dateParts["month"], "12"
+        assertEquals dateParts["day"], "23"
+    }
+
+    @Test
+    void testExtractDatePartsInFrenchLocale(){
+        LocaleUtilities.setLocale("fr_CA")
+        Map dateParts = dateConverterService.convertGregorianToDefaultCalendarAndExtractDateParts(new GregorianCalendar(2000,1,3).time)
+        assertEquals dateParts["year"], "2000"
+        assertEquals dateParts["month"], "02"
+        assertEquals dateParts["day"], "03"
+    }
+
+    @Test
+    void testExtractDatePartsWithNullDate(){
+        Map dateParts = dateConverterService.convertGregorianToDefaultCalendarAndExtractDateParts(null)
+        assertEquals dateParts.size(), 0
+    }
+
+    @Test
+    void testGetStartDateInGregorianCalendarFromEnglishLocale(){
+        LocaleUtilities.setLocale("en_US")
+        String gregorianStartDateForYear = formatDate(dateConverterService.getStartDateInGregorianCalendar(2010))
+        assertEquals gregorianStartDateForYear, "2010/01/01"
+
+        String gregorianStartDateForYearAndMonth = formatDate(dateConverterService.getStartDateInGregorianCalendar(2010,3))
+        assertEquals gregorianStartDateForYearAndMonth, "2010/04/01"
+    }
+
+    @Test
+    void testGetStartDateInGregorianCalendarFromArabicLocale(){
+        LocaleUtilities.setLocale("ar")
+        String gregorianStartDateForYear = formatDate(dateConverterService.getStartDateInGregorianCalendar(1433))
+        assertEquals gregorianStartDateForYear, "2011/11/27"
+
+        String gregorianStartDateForYearAndMonth = formatDate(dateConverterService.getStartDateInGregorianCalendar(1433,2))
+        assertEquals gregorianStartDateForYearAndMonth, "2012/01/25"
+    }
+
+    @Test
+    void testGetStartDateInGregorianCalendarFromFrenchLocale(){
+        LocaleUtilities.setLocale("fr_CA")
+        String gregorianStartDateForYear = formatDate(dateConverterService.getStartDateInGregorianCalendar(2010))
+        assertEquals gregorianStartDateForYear, "2010/01/01"
+
+        String gregorianStartDateForYearAndMonth = formatDate(dateConverterService.getStartDateInGregorianCalendar(2010,3))
+        assertEquals gregorianStartDateForYearAndMonth, "2010/04/01"
+    }
+
+    @Test
+    void testGetEndDateInGregorianCalendarFromEnglishLocale(){
+        LocaleUtilities.setLocale("en_US")
+        String endDateFromYear = formatDate(dateConverterService.getEndDateInGregorianCalendar(2010))
+        assertEquals endDateFromYear, "2010/12/31"
+
+        String endDateFromYearAndMonth = formatDate(dateConverterService.getEndDateInGregorianCalendar(2012,1))
+        assertEquals endDateFromYearAndMonth, "2012/02/29"
+    }
+
+    @Test
+    void testGetEndDateInGregorianCalendarFromArabicLocale(){
+        LocaleUtilities.setLocale("ar")
+        String endDateFromYear = formatDate(dateConverterService.getEndDateInGregorianCalendar(1433))
+        assertEquals endDateFromYear, "2012/11/14"
+
+        String endDateFromYearAndMonth = formatDate(dateConverterService.getEndDateInGregorianCalendar(1433,2))
+        assertEquals endDateFromYearAndMonth, "2012/02/23"
+    }
+
+    @Test
+    void testGetEndDateInGregorianCalendarFromFrenchLocale(){
+        LocaleUtilities.setLocale("fr_CA")
+        String endDateFromYear = formatDate(dateConverterService.getEndDateInGregorianCalendar(2010))
+        assertEquals endDateFromYear, "2010/12/31"
+
+        String endDateFromYearAndMonth = formatDate(dateConverterService.getEndDateInGregorianCalendar(2012,1))
+        assertEquals endDateFromYearAndMonth, "2012/02/29"
+    }
+
+    @Test
+    void testGetMonthNameFromCodeInEnglishLocale(){
+        LocaleUtilities.setLocale("en_US")
+        Map monthNamesWithCode = dateConverterService.getMonthNamesWithCode()
+        assertEquals monthNamesWithCode.get(2), "March"
+    }
+
+    @Test
+    void testGetMonthNameFromCodeInArabicLocale(){
+        LocaleUtilities.setLocale("ar")
+        Map monthNamesWithCode = dateConverterService.getMonthNamesWithCode()
+        String uniCodeForThirdIslamicMonth = "\u0631"+"\u0628"+"\u064a"+"\u0639 "+"\u0627"+"\u0644"+"\u0623"+"\u0648"+"\u0644"
+        assertEquals monthNamesWithCode.get(2), uniCodeForThirdIslamicMonth
+    }
+
+    @Test
+    void testGetGregorianMonthNameInArabicLocale(){
+        LocaleUtilities.setLocale("en_US")
+        Map monthNamesWithCode = dateConverterService.getMonthNamesWithCode("ar")
+        String uniCodeForFirstGregorianMonthInArabicLocale = "\u064a"+"\u0646"+"\u0627"+"\u064a"+"\u0631"
+        assertEquals monthNamesWithCode.get(0), uniCodeForFirstGregorianMonthInArabicLocale
+    }
+
+    @Test
+    void testGetMonthNameFromCodeInFrenchLocale(){
+        LocaleUtilities.setLocale("fr_CA")
+        Map monthNamesWithCode = dateConverterService.getMonthNamesWithCode()
+        String uniCodeForSecondMonthInFrench = "\u0066"+"\u00e9"+"\u0076"+"\u0072"+"\u0069"+"\u0065"+"\u0072"
+        assertEquals monthNamesWithCode.get(1), uniCodeForSecondMonthInFrench
+    }
+
+    @Test
+    void testJSONDateUnmarshallerWithValidDate(){
+        JSONObject data = new JSONObject(startDate: "01/01/2010")
+        def dateFields = ["startDate"]
+        def dateParts = dateConverterService.JSONDateUnmarshaller(data, dateFields)
+        assertEquals dateParts.startDate, "01/01/2010"
+    }
+
+
+    @Test
+    void testJSONDateUnmarshallerWithEmptyString(){
+        JSONObject data = new JSONObject(startDate: "")
+        def dateFields = ["startDate"]
+        def dateParts = dateConverterService.JSONDateUnmarshaller(data, dateFields)
+        assertEquals dateParts.startDate, ""
+    }
+
+    @Test
+    void testJSONDateUnmarshallerWithnull(){
+        JSONObject data = new JSONObject(startDate: null)
+        def dateFields = ["startDate"]
+        def dateParts = dateConverterService.JSONDateUnmarshaller(data, dateFields)
+        assertEquals dateParts.startDate, null
+    }
+
+
+    private String formatDate(date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        dateFormat.format(date);
     }
 
 }

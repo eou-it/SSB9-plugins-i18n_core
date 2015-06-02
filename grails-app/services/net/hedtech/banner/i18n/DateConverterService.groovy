@@ -1,6 +1,6 @@
 /*******************************************************************************
-Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
-*******************************************************************************/ 
+Copyright 2009-2015 Ellucian Company L.P. and its affiliates.
+*******************************************************************************/
 
 package net.hedtech.banner.i18n
 
@@ -14,6 +14,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import org.springframework.util.ClassUtils
 
 import java.sql.Timestamp
+import com.ibm.icu.text.DateFormatSymbols
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import grails.converters.JSON
@@ -28,6 +29,9 @@ class DateConverterService {
 
     public static int FIRST_DAY_OF_MONTH = -1
     public static int LAST_DAY_OF_MONTH = -2
+
+    private static final DATE_YMD_DIGITS_FORMAT = "yyyy/MM/dd"
+    private static final SLASH_SEPARATOR = "/"
 
     def localizerService = { mapToLocalize ->
         new ValidationTagLib().message(mapToLocalize)
@@ -283,7 +287,7 @@ class DateConverterService {
     private JSONObject unmarshallDateForJSONObject(data, dateFields) {
         JSONObject jsonObj = new JSONObject();
         data.each { key, value ->
-           if(dateFields.contains(key) && value != JSONObject.NULL) {
+           if(dateFields.contains(key) && value != JSONObject.NULL && value != "") {
                    value = parseDefaultCalendarToGregorian(value)
            }
            jsonObj.put(key, value);
@@ -454,5 +458,66 @@ class DateConverterService {
                    getGregorianULocaleString(),
                    format,
                    format);
-       }
+    }
+
+    public Map convertGregorianToDefaultCalendarAndExtractDateParts(Date date){
+        if(date) {
+            String dateString = convertGregorianToDefaultCalendar(date, DATE_YMD_DIGITS_FORMAT)
+            ArrayList dateParts = dateString.tokenize(SLASH_SEPARATOR)
+            return [year: dateParts[0], month: dateParts[1], day: dateParts[2]]
+        }
+        return [:]
+    }
+
+    private Date autoCompleteDateAndConvertToGregorianEquivalent(int year, int month, int day){
+        Calendar calendar = getDefaultCalendarInstance()
+        calendar.set(calendar.YEAR, year)
+        calendar.set(calendar.MONTH, month)
+        calendar.set(calendar.DAY_OF_MONTH, day)
+        return calendar.time
+    }
+
+    private Calendar getDefaultCalendarInstance() {
+        String localeString = getDefaultTranslationULocaleString()
+        ULocale locale = new ULocale(localeString)
+        return Calendar.getInstance(locale)
+    }
+
+    public Date getStartDateInGregorianCalendar(Integer year,Integer month=null,Integer day=null){
+        Calendar calendar = getDefaultCalendarInstance()
+        if(month == null){
+            month = calendar.getMinimum(calendar.MONTH)
+        }
+        if(day == null){
+            day = calendar.getMinimum(calendar.DAY_OF_MONTH)
+        }
+
+        autoCompleteDateAndConvertToGregorianEquivalent(year,month,day)
+    }
+
+    public Date getEndDateInGregorianCalendar(Integer year,Integer month=null,Integer day=null){
+        Calendar calendar = getDefaultCalendarInstance()
+        if(month == null){
+            month = calendar.getMaximum(calendar.MONTH)
+        }
+        if(day == null){
+            day = calendar.handleGetMonthLength(year,month)
+        }
+
+        autoCompleteDateAndConvertToGregorianEquivalent(year,month,day)
+    }
+
+    /**
+     *
+     * @param locale : Defaulted to browser locale if not passed
+     * @return : Map of Month names with code which is zero based index
+     */
+    public Map getMonthNamesWithCode(String locale=getDefaultTranslationULocaleString()){
+        Map monthNamesWithCode = [:]
+        String[] monthNames = new DateFormatSymbols(getDefaultCalendarInstance(),new ULocale(locale)).getMonths()
+        monthNames.eachWithIndex{ String monthName, int monthCode ->
+            monthNamesWithCode.put(monthCode,monthName);
+        }
+        return monthNamesWithCode
+    }
 }
