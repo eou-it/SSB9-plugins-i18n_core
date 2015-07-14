@@ -4,7 +4,9 @@ Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
-//grails.project.war.file = "target/${appName}-${appVersion}.war"
+
+grails.project.dependency.resolver="maven"
+
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
@@ -17,16 +19,10 @@ grails.project.dependency.resolution = {
             mavenRepo "${System.properties['PROXY_SERVER_NAME']}"
         }
         mavenRepo "http://repo.grails.org/grails/repo"
-            grailsPlugins()
-            grailsHome()
             grailsCentral()
             mavenCentral()
 
-
-
             mavenRepo "http://repository.jboss.org/maven2/"
-            mavenRepo "http://repository.codehaus.org"
-
 
     }
     dependencies {
@@ -37,7 +33,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        runtime  ":hibernate:3.6.10.10"
+        runtime  ":hibernate:3.6.10.19"
         build ":tomcat:7.0.52.1"
         test ':code-coverage:2.0.3-2',
         {
