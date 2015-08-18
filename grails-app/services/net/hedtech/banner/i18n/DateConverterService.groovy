@@ -48,6 +48,9 @@ class DateConverterService {
 
         String toDateString = ""
 
+        if (fromULocaleString == toULocaleString && fromDateFormatString == toDateFormatString) {
+            return fromDateValue
+        }
 
         try {
             Date fromDate
