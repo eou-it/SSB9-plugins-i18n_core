@@ -5,7 +5,7 @@ package net.hedtech.banner.i18n
 
 import net.hedtech.banner.exceptions.CurrencyNotFoundException
 import org.junit.Test
-
+import org.springframework.context.i18n.LocaleContextHolder as LCH
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertTrue
@@ -41,6 +41,7 @@ def currencyFormatService
 
     private final String INVALID_CODE ="XYZ"
     private final String INVALID_CODE_MESSAGE = "Invalid currency code"
+    public final String AR = "ar"
 
 
 
@@ -50,6 +51,16 @@ def currencyFormatService
 
     }
 
+    @Test
+    void testUSDForArabicLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(AR))
+        assertEquals currencyFormatService.format(USD,new BigDecimal(POSITIVE_TEST_VALUE)),USD_POS_TEST_VALUE
+    }
+    @Test
+    void testUSDForArabicLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(AR))
+        assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE)),USD_NEG_TEST_VALUE
+    }
     @Test
     void testUSDPositiveCurrencyFormatter() {
         assertEquals currencyFormatService.format(USD,new BigDecimal(POSITIVE_TEST_VALUE)),USD_POS_TEST_VALUE

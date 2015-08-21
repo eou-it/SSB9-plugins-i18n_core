@@ -9,7 +9,6 @@ import com.ibm.icu.text.NumberFormat
 import com.ibm.icu.util.Currency
 import net.hedtech.banner.exceptions.CurrencyNotFoundException
 import org.apache.log4j.Logger
-
 import org.springframework.context.i18n.LocaleContextHolder as LCH
 
 /**
@@ -21,15 +20,22 @@ import org.springframework.context.i18n.LocaleContextHolder as LCH
 class CurrencyFormatService {
 
     Logger logger = Logger.getLogger(this.getClass())
+    public static final String ARABIC_LOCALE = "ar"
+    public final String EN = "en"
+    public final String US = "US"
 
     public String format(String currencyCode, BigDecimal amount) throws CurrencyNotFoundException {
         if(isInvalidCurrencyCode(currencyCode))   {
             throw new CurrencyNotFoundException(currencyCode:currencyCode)
         }
+
         Locale locale = LCH.getLocale()
+        if(locale.toString().equalsIgnoreCase(ARABIC_LOCALE)){
+            LCH.setLocale(new Locale(EN,US))
+        }
         String fmtMonetaryValue;
         ArabicShaping shaping = new ArabicShaping(ArabicShaping.DIGITS_AN2EN)
-        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale)
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(LCH.getLocale())
         Currency currency = Currency.getInstance(currencyCode)
         numberFormat.setCurrency(currency)
         fmtMonetaryValue = numberFormat.format(amount)
