@@ -41,7 +41,7 @@ def currencyFormatService
 
     private final String INVALID_CODE ="XYZ"
     private final String INVALID_CODE_MESSAGE = "Invalid currency code"
-    public final String AR = "ar"
+    private final String AR = "ar"
 
 
 

@@ -20,7 +20,7 @@ import org.springframework.context.i18n.LocaleContextHolder as LCH
 class CurrencyFormatService {
 
     Logger logger = Logger.getLogger(this.getClass())
-    public static final String ARABIC_LOCALE = "ar"
+    public final String ARABIC_LOCALE = "ar"
     public final String EN = "en"
     public final String US = "US"
 
