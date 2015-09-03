@@ -30,12 +30,10 @@ class CurrencyFormatService {
         }
 
         Locale locale = LCH.getLocale()
-        if(locale.toString().equalsIgnoreCase(ARABIC_LOCALE)){
-            LCH.setLocale(new Locale(EN,US))
-        }
+        locale=locale.toString().equalsIgnoreCase(ARABIC_LOCALE)?new Locale(EN,US):locale
         String fmtMonetaryValue;
         ArabicShaping shaping = new ArabicShaping(ArabicShaping.DIGITS_AN2EN)
-        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(LCH.getLocale())
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale)
         Currency currency = Currency.getInstance(currencyCode)
         numberFormat.setCurrency(currency)
         fmtMonetaryValue = numberFormat.format(amount)
