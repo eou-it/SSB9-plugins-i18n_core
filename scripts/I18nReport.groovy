@@ -1,6 +1,6 @@
 /*******************************************************************************
-Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
-*******************************************************************************/
+ Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
+ *******************************************************************************/
 import grails.util.GrailsNameUtils
 
 includeTargets << grailsScript("_GrailsInit")
@@ -9,161 +9,161 @@ includeTargets << grailsScript("_GrailsInit")
 import groovy.io.FileType
 
 def parseVariants = { variants ->
-	int runs = 0
-	while (variants.find { it ==~ /.*?\$\{.*?\}.*/ } && runs++ < 10) {
-		def newVariants = []
-		variants.each { match ->
-			def knownVariants = buildConfig.reportMessages.dynamicKeys.find { key, value ->
-				match.contains("\${${key}}") }
-			if (knownVariants) {
-				knownVariants.value.each { variant ->
-					newVariants << match.replace("\${${knownVariants.key}}", variant) }
-			} else if (match ==~ /.*?\?.*?:.*/) {
-				def replaced = false
-				newVariants << match.replaceAll(/\$\{.*?\?.*?["'](.*?)['"].*?:.*?\}/) { f, m ->
-	                def result = replaced ? f : m; replaced = true; result }
-				replaced = false
-				newVariants << match.replaceAll(/\$\{.*?\?.*?:.*?["'](.*?)['"].*?\}/) { f, m ->
-	                def result = replaced ? f : m; replaced = true; result }
-			} else {
-				newVariants << match.replaceAll("\\\$", "#")
-			}
-		}
-		variants = newVariants
-	}
-	variants
+    int runs = 0
+    while (variants.find { it ==~ /.*?\$\{.*?\}.*/ } && runs++ < 10) {
+        def newVariants = []
+        variants.each { match ->
+            def knownVariants = buildConfig.reportMessages.dynamicKeys.find { key, value ->
+                match.contains("\${${key}}") }
+            if (knownVariants) {
+                knownVariants.value.each { variant ->
+                    newVariants << match.replace("\${${knownVariants.key}}", variant) }
+            } else if (match ==~ /.*?\?.*?:.*/) {
+                def replaced = false
+                newVariants << match.replaceAll(/\$\{.*?\?.*?["'](.*?)['"].*?:.*?\}/) { f, m ->
+                    def result = replaced ? f : m; replaced = true; result }
+                replaced = false
+                newVariants << match.replaceAll(/\$\{.*?\?.*?:.*?["'](.*?)['"].*?\}/) { f, m ->
+                    def result = replaced ? f : m; replaced = true; result }
+            } else {
+                newVariants << match.replaceAll("\\\$", "#")
+            }
+        }
+        variants = newVariants
+    }
+    variants
 }
 
 def escapeAndUpdateUsed = { variants, file, used ->
-	variants.each {
-		def key = it.replaceAll(/^\.(.*)$/) { f, m -> "#.$m"
-				   }.replaceAll(/^(.*)\.$/) { f, m -> "${m}.#" }
-		def keyFiles = used."$key"
-		if (!keyFiles) { keyFiles = used."$key" = [] as SortedSet}
-		keyFiles << file.absolutePath
-	}
+    variants.each {
+        def key = it.replaceAll(/^\.(.*)$/) { f, m -> "#.$m"
+        }.replaceAll(/^(.*)\.$/) { f, m -> "${m}.#" }
+        def keyFiles = used."$key"
+        if (!keyFiles) { keyFiles = used."$key" = [] as SortedSet}
+        keyFiles << file.absolutePath
+    }
 }
 
 int numberOfFiles = 0
 def gatherKeys = { folderName ->
-	def used = [:]
-	new File(folderName).eachFileRecurse { file ->
-		if (!file.isDirectory()) {
-			numberOfFiles++
-			def text = file.text
-			text.eachMatch(/message[\s\(].*?code.*?[=:].*?(?:"(.*?)"|'(.*?)')/) { full ->
-				def variants = [full[1] ?: full[2]]
-				if (variants[0] ==~ /^\$\{[^\}]*\}$/) { return }
-				variants = parseVariants(variants)
-				escapeAndUpdateUsed(variants, file, used)
-	} } }
-	used
+    def used = [:]
+    new File(folderName).eachFileRecurse { file ->
+        if (!file.isDirectory()) {
+            numberOfFiles++
+            def text = file.text
+            text.eachMatch(/message[\s\(].*?code.*?[=:].*?(?:"(.*?)"|'(.*?)')/) { full ->
+                def variants = [full[1] ?: full[2]]
+                if (variants[0] ==~ /^\$\{[^\}]*\}$/) { return }
+                variants = parseVariants(variants)
+                escapeAndUpdateUsed(variants, file, used)
+            } } }
+    used
 }
 
 def parseAssignment = { line, localVars ->
-	def assignmentMatcher = line =~ /\s*?(?:\w*?\s*?)(\w+?)\s*?=\s*(.*)\s*/
-	if (assignmentMatcher.matches()) {
-		localVars[assignmentMatcher[0][1]] =
-			assignmentMatcher[0][2].replaceAll(/^.*?(?:"(.*?)"|'(.*?)').*$/) { f, m1, m2 -> m1 ?: m2 }
-	}
-	assignmentMatcher.matches()
+    def assignmentMatcher = line =~ /\s*?(?:\w*?\s*?)(\w+?)\s*?=\s*(.*)\s*/
+    if (assignmentMatcher.matches()) {
+        localVars[assignmentMatcher[0][1]] =
+                assignmentMatcher[0][2].replaceAll(/^.*?(?:"(.*?)"|'(.*?)').*$/) { f, m1, m2 -> m1 ?: m2 }
+    }
+    assignmentMatcher.matches()
 }
 
 def parseMessageTag = { line, localVars, file, used ->
-	line.eachMatch(/message\(.*?code\s*:\s*(.*?)[\),]/) { full, match ->
-		def variants = []
-		if (match ==~ /^["'].*['"]$/) {
-			variants << match[1..-2]
-		} else {
-			def var = localVars."$match"
-			if (var) { variants << var }
-		}
-		if (!variants) {
-			println "couldn't parse $match"
-		} else {
-			variants[0] = variants[0].replaceAll("[\"'].*['\"]", "\\\${dynamic}")
-			if (variants[0] ==~ /^\$\{.*\}$/) { return }
-			variants = parseVariants(variants)
-			escapeAndUpdateUsed(variants, file, used)
-		}
-} }
+    line.eachMatch(/message\(.*?code\s*:\s*(.*?)[\),]/) { full, match ->
+        def variants = []
+        if (match ==~ /^["'].*['"]$/) {
+            variants << match[1..-2]
+        } else {
+            def var = localVars."$match"
+            if (var) { variants << var }
+        }
+        if (!variants) {
+            println "couldn't parse $match"
+        } else {
+            variants[0] = variants[0].replaceAll("[\"'].*['\"]", "\\\${dynamic}")
+            if (variants[0] ==~ /^\$\{.*\}$/) { return }
+            variants = parseVariants(variants)
+            escapeAndUpdateUsed(variants, file, used)
+        }
+    } }
 
 def parseJavascriptFile = { line, localVars, file, used ->
-	line.eachMatch(/\(*\.i18n.prop\(.*?([\'\"].*?[\'\"].*?)[\),]/) { full, match ->
-		def variants = []
+    line.eachMatch(/\(*\.i18n.prop\(.*?([\'\"].*?[\'\"].*?)[\),]/) { full, match ->
+        def variants = []
 
-		if (match ==~ /^["'].*['"]$/) {
-			variants << match[1..-2]
-		} else {
-			def var = localVars."$match"
-			if (var) { variants << var }
-		}
-		if (!variants) {
-			println "couldn't parse $match"
-		} else {
-			variants[0] = variants[0].replaceAll("[\"'].*['\"]", "\\\${dynamic}")
-			if (variants[0] ==~ /^\$\{.*\}$/) { return }
-			variants = parseVariants(variants)
-			escapeAndUpdateUsed(variants, file, used)
-		}
-} }
+        if (match ==~ /^["'].*['"]$/) {
+            variants << match[1..-2]
+        } else {
+            def var = localVars."$match"
+            if (var) { variants << var }
+        }
+        if (!variants) {
+            println "couldn't parse $match"
+        } else {
+            variants[0] = variants[0].replaceAll("[\"'].*['\"]", "\\\${dynamic}")
+            if (variants[0] ==~ /^\$\{.*\}$/) { return }
+            variants = parseVariants(variants)
+            escapeAndUpdateUsed(variants, file, used)
+        }
+    } }
 
 def parseMessageSource = { line, localVars, file, used ->
-	line.eachMatch(/getMessage\s*\(\s*(.*?)\s*[\),]/) { full, match ->
+    line.eachMatch(/getMessage\s*\(\s*(.*?)\s*[\),]/) { full, match ->
         def variants = []
-		if (match ==~ /^["'].*['"]$/) {
-			variants << match[1..-2]
-		} else {
-			def var = localVars."$match"
-			if (var) { variants << var }
-		}
-		if (!variants) {
-			println "couldn't parse $match"
-		} else {
-			variants[0] = variants[0].replaceAll("[\"'].*['\"]", "\\\${dynamic}")
-			if (variants[0] ==~ /^\$\{.*\}$/) { return }
-			variants = parseVariants(variants)
-			escapeAndUpdateUsed(variants, file, used)
-		}
+        if (match ==~ /^["'].*['"]$/) {
+            variants << match[1..-2]
+        } else {
+            def var = localVars."$match"
+            if (var) { variants << var }
+        }
+        if (!variants) {
+            println "couldn't parse $match"
+        } else {
+            variants[0] = variants[0].replaceAll("[\"'].*['\"]", "\\\${dynamic}")
+            if (variants[0] ==~ /^\$\{.*\}$/) { return }
+            variants = parseVariants(variants)
+            escapeAndUpdateUsed(variants, file, used)
+        }
     }
     line.eachMatch(/message\s*\(\s*(.*?)\s*[\),]/) { full, match ->
         def variants = []
-		if (match ==~ /^["'].*['"]$/) {
-			variants << match[1..-2]
-		} else {
-			def var = localVars."$match"
-			if (var) { variants << var }
-		}
-		if (!variants) {
-			println "couldn't parse $match"
-		} else {
-			variants[0] = variants[0].replaceAll("[\"'].*['\"]", "\\\${dynamic}")
-			if (variants[0] ==~ /^\$\{.*\}$/) { return }
-			variants = parseVariants(variants)
-			escapeAndUpdateUsed(variants, file, used)
-		}
+        if (match ==~ /^["'].*['"]$/) {
+            variants << match[1..-2]
+        } else {
+            def var = localVars."$match"
+            if (var) { variants << var }
+        }
+        if (!variants) {
+            println "couldn't parse $match"
+        } else {
+            variants[0] = variants[0].replaceAll("[\"'].*['\"]", "\\\${dynamic}")
+            if (variants[0] ==~ /^\$\{.*\}$/) { return }
+            variants = parseVariants(variants)
+            escapeAndUpdateUsed(variants, file, used)
+        }
     }
-     line.eachMatch(/i18n:m\s*\(\s*(.*?)\s*\)/) { full, match ->
+    line.eachMatch(/i18n:m\s*\(\s*(.*?)\s*\)/) { full, match ->
         def variants = []
-		if (match ==~ /^["'].*['"]$/) {
-			variants << match[1..-2]
-		} else {
-			def var = localVars."$match"
-			if (var) { variants << var }
-		}
-		if (!variants) {
-			println "couldn't parse $match"
-		} else {
-			variants[0] = variants[0].replaceAll("[\"'].*['\"]", "\\\${dynamic}")
-			if (variants[0] ==~ /^\$\{.*\}$/) { return }
-			variants = parseVariants(variants)
-			escapeAndUpdateUsed(variants, file, used)
-		}
+        if (match ==~ /^["'].*['"]$/) {
+            variants << match[1..-2]
+        } else {
+            def var = localVars."$match"
+            if (var) { variants << var }
+        }
+        if (!variants) {
+            println "couldn't parse $match"
+        } else {
+            variants[0] = variants[0].replaceAll("[\"'].*['\"]", "\\\${dynamic}")
+            if (variants[0] ==~ /^\$\{.*\}$/) { return }
+            variants = parseVariants(variants)
+            escapeAndUpdateUsed(variants, file, used)
+        }
     }
 }
 
 def gatherKeysFromSource = { folderName ->
-	def used = [:]
+    def used = [:]
 
     if (new File(folderName).exists()) {
         new File(folderName).eachFileRecurse { file ->
@@ -175,36 +175,37 @@ def gatherKeysFromSource = { folderName ->
                     parseMessageTag(line, localVars, file, used)
                     parseMessageSource(line, localVars, file, used)
                     parseJavascriptFile(line, localVars, file, used)
-        } } }
+                } } }
     }
-	used
+    used
 }
 
 target(main: "Scans all properties files and reports missing or obsolete keys") {
 
-	def base = "${basedir}/grails-app/i18n"
-	def messagesFile
-	if (args) {
-		def lc = args.split("\n")[0]
-		messagesFile = new File("${base}/messages_${lc}.properties")
-		if (!messagesFile.exists()) {
-			println "\nOops, locale '${lc}' does not exist yet! Please create ${base}/messages_${lc}.properties first.\n"
-			return
-		}
-	} else {
-		messagesFile = new File("${base}/messages.properties")
-	}
-
+    def base = "${basedir}/grails-app/i18n"
+    def messagesFile
     def used = [:]
     def defined = [] as Set
 
-    messagesFile.eachLine { line ->
-    	if (!line.trim().startsWith("#") && line.contains("=")) {
-    		defined << line.substring(0, line.indexOf("=")).trim()
-	} }
+    if (args) {
+        def lc = args.split("\n")[0]
+        messagesFile = new File("${base}/messages_${lc}.properties")
+        if (!messagesFile.exists()) {
+            println "\nOops, locale '${lc}' does not exist yet! Please create ${base}/messages_${lc}.properties first.\n"
+            return
+        }
+        defined.addAll(fetchAllKeysFromFiles(messagesFile))
+    } else {
+        messagesFile = new File("${base}")
+        messagesFile.eachFileRecurse { file ->
+            if (!file.isDirectory()) {
+                defined.addAll(fetchAllKeysFromFiles(file))
+            }
+        }
+    }
 
-   /* used += gatherKeys("${basedir}/msgs")
-    used += gatherKeysFromSource("${basedir}/msgs")*/
+    /* used += gatherKeys("${basedir}/msgs")
+     used += gatherKeysFromSource("${basedir}/msgs")*/
 
     used += gatherKeys("${basedir}/grails-app/views")
     used += gatherKeysFromSource("${basedir}/grails-app/taglib")
@@ -221,14 +222,14 @@ target(main: "Scans all properties files and reports missing or obsolete keys") 
     def matched = [] as Set
 
     used.each { key, filenames ->
-		if (key.contains("#")) {
+        if (key.contains("#")) {
             println key
-			dynamic << key
-		} else if (!(key in defined)) {
-			missing << key
-		} else {
-			matched << key
-	    }
+            dynamic << key
+        } else if (!(key in defined)) {
+            missing << key
+        } else {
+            matched << key
+        }
     }
 
     def domainClassNames = buildConfig.reportMessages.exclude
@@ -266,26 +267,26 @@ target(main: "Scans all properties files and reports missing or obsolete keys") 
     println "\n=================="
     println "== missing keys ==\n"
     missing.each { key ->
-    	def filenames = used."$key".collect {
-    		def name
-    		/*if (it.contains("views/")) { name = it.substring(it.indexOf("views/"))
-    		} else if (it.endsWith("groovy")) { name = it.substring(it.lastIndexOf("/")+1)
+        def filenames = used."$key".collect {
+            def name
+            /*if (it.contains("views/")) { name = it.substring(it.indexOf("views/"))
+            } else if (it.endsWith("groovy")) { name = it.substring(it.lastIndexOf("/")+1)
             } else if (it.endsWith("js")) { name = it.substring(it.lastIndexOf("/")+1)
             } else if (it.endsWith("gsp")) { name = it.substring(it.lastIndexOf("/")+1)
             }*/
 
             if (it.contains("views/")) {
                 name = it.substring(it.indexOf("views/"))
-    		} else {
+            } else {
                 name = it.substring(it.lastIndexOf("/")+1)
             }
 
-    		name
-    	}
-    	println "${key.padRight(50)} ${filenames[0]}"
-    	if (filenames.size() > 1) {
-    		filenames[1..-1].each { println " ".padLeft(51) + it }
-	} }
+            name
+        }
+        println "${key.padRight(50)} ${filenames[0]}"
+        if (filenames.size() > 1) {
+            filenames[1..-1].each { println " ".padLeft(51) + it }
+        } }
 
     def unmatched = defined - matched
 
@@ -310,38 +311,38 @@ target(main: "Scans all properties files and reports missing or obsolete keys") 
     println "\n=================="
     println "== dynamic keys =="
     dynamicMissing.each { key ->
-		def filenames = used."$key".collect {
-			def name
-    		/*if (it.contains("views/")) { name = it.substring(it.indexOf("views/"))
-    		} else if (it.endsWith("groovy")) { name = it.substring(it.lastIndexOf("/")+1) }*/
+        def filenames = used."$key".collect {
+            def name
+            /*if (it.contains("views/")) { name = it.substring(it.indexOf("views/"))
+            } else if (it.endsWith("groovy")) { name = it.substring(it.lastIndexOf("/")+1) }*/
             if (it.contains("views/")) {
-              name = it.substring(it.indexOf("views/"))
+                name = it.substring(it.indexOf("views/"))
             } else {
-              name = it.substring(it.lastIndexOf("/")+1)
+                name = it.substring(it.lastIndexOf("/")+1)
             }
-			name
-		}
-		println "\n${(key + ' (missing)').padRight(50)} ${filenames[0]}"
-		if (filenames.size() > 1) {
-			filenames[1..-1].each { println " ".padLeft(51) + it } }
+            name
+        }
+        println "\n${(key + ' (missing)').padRight(50)} ${filenames[0]}"
+        if (filenames.size() > 1) {
+            filenames[1..-1].each { println " ".padLeft(51) + it } }
     }
     dynamicMatches.each { key, matches ->
-		def filenames = used."$key".collect {
-    		def name
-    		/*if (it.contains("views/")) { name = it.substring(it.indexOf("views/"))
-    		} else if (it.endsWith("groovy")) { name = it.substring(it.lastIndexOf("/")+1) }*/
+        def filenames = used."$key".collect {
+            def name
+            /*if (it.contains("views/")) { name = it.substring(it.indexOf("views/"))
+            } else if (it.endsWith("groovy")) { name = it.substring(it.lastIndexOf("/")+1) }*/
             if (it.contains("views/")) {
-              name = it.substring(it.indexOf("views/"))
+                name = it.substring(it.indexOf("views/"))
             } else {
-              name = it.substring(it.lastIndexOf("/")+1)
+                name = it.substring(it.lastIndexOf("/")+1)
             }
-    		name
-		}
-		println "\n${key.padRight(50)} ${filenames[0]}"
-		if (filenames.size() > 1) {
-			filenames[1..-1].each { println " ".padLeft(51) + it } }
+            name
+        }
+        println "\n${key.padRight(50)} ${filenames[0]}"
+        if (filenames.size() > 1) {
+            filenames[1..-1].each { println " ".padLeft(51) + it } }
 
-		matches.each { println " - $it" }
+        matches.each { println " - $it" }
     }
 
     println "\n\n==================="
@@ -368,8 +369,18 @@ target(main: "Scans all properties files and reports missing or obsolete keys") 
     println "found ${unmatched.size()} obsolete keys"
 
     if (!args) {
-    	println"\nTo generate a report for a specific locale provide the exact language code as a parameter\nlike e.g. 'grails report-messages de'"
+        println"\nTo generate a report for a specific locale provide the exact language code as a parameter\nlike e.g. 'grails report-messages de'"
     }
+}
+
+private Set fetchAllKeysFromFiles(File file) {
+    def defined = [] as Set
+    file.eachLine { line ->
+        if (!line.trim().startsWith("#") && line.contains("=")) {
+            defined << line.substring(0, line.indexOf("=")).trim()
+        }
+    }
+    defined
 }
 
 setDefaultTarget(main)
