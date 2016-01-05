@@ -48,10 +48,6 @@ class DateConverterService {
 
         String toDateString = ""
 
-        if (fromULocaleString == toULocaleString && fromDateFormatString == toDateFormatString) {
-            return fromDateValue
-        }
-
         try {
             Date fromDate
 
@@ -68,6 +64,10 @@ class DateConverterService {
                 com.ibm.icu.text.DateFormat fromDateFormat = fromCalendar.handleGetDateFormat(fromDateFormatString, fromULocale)
                 fromDateValue = fromDateFormat.format(fromCalendar)
                 fromDate = fromDateFormat.parse(fromDateValue)
+            }
+
+            if (fromULocaleString == toULocaleString && fromDateFormatString == toDateFormatString) {
+                return fromDateValue
             }
 
             //String toULocaleString = toLocaleString + "@calendar=" + toCalendarString
