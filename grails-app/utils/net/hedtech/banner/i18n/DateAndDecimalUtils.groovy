@@ -3,9 +3,10 @@ Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/ 
 package net.hedtech.banner.i18n
 
+import grails.util.Holders
+
 import java.text.DateFormatSymbols
 import java.text.DecimalFormatSymbols
-import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.springframework.context.i18n.LocaleContextHolder as LCH
 import java.text.ParseException
 
@@ -60,7 +61,7 @@ class DateAndDecimalUtils {
     }
 
     public static List getListOfCalendars(def locale) {
-        def messageSource =  ApplicationHolder.application.mainContext.getBean('messageSource')
+        def messageSource =  Holders.grailsApplication.mainContext.getBean('messageSource')
 
         List calendars = new ArrayList();
 
@@ -94,7 +95,7 @@ class DateAndDecimalUtils {
     }
 
     public static void addCalendarProps(List calendars, Locale locale, def propertyMap = [:]) {
-        def messageSource =  ApplicationHolder.application.mainContext.getBean('messageSource')
+        def messageSource =  Holders.grailsApplication.mainContext.getBean('messageSource')
         if(calendars != null) {
             def dateConverterService = new DateConverterService();
 
@@ -115,7 +116,7 @@ class DateAndDecimalUtils {
     }
 
     def static formatDate = {
-        def messageSource =  ApplicationHolder.application.mainContext.getBean('messageSource')
+        def messageSource =  Holders.grailsApplication.mainContext.getBean('messageSource')
         //def pattern = MessageUtility.message("default.date.format")
         Locale locale = LCH.getLocale()
         def pattern = messageSource.getMessage("default.date.format", null, locale)
@@ -143,7 +144,7 @@ class DateAndDecimalUtils {
 
        if (value) {
            try {
-               def messageSource =  ApplicationHolder.application.mainContext.getBean('messageSource')
+               def messageSource =  Holders.grailsApplication.mainContext.getBean('messageSource')
                Locale locale = LCH.getLocale()
                def pattern = messageSource.getMessage("default.date.format", null, locale)
                value = Date.parse(pattern, it)
