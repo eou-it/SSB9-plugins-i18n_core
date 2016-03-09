@@ -54,7 +54,7 @@
             },
             nextJump: {text: 'nextJumpText', status: 'nextJumpStatus', // Next year
                 keystroke: {keyCode: 34, ctrlKey: true, shiftKey:true}, // Ctrl + shift + Page down
-                enabled: function(inst) {
+				enabled: function(inst) {
                     var maxDate = inst.get('maxDate');
                     return (!maxDate || inst.drawDate.newDate().
                         add(inst.get('monthsToJump') - inst.get('monthsOffset'), 'm').
@@ -64,32 +64,32 @@
                         add(inst.get('monthsToJump') - inst.get('monthsOffset'), 'm').
                         day(inst.get('calendar').minDay); },
                 action: function(inst) {
-                    $.calendars.picker.changeMonth(this, inst.get('monthsToJump')); }
+					$.calendars.picker.changeMonth(this, inst.get('monthsToJump')); }
             },
-            current: {text: 'currentText', status: 'currentStatus', // Current month
-                keystroke: {keyCode: 36, ctrlKey: true, shiftKey:true}, // Ctrl + shift + Home
-                enabled: function(inst) {
-                    var minDate = inst.curMinDate();
-                    var maxDate = inst.get('maxDate');
-                    var curDate = inst.selectedDates[0] || inst.get('calendar').today();
-                    return (!minDate || curDate.compareTo(minDate) != -1) &&
-                        (!maxDate || curDate.compareTo(maxDate) != +1); },
-                date: function(inst) {
-                    return inst.selectedDates[0] || inst.get('calendar').today(); },
-                action: function(inst) {
-                    var curDate = inst.selectedDates[0] || inst.get('calendar').today();
-                    $.calendars.picker.showMonth(this, curDate.year(), curDate.month()); }
-            },
-            today: {text: 'todayText', status: 'todayStatus', // Today's month
-                keystroke: {keyCode: 36, ctrlKey: true, shiftKey:true}, // Ctrl + shift + Home
-                enabled: function(inst) {
-                    var minDate = inst.curMinDate();
-                    var maxDate = inst.get('maxDate');
-                    return (!minDate || inst.get('calendar').today().compareTo(minDate) != -1) &&
-                        (!maxDate || inst.get('calendar').today().compareTo(maxDate) != +1); },
-                date: function(inst) { return inst.get('calendar').today(); },
-                action: function(inst) { $.calendars.picker.showMonth(this); }
-            },
+			current: {text: 'currentText', status: 'currentStatus', // Current month
+				keystroke: {keyCode: 36, ctrlKey: true, shiftKey:true}, // Ctrl + shift + Home
+				enabled: function(inst) {
+					var minDate = inst.curMinDate();
+					var maxDate = inst.get('maxDate');
+					var curDate = inst.selectedDates[0] || inst.get('calendar').today();
+					return (!minDate || curDate.compareTo(minDate) != -1) &&
+						(!maxDate || curDate.compareTo(maxDate) != +1); },
+				date: function(inst) {
+					return inst.selectedDates[0] || inst.get('calendar').today(); },
+				action: function(inst) {
+					var curDate = inst.selectedDates[0] || inst.get('calendar').today();
+					$.calendars.picker.showMonth(this, curDate.year(), curDate.month()); }
+			},
+			today: {text: 'todayText', status: 'todayStatus', // Today's month
+				keystroke: {keyCode: 36, ctrlKey: true, shiftKey:true}, // Ctrl + shift +Home
+				enabled: function(inst) {
+					var minDate = inst.curMinDate();
+					var maxDate = inst.get('maxDate');
+					return (!minDate || inst.get('calendar').today().compareTo(minDate) != -1) &&
+						(!maxDate || inst.get('calendar').today().compareTo(maxDate) != +1); },
+				date: function(inst) { return inst.get('calendar').today(); },
+				action: function(inst) { $.calendars.picker.showMonth(this); }
+			},
             clear: {text: 'clearText', status: 'clearStatus', // Clear the datepicker
                 keystroke: {keyCode: 35, ctrlKey: true, shiftKey:true}, // Ctrl + shift + End
                 enabled: function(inst) { return true; },
@@ -103,7 +103,7 @@
 //                action: function(inst) { $.calendars.picker.hide(this); }
 //            },
             prevWeek: {text: 'prevWeekText', status: 'prevWeekStatus', // Previous week
-                keystroke: {keyCode: 38, ctrlKey: true, shiftKey:true}, // Ctrl + shift + Up
+                keystroke: {keyCode: 38}, // Up
                 enabled: function(inst) {
                     var minDate = inst.curMinDate();
                     return (!minDate || inst.drawDate.newDate().
@@ -112,9 +112,9 @@
                     add(-inst.get('calendar').daysInWeek(), 'd'); },
                 action: function(inst) { $.calendars.picker.changeDay(
                     this, -inst.get('calendar').daysInWeek()); }
-            },
+			},
             prevDay: {text: 'prevDayText', status: 'prevDayStatus', // Previous day
-                keystroke: {keyCode: 37, ctrlKey: true, shiftKey:true}, // Ctrl + shift + Left
+                keystroke: {keyCode: 37}, //  Left
                 enabled: function(inst) {
                     var minDate = inst.curMinDate();
                     return (!minDate || inst.drawDate.newDate().add(-1, 'd').
@@ -123,16 +123,16 @@
                 action: function(inst) { $.calendars.picker.changeDay(this, -1); }
             },
             nextDay: {text: 'nextDayText', status: 'nextDayStatus', // Next day
-                keystroke: {keyCode: 39, ctrlKey: true, shiftKey:true}, // Ctrl + shift + Right
+                keystroke: {keyCode: 39}, // Right
                 enabled: function(inst) {
-                    var maxDate = inst.get('maxDate');
+					var maxDate = inst.get('maxDate');
                     return (!maxDate || inst.drawDate.newDate().add(1, 'd').
                         compareTo(maxDate) != +1); },
                 date: function(inst) { return inst.drawDate.newDate().add(1, 'd'); },
                 action: function(inst) { $.calendars.picker.changeDay(this, 1); }
             },
             nextWeek: {text: 'nextWeekText', status: 'nextWeekStatus', // Next week
-                keystroke: {keyCode: 40, ctrlKey: true, shiftKey:true}, // Ctrl + shift + Down
+                keystroke: {keyCode: 40}, // Down
                 enabled: function(inst) {
                     var maxDate = inst.get('maxDate');
                     return (!maxDate || inst.drawDate.newDate().
@@ -143,6 +143,34 @@
                     this, inst.get('calendar').daysInWeek()); }
             },
 
+			firstDayOfMonth: {text: 'firstDayText', status: 'prevDayStatus', // first day of month
+				keystroke: {keyCode: 36}, //  Home
+				enabled: function(inst) {
+					var target = $(this);
+					var minDate = inst.curMinDate();
+					console.info(inst.drawDate._day);
+
+					return (!minDate || inst.drawDate.newDate().add(-1, 'd').
+						compareTo(minDate) != -1); },
+				date: function(inst) {
+
+					return inst.drawDate.newDate().add(0, 'd'); },
+				action: function(inst) { $.calendars.picker.changeDay(this, -inst.drawDate._day+1); }
+			},
+			lastDayOfMonth: {text: 'lastDayText', status: 'prevDayStatus', // last day of month
+				keystroke: {keyCode: 35}, //  end
+
+				enabled: function(inst) {
+					var target = $(this);
+					var minDate = inst.curMinDate();
+					return (!minDate || inst.drawDate.newDate().add(-1, 'd').
+						compareTo(minDate) != -1); },
+				date: function(inst) {
+					return inst.drawDate.newDate().add(0, 'd'); },
+				action: function(inst) {
+					var daysInMonth=$.calendars.picker._checkMinMax(inst.drawDate, inst).daysInMonth(inst.drawDate._year,inst.drawDate._month)
+					$.calendars.picker.changeDay(this, daysInMonth-inst.drawDate._day); }
+			},
             activateNextCalendar: {text: 'activateNextCalendarText', status: 'activateNextCalendarStatus',
                 keystroke: {keyCode: 78, ctrlKey: true, shiftKey:true }, // Ctrl + shift + n
                 enabled: function(inst) {
@@ -158,7 +186,7 @@
                 }
 
             },
-            showCalendar: {text: 'showCalendarText', status: 'showCalendarStatus',
+			showCalendar: {text: 'showCalendarText', status: 'showCalendarStatus',
                 keystroke: {keyCode: 120 }, // F9
                 enabled: function(inst) {
                     return true;
@@ -408,6 +436,10 @@
             $.multicalendar._hideCalendar(visibleInstance);
             handled = true;
         }
+		else if (event.keyCode == 32) { // Space Select date and close.
+			$('#multiCalendarContainer .activeCalendar a.ui-state-hover').click();
+			handled = true;
+		}
         else { // Command keystrokes
             var commands = inst.get('commands');
             for (var name in commands) {
