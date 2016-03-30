@@ -107,7 +107,7 @@ class DateAndDecimalUtils {
                propertyMap.put("default." + calendar + ".monthNamesShort", convertToCommaDelimited(dateConverterService.getShortMonths(uLocale)))
                propertyMap.put("default." + calendar + ".dayNames", convertToCommaDelimited(dateConverterService.getWeekdays(uLocale)))
                propertyMap.put("default." + calendar + ".dayNamesShort", convertToCommaDelimited(dateConverterService.getShortWeekdays(uLocale)))
-               propertyMap.put("default." + calendar + ".dayNamesMin", convertToCommaDelimited(dateConverterService.getShortWeekdays(uLocale)))
+               propertyMap.put("default." + calendar + ".dayNamesMin", convertToCommaDelimited(dateConverterService.getMinWeekdays(uLocale)))
                propertyMap.put("default." + calendar + ".amPm", convertToCommaDelimited(dateConverterService.getAmPmStrings(uLocale)))
             }
         }

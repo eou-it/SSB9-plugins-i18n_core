@@ -322,11 +322,13 @@
 		}
 		// Resize
 		$('body').append(picker);
+		/*
 		var width = 0;
 		picker.find(renderer.monthSelector).each(function() {
 			width += $(this).outerWidth();
 		});
 		picker.width(width / monthsToShow[0]);
+		*/
 		// Pre-show customisation
 		var onShow = inst.get('onShow');
 		if (onShow) {
@@ -401,6 +403,10 @@
 					(showOtherMonths || drawDate.month() == month ?
 					dateInfo.content || drawDate.day() : '&nbsp;') +
 					(selectable ? '</a>' : '</span>'));
+				days =  days.replace(/<td>/g,
+					'<td class="' +
+					(drawDate.compareTo(today) == 0 && drawDate.month() == month ?
+					' ' + renderer.todayClass : '') + '">');
 				drawDate.add(1, 'd');
 				jd++;
 			}

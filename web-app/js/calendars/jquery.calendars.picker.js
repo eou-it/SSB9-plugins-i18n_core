@@ -127,7 +127,7 @@ $.extend(CalendarsPicker.prototype, {
 			action: function(inst) {
 				$.calendars.picker.changeMonth(this, -inst.get('monthsToStep')); }
 		},
-		prevJump: {text: 'prevJumpText', status: 'prevJumpStatus', // Previous year
+		/*prevJump: {text: 'prevJumpText', status: 'prevJumpStatus', // Previous year
 			keystroke: {keyCode: 33, ctrlKey: true}, // Ctrl + Page up
 			enabled: function(inst) {
 				var minDate = inst.curMinDate();
@@ -140,7 +140,7 @@ $.extend(CalendarsPicker.prototype, {
 					day(inst.get('calendar').minDay); },
 			action: function(inst) {
 				$.calendars.picker.changeMonth(this, -inst.get('monthsToJump')); }
-		},
+		},*/
 		next: {text: 'nextText', status: 'nextStatus', // Next month
 			keystroke: {keyCode: 34}, // Page down
 			enabled: function(inst) {
@@ -267,7 +267,7 @@ $.extend(CalendarsPicker.prototype, {
 		month: '<div class="calendars-month"><div class="calendars-month-header">{monthHeader}</div>' +
 		'<table><thead>{weekHeader}</thead><tbody>{weeks}</tbody></table></div>',
 		// A week header: '{days}' to insert individual day names
-		weekHeader: '<tr>{days}</tr>',
+		weekHeader: '<tr class="ui-datepicker-daynames">{days}</tr>',
 		// Individual day header: '{day}' to insert day name
 		dayHeader: '<th>{day}</th>',
 		// One week of the month: '{days}' to insert the week's days, '{weekOfYear}' to insert week of year
@@ -853,6 +853,7 @@ $.extend(CalendarsPicker.prototype, {
 				var onClose = inst.get('onClose');
 				if (onClose) {
 					onClose.apply(target, [inst.selectedDates]);
+
 				}
 			};
 			inst.div.stop();
@@ -1492,8 +1493,9 @@ $.extend(CalendarsPicker.prototype, {
 			var dow = (day + firstDay) % calendar.daysInWeek();
 			header += this._prepare(renderer.dayHeader, inst).replace(/\{day\}/g,
 				'<span class="' + this._curDoWClass + dow + '" title="' +
-				calendar.local.dayNames[dow] + '">' +
-				calendar.local.dayNamesMin[dow] + '</span>');
+				calendar.local.dayNames[dow] + '"><h5>' +
+				calendar.local.dayNamesMin[dow] + '</h5></span>');
+
 		}
 		return header;
 	},
@@ -1515,7 +1517,7 @@ $.extend(CalendarsPicker.prototype, {
 		var monthNames = calendar.local[
 			'monthNames' + (monthHeader.match(/mm/i) ? '' : 'Short')];
 		var html = monthHeader.replace(/m+/i, '\\x2E').replace(/y+/i, '\\x2F');
-		var selector = '<select class="' + this._monthYearClass +
+		/*var selector = '<select class="' + this._monthYearClass +
 			'" title="' + inst.get('monthStatus') + '">';
 		var maxMonth = calendar.monthsInYear(year) + calendar.minMonth;
 		for (var m = calendar.minMonth; m < maxMonth; m++) {
@@ -1529,7 +1531,24 @@ $.extend(CalendarsPicker.prototype, {
 					monthNames[m - calendar.minMonth] + '</option>';
 			}
 		}
-		selector += '</select>';
+		selector += '</select>';*/
+		var selector = '<div class="' + this._monthYearClass +
+			'" title="' + inst.get('monthStatus') + '">';
+		var maxMonth = calendar.monthsInYear(year) + calendar.minMonth;
+		for (var m = calendar.minMonth; m < maxMonth; m++) {
+			if ((!minDate || calendar.newDate(year, m,
+					calendar.daysInMonth(year, m) - 1 + calendar.minDay).
+					compareTo(minDate) != -1) &&
+				(!maxDate || calendar.newDate(year, m, calendar.minDay).
+					compareTo(maxDate) != +1)) {
+				if(month == m){
+				selector += '<span id="' + m + '/' + year + '"' +
+					'selected="selected" ><h5>' +
+					monthNames[m - calendar.minMonth] + '</h5></span>' };
+			}
+		}
+		selector += '</div>';
+
 		html = html.replace(/\\x2E/, selector);
 		// Years
 		var yearRange = inst.get('yearRange');
@@ -1547,16 +1566,19 @@ $.extend(CalendarsPicker.prototype, {
 				((yearRange[0].match('[+-].*') ? todayYear : 0) + parseInt(yearRange[0], 10)));
 			var end = (yearRange[1].match('c[+-].*') ? year + parseInt(yearRange[1].substring(1), 10) :
 				((yearRange[1].match('[+-].*') ? todayYear : 0) + parseInt(yearRange[1], 10)));
-			selector = '<select class="' + this._monthYearClass +
+			selector = '<div class="' + this._monthYearClass +
 				'" title="' + inst.get('yearStatus') + '">';
 			start = calendar.newDate(start + 1, calendar.firstMonth, calendar.minDay).add(-1, 'd');
 			end = calendar.newDate(end, calendar.firstMonth, calendar.minDay);
 			var addYear = function(y) {
 				if (y != 0 || calendar.hasYearZero) {
-					selector += '<option value="' +
-						Math.min(month, calendar.monthsInYear(y) - 1 + calendar.minMonth) +
-						'/' + y + '"' + (year == y ? ' selected="selected"' : '') + '>' +
-						y + '</option>';
+                    console.log(year);
+					if(y == year) {
+						selector += '<span id="' +
+							Math.min(month, calendar.monthsInYear(y) - 1 + calendar.minMonth) +
+							'/' + y + '"' + (year == y ? ' selected="selected"' : '') + '><h5>' +
+							y + '</h5></span>';
+					}
 				}
 			};
 			if (start.toJD() < end.toJD()) {
@@ -1573,7 +1595,7 @@ $.extend(CalendarsPicker.prototype, {
 					addYear(y);
 				}
 			}
-			selector += '</select>';
+			selector += '</div>';
 		}
 		html = html.replace(/\\x2F/, selector);
 		return html;

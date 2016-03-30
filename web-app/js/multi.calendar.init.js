@@ -9,6 +9,8 @@ $(document).ready(function() {
         useMouseWheel:     false,
         showOtherMonths:   true,
         selectOtherMonths: true,
+        prevJumpText:      "<span class=\"ui-icon ui-icon-circle-triangle-ww\"></span>",
+        nextJumpText:      "<span class=\"ui-icon ui-icon-circle-triangle-ee\"></span>",
         prevText:          "<span class=\"ui-icon ui-icon-circle-triangle-w\"> </span>",
         nextText:          "<span class=\"ui-icon ui-icon-circle-triangle-e\"> </span>",
         dayStatus:         $.i18n.prop("js.datepicker.selectText") +" "+ $.i18n.prop("js.datepicker.tooltipDateFormat"),

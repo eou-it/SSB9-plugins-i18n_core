@@ -123,7 +123,16 @@ class DateConverterService {
     public String[] getShortWeekdays(String uLocaleString) {
           return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortWeekdays();
     }
-
+   public String[] getMinWeekdays(String uLocaleString) {
+        ArrayList<String> minWeekdays = new ArrayList<String>();
+        String[] shortWeekdays = (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortWeekdays();
+        for(String s : shortWeekdays){
+            if(s.trim().length()) {
+                minWeekdays.add(s.substring(0, 2));
+            }
+        }
+        return minWeekdays.toArray(new String[0]);
+    }
     public String[] getAmPmStrings(String uLocaleString) {
           return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getAmPmStrings();
     }

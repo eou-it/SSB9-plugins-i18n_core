@@ -62,7 +62,7 @@
             }
             DOMStructure += '</div>';
 
-            $(document).find('body').append(DOMStructure);
+            $(inst).parent().append(DOMStructure);
         },
 
         concatTimePart: function (inst, data) {
@@ -271,7 +271,7 @@
                 $("#" + this.calendarContainer).css({top: (instPosition.top - pickerContainerHeight) + "px"});
             }
             else{
-                $("#" + this.calendarContainer).css({top: (instPosition.top + instHeight) + "px"});
+                $("#" + this.calendarContainer).css({top: (instPosition.top) + "px"});
             }
 
             if(instPosition.left + pickerContainerWidth >= screenWidthAvailable){
@@ -310,6 +310,7 @@
             var onClose = inst.settings.onClose || function(){};
             onClose.apply((inst.input ? inst.input[0] : null),
                           [(inst.input ? inst.input.val() : ''), inst]);
+            $(inst).removeAttr('disabled');
         },
 
 
@@ -323,7 +324,7 @@
             $("#" + this.calendarContainer).show("slow");
             $.multicalendar.activeCalendar = 1;
             $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar ).addClass('activeCalendar');
-            this.adjustPositionOfCalendar(inst);
+            //this.adjustPositionOfCalendar(inst);
             $.multicalendar._isCalendarShown = true;
             $.multicalendar._currentObj = $(inst);
         },
@@ -636,7 +637,8 @@
 
                         if(input) {
                             $.multicalendar._showCalendar(input);
-                            input.focus();
+                            input.attr('disabled','disabled');
+                            //input.focus();
 
                             //$.multicalendar.currentDateBoxValue = input.val();
                         }
