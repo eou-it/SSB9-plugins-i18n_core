@@ -63,6 +63,8 @@
             DOMStructure += '</div>';
 
             $(inst).parent().append(DOMStructure);
+            $(inst).parent().wrap("<div id='mobPosId' style='position: relative'></div>")
+
         },
 
         concatTimePart: function (inst, data) {
@@ -640,6 +642,7 @@
                             input.attr('disabled','disabled');
                             //input.focus();
 
+                            $('#' + this.timeBoxContainer)
                             //$.multicalendar.currentDateBoxValue = input.val();
                         }
                     }
