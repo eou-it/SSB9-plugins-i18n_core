@@ -1276,6 +1276,14 @@ button.ui-datepicker-cmd {
     position: absolute;
 }
 
+#multiCalendarContainer {
+    min-height: 100%;
+    position: fixed;
+    background-color: white;
+    left: 0px;
+    top: 0px;
+}
+
 #multiCalendarContainer > div {
     float: left;
 }
@@ -2789,8 +2797,9 @@ box-shadow:none;
 
 #multiCalendarContainer {
     z-index: 3000;
-    position: absolute;
-    top:-23px;
+    position: fixed;
+    background-color: white;
+    top:98px;
 }
 
 
@@ -2953,21 +2962,28 @@ div.ui-widget div.ui-widget-header{
         width: 100%;
         left: auto;
         text-align: center;
-        position: absolute;
-        top:0px
+        position: fixed;
+        top: 98px;
+        bottom: 0;
+        overflow-y:scroll !important
+    }
+
+    #multiCalendarContainer:after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 99px;
+
     }
     #multiCalendarContainer > div{
         width:auto;
-        display:inline-block;
         float:none;
     }
     #multiCalendarContainer .ui-datepicker{
         width:auto;
     }
-    /*#mobPosId{
-        position: inherit!important;
-    }*/
-}
+
+    }
 @media only screen and (min-width:768px){
     #multiCalendarContainer .ui-widget-header > span,.ui-datepicker-weekheader ul li,.ui-state-default, .ui-widget-content .ui-state-default {
         line-height:2.7em;
@@ -2989,6 +3005,7 @@ div.ui-widget div.ui-widget-header{
     #multiCalendarContainer {
         width: 22em;
         left: auto;
+        position: absolute;
     }
     .ui-datepicker-group {
         border:2px solid #999;
