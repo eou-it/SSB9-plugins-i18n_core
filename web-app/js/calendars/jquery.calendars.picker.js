@@ -1572,8 +1572,7 @@ $.extend(CalendarsPicker.prototype, {
 			end = calendar.newDate(end, calendar.firstMonth, calendar.minDay);
 			var addYear = function(y) {
 				if (y != 0 || calendar.hasYearZero) {
-                    console.log(year);
-					if(y == year) {
+                    if(y == year) {
 						selector += '<span id="' +
 							Math.min(month, calendar.monthsInYear(y) - 1 + calendar.minMonth) +
 							'/' + y + '"' + (year == y ? ' selected="selected"' : '') + '><h5>' +

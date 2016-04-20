@@ -61,9 +61,11 @@
                 }
             }
             DOMStructure += '</div>';
-
-            $(inst).parent().append(DOMStructure);
             $(inst).parent().wrap("<div id='mobPosId' style='position: relative'></div>")
+            $(inst).focus();
+            $(inst).parent().append(DOMStructure);
+
+
 
         },
 
@@ -312,11 +314,12 @@
             var onClose = inst.settings.onClose || function(){};
             onClose.apply((inst.input ? inst.input[0] : null),
                           [(inst.input ? inst.input.val() : ''), inst]);
-            $(inst).removeAttr('disabled');
+            $(inst).removeAttr('readOnly');
         },
 
 
         _showCalendar : function (inst) {
+            $(inst).attr('readOnly','true');
             if(!$('#multiCalendarContainer').length){
                 $.multicalendar._createDatePickerDOMStructure(inst);
                 $.multicalendar._addCalendarsToDOM(inst);
@@ -639,8 +642,8 @@
 
                         if(input) {
                             $.multicalendar._showCalendar(input);
-                            input.attr('disabled','disabled');
-                            //input.focus();
+                            input.attr('readOnly','true');
+                                input.focus();
 
                             $('#' + this.timeBoxContainer)
                             //$.multicalendar.currentDateBoxValue = input.val();

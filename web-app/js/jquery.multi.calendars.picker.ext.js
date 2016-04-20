@@ -195,6 +195,8 @@
                 },
                 action: function(inst) {
                     $.multicalendar._showCalendar(inst);
+					$(inst).attr('readOnly','true');
+
                 }
 
             }
@@ -387,7 +389,7 @@
 				var selectable = (selectOtherMonths || drawDate.month() == month) &&
 					this._isSelectable(target, drawDate, dateInfo.selectable, minDate, maxDate);
 				days += this._prepare(renderer.day, inst).replace(/\{day\}/g,
-					(selectable ? '<a href="javascript:void(0)" onclick="return false;"' : '<span') +
+					(selectable ? '<a href="javascript:void(0)" "onclick="return false;"' : '<span') +
 					' class="jd' + jd + ' ' + (dateInfo.dateClass || '') +
 					(selected && (selectOtherMonths || drawDate.month() == month) ?
 					' ' + renderer.selectedClass : '') +
