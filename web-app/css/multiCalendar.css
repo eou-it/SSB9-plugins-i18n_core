@@ -23,6 +23,11 @@ Copyright 2012-2015 Ellucian Company L.P. and its affiliates.
     border: 1px solid #cccccc !important;
     color:transparent !important
 }
+
+#closeId {
+    display: none;
+
+}
 /* Icons
 ----------------------------------*/
 
@@ -2929,6 +2934,8 @@ div.ui-widget div.ui-widget-header{
     float:right;
     background: transparent url("images/double-arrow-cal-left.svg") no-repeat scroll center center;
 }
+
+
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-ee {
     background: transparent url("images/double-arrow-cal-right.svg") no-repeat scroll center center;
 }
@@ -3002,6 +3009,23 @@ div.ui-widget div.ui-widget-header{
     }
     #multiCalendarContainer .ui-datepicker{
         width:auto;
+    }
+    #multiCalendarContainer .ui-widget-header {
+        background: none !important;
+        width: 26em;
+        margin:0 auto;
+        padding-left: 3em;
+
+    }
+
+    .ui-widget-header .ui-icon-close{
+        background: transparent url("images/icon-cl.png") no-repeat scroll center center;
+        background-position: 25px 5px !important;
+    }
+
+    #closeId {
+        padding-left: 5em;
+        display: block;
     }
 
     }

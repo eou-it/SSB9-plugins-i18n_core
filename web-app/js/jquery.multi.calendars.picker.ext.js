@@ -96,12 +96,13 @@
                 date: function(inst) { return null; },
                 action: function(inst) { $.calendars.picker.clear(this); }
             },
-//            close: {text: 'closeText', status: 'closeStatus', // Close the datepicker
-//                keystroke: {keyCode: 27}, // Escape
-//                enabled: function(inst) { return true; },
-//                date: function(inst) { return null; },
-//                action: function(inst) { $.calendars.picker.hide(this); }
-//            },
+            close: {text: 'closeText', status: 'closeStatus', // Close the datepicker
+                keystroke: {keyCode: 27}, // Escape
+                enabled: function(inst) { return true; },
+                date: function(inst) { return null; },
+                action: function(inst) {
+					$.multicalendar._hideCalendar(inst);}
+            },
             prevWeek: {text: 'prevWeekText', status: 'prevWeekStatus', // Previous week
                 keystroke: {keyCode: 38}, // Up
                 enabled: function(inst) {
