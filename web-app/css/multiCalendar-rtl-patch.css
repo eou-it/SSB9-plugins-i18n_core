@@ -1,7 +1,40 @@
 /*******************************************************************************
 Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/
-
+#multiCalendarContainer {
+    right:0 !important;
+}
+#multiCalendarContainer::before{
+    right:33.98%;
+}
+#multiCalendarContainer::after{
+    right:34%;
+}
+.ui-datepicker-weekheader ul li {
+    margin-right: 0.5em;
+    margin-top: 0.8em;
+}
+@media only screen and (min-width: 768px) {
+    .ui-icon, .ui-datepicker-cmd-prev, .ui-datepicker-cmd-next, .ui-widget-header .ui-icon.ui-icon-circle-triangle-w, .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
+        height: 2.7em;
+        line-height: 2.7em;
+    }
+}
+.ui-datepicker td {
+    border:1px solid #cccccc;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border:none;
+}
+@media only screen and (min-width: 768px) {
+    .ui-datepicker table {
+        margin: 0 0.75em 2em;
+        padding: 0;
+    }
+}
+.ui-datepicker .ui-datepicker-header {
+    padding:0;
+}
 .hasCalendarsPicker .ui-datepicker {
     width: auto;
 }
@@ -9,6 +42,11 @@ Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
 input.hasMultiCalendarPicker {
     margin: 0 0 0 -22px;
     padding: 0 0 0 25px;
+}
+.ui-datepicker-weekheader h5{
+    padding:0;
+    margin:0;
+    font-family: "geezaPro";
 }
 
 input.hasMultiCalendarPicker + span {
@@ -32,7 +70,7 @@ input.hasMultiCalendarPicker:hover + span, input.hasMultiCalendarPicker + span:h
 .ui-datepicker-cmd-next {
     float: left;
 }
-
+/*
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
     background: url("images/datepicker-arrow-back.png") no-repeat scroll 0 0 transparent;
 }
@@ -40,7 +78,7 @@ input.hasMultiCalendarPicker:hover + span, input.hasMultiCalendarPicker + span:h
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w {
     background: url("images/datepicker-arrow-next.png") no-repeat scroll 0 0 transparent;
 }
-
+*/
 .ui-datepicker-row-break {
     float: left;
 }

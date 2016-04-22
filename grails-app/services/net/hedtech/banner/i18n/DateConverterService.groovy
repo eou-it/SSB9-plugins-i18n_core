@@ -19,6 +19,9 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import grails.converters.JSON
 
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 /**
  * This utility class is used to convert Calendars supported by ICU4J for the UI.
  */
@@ -124,14 +127,20 @@ class DateConverterService {
           return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortWeekdays();
     }
    public String[] getMinWeekdays(String uLocaleString) {
-        ArrayList<String> minWeekdays = new ArrayList<String>();
-        String[] shortWeekdays = (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortWeekdays();
-        for(String s : shortWeekdays){
-            if(s.trim().length()) {
-                minWeekdays.add(s.substring(0, 2));
-            }
-        }
-        return minWeekdays.toArray(new String[0]);
+       ArrayList<String> minWeekdays = new ArrayList<String>();
+       String[] shortWeekdays = (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortWeekdays();
+       Pattern p = Pattern.compile("ar_?(US)?@");
+       Matcher m = p.matcher(uLocaleString);
+       if(!m.find()) {
+           for (String s : shortWeekdays) {
+               if (s.trim().length()) {
+                   minWeekdays.add(s.substring(0, 2));
+               }
+           }
+       } else {
+           return shortWeekdays;
+       }
+       return minWeekdays.toArray(new String[0]);
     }
     public String[] getAmPmStrings(String uLocaleString) {
           return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getAmPmStrings();
