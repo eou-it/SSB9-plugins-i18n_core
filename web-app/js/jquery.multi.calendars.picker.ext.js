@@ -442,7 +442,7 @@
             handled = true;
         }
         else if (event.keyCode == 13) { // Enter - select
-            $.multicalendar._hideCalendar(visibleInstance);
+			$('#multiCalendarContainer .activeCalendar a.ui-state-hover').click();
             handled = true;
         }
 		else if (event.keyCode == 32) { // Space Select date and close.

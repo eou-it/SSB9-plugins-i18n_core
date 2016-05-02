@@ -60,10 +60,51 @@
                     DOMStructure += '<div id="' + this.calendarIdPrefix  + (i + 1) + '"></div>';
                 }
             }
-            DOMStructure += '</div>';
-            $(inst).parent().wrap("<div id='mobPosId' style='position: relative'></div>")
+            DOMStructure += '<div id="multiCalenderIdCheck"> Show Hijri<input id="checkId" name="Calendar" type="checkbox" checked onchange="hideCalender()"/></div></div>';
+
+
             $(inst).focus();
+
             $(inst).parent().append(DOMStructure);
+
+
+            function isPortrait() {
+                if(window.innerHeight > window.innerWidth){
+                    return true;
+                }
+            }
+
+            if (screen.width >= 768) {
+                $('#multiCalenderIdCheck').css('display','none');
+            }
+
+            if(screen.width <=440 && !(isRTLMode()) && (isPortrait()))
+            {
+                $('#multiCalenderIdCheck').css('display','none');
+
+            }
+            if(screen.width <=768 && !(isRTLMode()) && (!isPortrait()))
+            {
+                $('#multiCalenderIdCheck').css('display','none');
+            }
+            if(isRTLMode() ){
+
+                if(screen.width <=440 && (isPortrait()))
+                {
+                    $('#multiCalendar2').addClass('activeCalendar');
+                    $('#multiCalendar1').addClass('activeCalendar');
+                }
+
+                if(screen.width <=768 && (!isPortrait()))
+                {
+                    $('#multiCalendar2').addClass('activeCalendar');
+                    $('#multiCalendar1').addClass('activeCalendar');
+                }
+            }
+
+
+
+
 
 
 
@@ -314,16 +355,22 @@
             var onClose = inst.settings.onClose || function(){};
             onClose.apply((inst.input ? inst.input[0] : null),
                           [(inst.input ? inst.input.val() : ''), inst]);
-            $(inst).removeAttr('readOnly');
+            $(inst).removeAttr('readonly');
         },
 
 
         _showCalendar : function (inst) {
-            $(inst).attr('readOnly','true');
+
+            $('#mobPosId').contents().unwrap();
+            $(inst).parent().wrap("<div id='mobPosId' style='position: relative'></div>")
+            $(inst).attr('readonly','true');
+            $(inst).focus();
             if(!$('#multiCalendarContainer').length){
+
                 $.multicalendar._createDatePickerDOMStructure(inst);
                 $.multicalendar._addCalendarsToDOM(inst);
                 $.multicalendar._showDateInCalendar(inst);
+
             }
             $.multicalendar._addAriaDescriptionToCalendar();
             $("#" + this.calendarContainer).show("slow");
@@ -642,8 +689,7 @@
 
                         if(input) {
                             $.multicalendar._showCalendar(input);
-                            input.attr('readOnly','true');
-                                input.focus();
+                            input.attr('readonly','true');
 
                             $('#' + this.timeBoxContainer)
                             //$.multicalendar.currentDateBoxValue = input.val();

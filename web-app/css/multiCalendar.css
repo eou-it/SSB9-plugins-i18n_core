@@ -28,6 +28,16 @@ Copyright 2012-2015 Ellucian Company L.P. and its affiliates.
     display: none;
 
 }
+
+*, *:before, *:after {
+    -webkit-box-sizing: initial !important;
+    -moz-box-sizing: initial   !important;
+    box-sizing: content-box        !important;
+}
+
+/*#multiCalenderIdCheck{
+    display: none;
+}*/
 /* Icons
 ----------------------------------*/
 
@@ -1376,7 +1386,6 @@ button.ui-datepicker-cmd {
 }
 
 #multiCalendarContainer .ui-widget-content {
-    border: 1px solid #cccccc;
     background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
     color: #333333;
 }
@@ -1519,7 +1528,7 @@ button.ui-datepicker-cmd {
 .ui-state-error .ui-icon, .ui-state-error-text .ui-icon {
     background-image: url(images/ui-icons_cc3333_256x240.png);
 }
-
+/*
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w {
     background: url(images/datepicker-arrow-back.png) no-repeat 0 0 transparent;
     height: 19px;
@@ -1530,7 +1539,7 @@ button.ui-datepicker-cmd {
     background: url(images/datepicker-arrow-next.png) no-repeat 0 0 transparent;
     height: 19px;
     width: 19px;
-}
+}*/
 
 /* positioning */
 .ui-icon-carat-1-n {
@@ -2653,12 +2662,6 @@ input.hasMultiCalendarPicker {
     min-width: 200px;
 }
 
-.timeEntry_control {
-    background: url("images/spinnerUpDown.png") no-repeat scroll 0 0 transparent !important;
-    position: relative;
-    top: 3px;
-}
-
 .time-calendar-img {
     background: url('images/date-time-sprite.png') no-repeat scroll -7px 0px transparent;
 }
@@ -2874,7 +2877,7 @@ box-shadow:none;
     height:2.5em;
     line-height:2.5em;
 }
-.ui-widget-header .ui-icon.ui-icon-circle-triangle-w, .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
+/*.ui-widget-header .ui-icon.ui-icon-circle-triangle-w, .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
     height:2.5em;
     line-height:2.5em;
     background: url(images/datepicker-arrow-back.png) no-repeat center center transparent;
@@ -2885,7 +2888,7 @@ box-shadow:none;
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
     background: url(images/datepicker-arrow-next.png) no-repeat center center transparent;
 
-}
+}*/
 .ui-datepicker-cmd-prev,.ui-datepicker-cmd-next {
     height:2.5em;
     line-height:2.5em;
@@ -2943,10 +2946,10 @@ div.ui-widget div.ui-widget-header{
     float:right;
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w {
-    background: transparent url("images/arrowleft-B.svg") no-repeat scroll center center;
+    background: transparent url("images/arrowleft.svg") no-repeat scroll center center;
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
-    background: transparent url("images/arrowright-B.svg") no-repeat scroll center center;
+    background: transparent url("images/arrowright.svg") no-repeat scroll center center;
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w, .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
     background-size:1.3em;
@@ -3030,6 +3033,9 @@ div.ui-widget div.ui-widget-header{
 
     }
 @media only screen and (min-width:768px){
+
+
+
     #multiCalendarContainer .ui-widget-header > span,.ui-datepicker-weekheader ul li,.ui-state-default, .ui-widget-content .ui-state-default {
         line-height:2.7em;
     }
@@ -3081,9 +3087,9 @@ div.ui-widget div.ui-widget-header{
         content: "";
         display: block;
         height: 0;
-        left: 33.6%;
+        left: 33.66%;
         position: absolute;
-        top: -1.2em;
+        top: -1.1em;
         width: 0;
     }
     #multiCalendarContainer::after {
@@ -3092,8 +3098,8 @@ div.ui-widget div.ui-widget-header{
         border-width: 10px;
         content: "";
         display: block;
-        height: 0;
-        left: 34%;
+        height: 4px;
+        left: 33.68%;
         position: absolute;
         top: -1.1em;
         width: 0;
