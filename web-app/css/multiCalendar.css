@@ -35,9 +35,7 @@ Copyright 2012-2015 Ellucian Company L.P. and its affiliates.
     box-sizing: content-box        !important;
 }
 
-/*#multiCalenderIdCheck{
-    display: none;
-}*/
+
 /* Icons
 ----------------------------------*/
 
@@ -2239,34 +2237,6 @@ button.ui-datepicker-cmd {
     background-position: -80px -224px;
 }
 
-/* Misc visuals
-----------------------------------*/
-
-/* Corner radius */
-/*.ui-corner-tl { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; }
-.ui-corner-tr { -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-top-right-radius: 4px; }
-.ui-corner-bl { -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; }
-.ui-corner-br { -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; }
-.ui-corner-top { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-top-right-radius: 4px; }
-.ui-corner-bottom { -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; }
-.ui-corner-right {  -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-top-right-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; }
-.ui-corner-left { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; }
-.ui-corner-all { -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
-.ui-corner-all.ui-button.ui-widget {
-    background-color: #585858;
-    background-image: url(../../../../../images/prim-secndry-buttons-sprite.png), url(../../../../../images/prim-secndry-buttons-sprite.png), url(../../../../../images/prim-secndry-buttons-sprite.png);
-    background-position: left 0px, right -58px, 0 -29px;
-    background-repeat: no-repeat, no-repeat, repeat-x;
-    border: medium none;
-    border-radius: 4px 4px 4px 4px;
-    color: #FFFFFF;
-    font-size: 12px;
-    font-weight: bold;
-    height: 26px;
-    line-height: 12px;
-    padding: 0 20px;
-}*/
-
 /* Overlays */
 .ui-widget-overlay {
     background: #000000 url(images/ui-bg_flat_0_000000_40x100.png) 50% 50% repeat-x;
@@ -2852,7 +2822,6 @@ box-shadow:none;
 }
 .ui-datepicker-weekheader ul li{
     margin-right:1.4em;
-    /*margin-top: 0.2em;*/
 }
 .ui-datepicker-weekheader ul li:nth-last-child(1){
     margin-right:auto;
@@ -2877,18 +2846,7 @@ box-shadow:none;
     height:2.5em;
     line-height:2.5em;
 }
-/*.ui-widget-header .ui-icon.ui-icon-circle-triangle-w, .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
-    height:2.5em;
-    line-height:2.5em;
-    background: url(images/datepicker-arrow-back.png) no-repeat center center transparent;
-}
-.ui-widget-header .ui-icon.ui-icon-circle-triangle-w {
-    background: url(images/datepicker-arrow-back.png) no-repeat center center transparent;
-}
-.ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
-    background: url(images/datepicker-arrow-next.png) no-repeat center center transparent;
 
-}*/
 .ui-datepicker-cmd-prev,.ui-datepicker-cmd-next {
     height:2.5em;
     line-height:2.5em;
