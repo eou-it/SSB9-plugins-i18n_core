@@ -60,7 +60,8 @@
                     DOMStructure += '<div id="' + this.calendarIdPrefix  + (i + 1) + '"></div>';
                 }
             }
-            DOMStructure += '<div id="multiCalenderIdCheck"> Show Hijri<input id="checkId" name="Calendar" type="checkbox" checked onchange="hideCalender()"/></div></div>';
+
+            DOMStructure += '<div id="multiCalenderIdCheck">'+ $.i18n.prop("datepicker.toggle.text") +'<input id="checkId" name="Calendar" type="checkbox" checked onchange="hideCalender()"/></div></div>';
 
 
             $(inst).focus();
