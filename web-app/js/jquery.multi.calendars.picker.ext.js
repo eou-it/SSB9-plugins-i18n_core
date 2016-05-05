@@ -369,7 +369,7 @@
                     (drawDate.compareTo(inst.drawDate) == 0 && drawDate.month() == month && $.multicalendar._isCalendarShown?
 					' ' + renderer.highlightedClass : '') + '"' +
 					(dateInfo.title || (dayStatus && selectable) ? ' title="' +
-					(dateInfo.title || drawDate.formatDate(dayStatus)) + '"' : '') + '>' +
+					(dateInfo.title || $.i18n.prop("js.datepicker.selectText")+" "+drawDate.formatDate(dayStatus)) + '"' : '') + '>' +
 					(showOtherMonths || drawDate.month() == month ?
 					dateInfo.content || drawDate.day() : '&nbsp;') +
 					(selectable ? '</a>' : '</span>'));
