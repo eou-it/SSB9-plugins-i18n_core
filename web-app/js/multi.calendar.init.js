@@ -17,8 +17,8 @@ $(document).ready(function() {
         dayStatus:         $.i18n.prop("js.datepicker.selectText") +" "+ $.i18n.prop("js.datepicker.tooltipDateFormat"),
         prevStatus:        $.i18n.prop("js.datepicker.prevStatus"),
         nextStatus:        $.i18n.prop("js.datepicker.nextStatus"),
-        yearStatus:        $.i18n.prop("js.datepicker.yearStatus"),
-        monthStatus:       $.i18n.prop("js.datepicker.monthStatus")
+        prevJumpStatus: $.i18n.prop("js.datepicker.prevJumpStatus"),
+        nextJumpStatus:$.i18n.prop("js.datepicker.nextJumpStatus")
     });
 
     var default_calendar=$.i18n.prop("default.calendar");

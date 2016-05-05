@@ -1533,7 +1533,7 @@ $.extend(CalendarsPicker.prototype, {
 		}
 		selector += '</select>';*/
 		var selector = '<div class="' + this._monthYearClass +
-			'" title="' + inst.get('monthStatus') + '">';
+			'">';
 		var maxMonth = calendar.monthsInYear(year) + calendar.minMonth;
 		for (var m = calendar.minMonth; m < maxMonth; m++) {
 			if ((!minDate || calendar.newDate(year, m,
@@ -1554,7 +1554,7 @@ $.extend(CalendarsPicker.prototype, {
 		var yearRange = inst.get('yearRange');
 		if (yearRange == 'any') {
 			selector = '<select class="' + this._monthYearClass + ' ' + this._anyYearClass +
-				'" title="' + inst.get('yearStatus') + '">' +
+				'">' +
 				'<option>' + year + '</option></select>' +
 				'<input class="' + this._monthYearClass + ' ' + this._curMonthClass +
 				month + '" value="' + year + '">';
@@ -1567,7 +1567,7 @@ $.extend(CalendarsPicker.prototype, {
 			var end = (yearRange[1].match('c[+-].*') ? year + parseInt(yearRange[1].substring(1), 10) :
 				((yearRange[1].match('[+-].*') ? todayYear : 0) + parseInt(yearRange[1], 10)));
 			selector = '<div class="' + this._monthYearClass +
-				'" title="' + inst.get('yearStatus') + '">';
+				'">';
 			start = calendar.newDate(start + 1, calendar.firstMonth, calendar.minDay).add(-1, 'd');
 			end = calendar.newDate(end, calendar.firstMonth, calendar.minDay);
 			var addYear = function(y) {
