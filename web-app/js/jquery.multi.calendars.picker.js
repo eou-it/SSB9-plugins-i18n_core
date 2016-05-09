@@ -69,42 +69,16 @@
             $(inst).parent().append(DOMStructure);
 
 
-            function isPortrait() {
-                if(window.innerHeight > window.innerWidth){
-                    return true;
-                }
-            }
 
-            if (screen.width >= 768) {
-                $('#multiCalenderIdCheck').css('display','none');
-            }
-
-            if(screen.width <=440 && !(isRTLMode()) && (isPortrait()))
+            if(isRTLMode() && screen.width <768)
             {
+                $('#multiCalendar2').addClass('activeCalendar');
+                $('#multiCalendar1').addClass('activeCalendar');
+
+            }
+            else{
                 $('#multiCalenderIdCheck').css('display','none');
-
             }
-            if(screen.width <=768 && !(isRTLMode()) && (!isPortrait()))
-            {
-                $('#multiCalenderIdCheck').css('display','none');
-            }
-            if(isRTLMode() ){
-
-                if(screen.width <=440 && (isPortrait()))
-                {
-                    $('#multiCalendar2').addClass('activeCalendar');
-                    $('#multiCalendar1').addClass('activeCalendar');
-                }
-
-                if(screen.width <=768 && (!isPortrait()))
-                {
-                    $('#multiCalendar2').addClass('activeCalendar');
-                    $('#multiCalendar1').addClass('activeCalendar');
-                }
-            }
-
-
-
 
 
 
