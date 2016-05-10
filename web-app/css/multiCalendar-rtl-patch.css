@@ -1,7 +1,79 @@
 /*******************************************************************************
 Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/
+#multiCalendarContainer {
+    right:0 !important;
+    width: auto;
 
+}
+#checkId{
+
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5em;
+}
+
+#multiCalenderIdCheck{
+    height: 3.13em;
+    background-color: #F3F7F8 !important;
+    font-family: lucidaGrande;
+    color: #058423;
+    line-height: 3.13em;
+    font-size: 16px;
+    text-align: center;
+}
+#multiCalendar1{
+    display: none;
+}
+#multiCalendarContainer::before{
+    right:17.25%;
+}
+#multiCalendarContainer::after{
+    right:17.4%;
+}
+
+.ui-datepicker-weekheader ul li {
+    margin-right: 0.5em;
+}
+.ui-datepicker-weekheader ul li {
+    margin-left: 0em;
+}
+@media only screen and (min-width: 768px) {
+
+    #multiCalendarContainer {
+
+        width: 47em;
+
+    }
+    #multiCalenderIdCheck{
+        display: none;
+    }
+
+    .ui-icon, .ui-datepicker-cmd-prev, .ui-datepicker-cmd-next, .ui-widget-header .ui-icon.ui-icon-circle-triangle-w, .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
+        height: 2.7em;
+        line-height: 2.7em;
+    }
+    #multiCalendarContainer > div {
+
+        float: left;
+
+    }
+}
+.ui-datepicker td {
+    border:1px solid #cccccc;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border:none;
+}
+@media only screen and (min-width: 768px) {
+    .ui-datepicker table {
+        margin: 0 0.75em 2em;
+        padding: 0;
+    }
+}
+.ui-datepicker .ui-datepicker-header {
+    padding:0;
+}
 .hasCalendarsPicker .ui-datepicker {
     width: auto;
 }
@@ -9,6 +81,11 @@ Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
 input.hasMultiCalendarPicker {
     margin: 0 0 0 -22px;
     padding: 0 0 0 25px;
+}
+.ui-datepicker-weekheader h5{
+    padding:0;
+    margin:0;
+    font-family: "geezaPro";
 }
 
 input.hasMultiCalendarPicker + span {
@@ -31,14 +108,6 @@ input.hasMultiCalendarPicker:hover + span, input.hasMultiCalendarPicker + span:h
 
 .ui-datepicker-cmd-next {
     float: left;
-}
-
-.ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
-    background: url("images/datepicker-arrow-back.png") no-repeat scroll 0 0 transparent;
-}
-
-.ui-widget-header .ui-icon.ui-icon-circle-triangle-w {
-    background: url("images/datepicker-arrow-next.png") no-repeat scroll 0 0 transparent;
 }
 
 .ui-datepicker-row-break {
@@ -64,3 +133,15 @@ input.hasMultiCalendarPicker.hasTimePicker:hover ~ .time-icon, input.hasMultiCal
     filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
 }
 
+
+@media only screen and (max-width:767px) and (orientation:landscape){
+
+    #closeId {
+        padding-right: 0em;
+    }
+    #multiCalendarContainer .ui-widget-header {
+       width: 29em;
+       padding-right: 3em;
+        padding-left: 0em;
+    }
+}
