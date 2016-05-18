@@ -38,6 +38,10 @@ Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
 .ui-datepicker-weekheader ul li {
     margin-left: 0em;
 }
+.ui-datepicker-weekheader ul li:nth-last-child(1) {
+    margin-right: 0.4em;
+}
+
 @media only screen and (min-width: 768px) {
 
     #multiCalendarContainer {
@@ -85,7 +89,7 @@ input.hasMultiCalendarPicker {
 .ui-datepicker-weekheader h5{
     padding:0;
     margin:0;
-    font-family: "geezaPro";
+    /*font-family: "geezaPro";*/
 }
 
 input.hasMultiCalendarPicker + span {
