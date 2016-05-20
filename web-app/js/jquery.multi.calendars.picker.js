@@ -66,8 +66,7 @@
 
             $(inst).focus();
 
-            $(inst).parent().append(DOMStructure);
-
+           $(document).find('body').append(DOMStructure);
 
 
             if(isRTLMode() && screen.width <768)
@@ -288,10 +287,10 @@
             var lastPickerOuterWidth = $("#" + this.calendarContainer + " .hasCalendarsPicker:first .ui-datepicker").outerWidth();
             var pickerContainerWidth = $('.hasCalendarsPicker').length > 1 ? firstPickerOuterWidth + lastPickerOuterWidth : firstPickerOuterWidth;
             if(instPosition.top + instHeight + pickerContainerHeight >= screenHeightAvailable && instPosition.top > pickerContainerHeight){
-                $("#" + this.calendarContainer).css({top: (instPosition.top - pickerContainerHeight) + "px"});
+                $("#" + this.calendarContainer).css({top: (instPosition.top - pickerContainerHeight - (instHeight*1.5)) + "px"});
             }
             else{
-                $("#" + this.calendarContainer).css({top: (instPosition.top) + "px"});
+                $("#" + this.calendarContainer).css({top: (instPosition.top +(instHeight*1.3)) + "px"});
             }
 
             if(instPosition.left + pickerContainerWidth >= screenWidthAvailable){
@@ -330,16 +329,15 @@
             var onClose = inst.settings.onClose || function(){};
             onClose.apply((inst.input ? inst.input[0] : null),
                           [(inst.input ? inst.input.val() : ''), inst]);
-            $(inst).removeAttr('readonly');
+            $(inst).removeAttr('readOnly');
         },
 
 
         _showCalendar : function (inst) {
 
-            $('#mobPosId').contents().unwrap();
-            $(inst).parent().wrap("<div id='mobPosId' style='position: relative'></div>")
-            $(inst).attr('readonly','true');
+            $(inst).attr('readOnly','readnly');
             $(inst).focus();
+            //input.focus()
             if(!$('#multiCalendarContainer').length){
 
                 $.multicalendar._createDatePickerDOMStructure(inst);
@@ -351,7 +349,8 @@
             $("#" + this.calendarContainer).show("slow");
             $.multicalendar.activeCalendar = 1;
             $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar ).addClass('activeCalendar');
-            //this.adjustPositionOfCalendar(inst);
+           if(screen.width>768){
+            this.adjustPositionOfCalendar(inst)};
             $.multicalendar._isCalendarShown = true;
             $.multicalendar._currentObj = $(inst);
         },
@@ -664,7 +663,7 @@
 
                         if(input) {
                             $.multicalendar._showCalendar(input);
-                            input.attr('readonly','true');
+                            input.attr('readOnly','readonly');
 
                             $('#' + this.timeBoxContainer)
                             //$.multicalendar.currentDateBoxValue = input.val();

@@ -2,9 +2,7 @@
 Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/
 #multiCalendarContainer {
-    right:0 !important;
-    width: auto;
-
+    right:0 ;
 }
 #checkId{
 
@@ -26,10 +24,10 @@ Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
     display: none;
 }
 #multiCalendarContainer::before{
-    right:17.25%;
+    border-style:none;
 }
 #multiCalendarContainer::after{
-    right:17.4%;
+    border-style:none;
 }
 
 .ui-datepicker-weekheader ul li {
@@ -70,6 +68,12 @@ Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
     border:none;
 }
 @media only screen and (min-width: 768px) {
+
+    #multiCalendarContainer {
+        right:auto ;
+        width: auto;
+    }
+
     .ui-datepicker table {
         margin: 0 0.75em 2em;
         padding: 0;
@@ -89,7 +93,6 @@ input.hasMultiCalendarPicker {
 .ui-datepicker-weekheader h5{
     padding:0;
     margin:0;
-    /*font-family: "geezaPro";*/
 }
 
 input.hasMultiCalendarPicker + span {

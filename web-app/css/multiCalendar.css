@@ -11,6 +11,9 @@ Copyright 2012-2015 Ellucian Company L.P. and its affiliates.
     cursor: default;
 }
 
+#mobPosId{
+    position: relative;
+}
 .grid td.focus, .grid td.focus a {
     background-color: transparent !important;
     color: #000000 !important;
@@ -28,13 +31,6 @@ Copyright 2012-2015 Ellucian Company L.P. and its affiliates.
     display: none;
 
 }
-
-*, *:before, *:after {
-    -webkit-box-sizing: initial !important;
-    -moz-box-sizing: initial   !important;
-    box-sizing: content-box        !important;
-}
-
 
 /* Icons
 ----------------------------------*/
@@ -2617,7 +2613,7 @@ input.hasMultiCalendarPicker:hover .calendar-img, .calendar-img:hover {
 input.hasMultiCalendarPicker {
     margin: 0 -22px 0 0; /* leave space for button width */
     padding: 0 25px 0 0;
-    height: 20px;
+    height: 22px;
     border: 1px solid #778FA0;
     border-radius: 0 3px 3px 0;
 }
@@ -2743,7 +2739,7 @@ box-shadow:none;
 }
 #multiCalendarContainer {
     width:100%;
-    left:0 !important;
+    left:0 ;
     z-index: 3000;
     position: absolute;
 }
@@ -3037,6 +3033,7 @@ div.ui-widget div.ui-widget-header{
     #multiCalendarContainer{
         position: absolute;
         top:3em;
+        min-height: auto;
     }
     #multiCalendarContainer::before {
         border-color: transparent transparent #cad5e0;
@@ -3045,7 +3042,7 @@ div.ui-widget div.ui-widget-header{
         content: "";
         display: block;
         height: 0;
-        left: 33.66%;
+        left: 31.68%;
         position: absolute;
         top: -1.1em;
         width: 0;
@@ -3057,7 +3054,7 @@ div.ui-widget div.ui-widget-header{
         content: "";
         display: block;
         height: 4px;
-        left: 33.68%;
+        left: 31.68%;
         position: absolute;
         top: -1.1em;
         width: 0;
