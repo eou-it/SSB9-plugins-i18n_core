@@ -349,7 +349,7 @@
             $("#" + this.calendarContainer).show("slow");
             $.multicalendar.activeCalendar = 1;
             $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar ).addClass('activeCalendar');
-           if(screen.width>768){
+           if(screen.width>=768){
             this.adjustPositionOfCalendar(inst)};
             $.multicalendar._isCalendarShown = true;
             $.multicalendar._currentObj = $(inst);
