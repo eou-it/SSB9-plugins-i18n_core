@@ -39,7 +39,10 @@ Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
 .ui-datepicker-weekheader ul li:nth-last-child(1) {
     margin-right: 0.4em;
 }
-
+#multiCalendarContainer .hasCalendarsPicker > div {
+    opacity: 1;
+    filter: Alpha(Opacity = 100);
+}
 @media only screen and (min-width: 768px) {
 
     #multiCalendarContainer {
@@ -59,6 +62,10 @@ Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
 
         float: left;
 
+    }
+    #multiCalendarContainer .hasCalendarsPicker > div {
+        opacity: 0.5;
+        filter: Alpha(Opacity = 50);
     }
 }
 .ui-datepicker td {

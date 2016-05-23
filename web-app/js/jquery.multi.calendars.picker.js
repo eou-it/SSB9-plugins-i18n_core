@@ -349,6 +349,9 @@
             $("#" + this.calendarContainer).show("slow");
             $.multicalendar.activeCalendar = 1;
             $('#' + $.multicalendar.calendarIdPrefix + $.multicalendar.activeCalendar ).addClass('activeCalendar');
+
+
+
            if(screen.width>=768){
             this.adjustPositionOfCalendar(inst)};
             $.multicalendar._isCalendarShown = true;
@@ -1168,3 +1171,15 @@
     $.multicalendar = new MultiCalendarsPicker(); // singleton instance
 
 })(jQuery);
+var hideCalender=function(){
+
+    if($('#checkId').is(":checked")){
+
+        $('#multiCalendar1').hide()
+        $('#multiCalendar2').show()
+    }
+    else{
+        $('#multiCalendar2').hide()
+        $('#multiCalendar1').show()
+    }
+}
