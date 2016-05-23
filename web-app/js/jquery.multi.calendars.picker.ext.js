@@ -121,7 +121,13 @@
                     return (!minDate || inst.drawDate.newDate().add(-1, 'd').
                         compareTo(minDate) != -1); },
                 date: function(inst) { return inst.drawDate.newDate().add(-1, 'd'); },
-                action: function(inst) { $.calendars.picker.changeDay(this, -1); }
+                action: function(inst) {
+					if(isRTLMode()){
+						$.calendars.picker.changeDay(this, 1);
+					}
+					else
+						$.calendars.picker.changeDay(this, -1);
+				}
             },
             nextDay: {text: 'nextDayText', status: 'nextDayStatus', // Next day
                 keystroke: {keyCode: 39}, // Right
@@ -130,7 +136,13 @@
                     return (!maxDate || inst.drawDate.newDate().add(1, 'd').
                         compareTo(maxDate) != +1); },
                 date: function(inst) { return inst.drawDate.newDate().add(1, 'd'); },
-                action: function(inst) { $.calendars.picker.changeDay(this, 1); }
+                action: function(inst) {
+					if (isRTLMode()) {
+						$.calendars.picker.changeDay(this, -1);
+					}
+					else
+						$.calendars.picker.changeDay(this, 1);
+				}
             },
             nextWeek: {text: 'nextWeekText', status: 'nextWeekStatus', // Next week
                 keystroke: {keyCode: 40}, // Down
