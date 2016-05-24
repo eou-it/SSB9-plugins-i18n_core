@@ -463,6 +463,7 @@
 		}
         else { // Command keystrokes
             var commands = inst.get('commands');
+			handled = true;
             for (var name in commands) {
                 var command = commands[name];
                 if (command.keystroke.keyCode == event.keyCode &&
@@ -470,7 +471,6 @@
                         !!command.keystroke.altKey == event.altKey &&
                         !!command.keystroke.shiftKey == event.shiftKey) {
                     $.calendars.picker.performAction(target, name);
-                    handled = true;
                     break;
                 }
             }
