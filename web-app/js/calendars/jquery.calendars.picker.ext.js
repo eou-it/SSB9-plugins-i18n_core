@@ -16,10 +16,11 @@ var themeRollerRenderer = {
 	'<div class="ui-helper-clearfix"></div></div>',
 	monthRow: '<div class="ui-datepicker-row-break">{months}</div>',
 	month: '<div class="ui-datepicker-group">' +
-	'<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">{link:prev}<span>{monthHeader:MM yyyy}</span>{link:next}</div>' +
-	'<table class="ui-datepicker-calendar"><thead>{weekHeader}</thead><tbody>{weeks}</tbody></table></div>',
-	weekHeader: '<tr>{days}</tr>',
-	dayHeader: '<th>{day}</th>',
+	'<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">{link:prevJump}<div class="vertical-line">|</div>{link:prev}<span>{monthHeader:MM yyyy}</span>{link:next}<div class="vertical-line">|</div>{link:nextJump}{link:close}</div>' +
+	'<div class="ui-datepicker-weekheader">{weekHeader}</div><table class="ui-datepicker-calendar"><tbody>{weeks}</tbody></table></div>',
+	weekHeader: '<ul>{days}</ul>',
+	dayHeader: '<li>{day}</li>',
+
 	week: '<tr>{days}</tr>',
 	day: '<td>{day}</td>',
 	monthSelector: '.ui-datepicker-group',
