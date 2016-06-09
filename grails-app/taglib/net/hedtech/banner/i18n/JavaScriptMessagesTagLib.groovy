@@ -58,9 +58,9 @@ class JavaScriptMessagesTagLib {
 
         if (names.size() > 0) {
 
-            // Search for any place where we are referencing message codes
-            def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)/
-
+            // Search for any place where we are referencing message codes patterns to check .i18n.prop('abc') or ('abc' | xei18n)
+            int count=0;
+            def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n/
             names.each { name ->
                 resourceService.getModule(name)?.resources?.findAll { it.sourceUrlExtension == "js" }?.each {
 
@@ -87,10 +87,15 @@ class JavaScriptMessagesTagLib {
 
                             def matcher = regex.matcher(fileText)
                             while (matcher.find()) {
-                                it.attributes[LOCALE_KEYS_ATTRIBUTE] << matcher.group(1)
-                            }
+                                if(matcher.group(1)!=null){
+                                   it.attributes[LOCALE_KEYS_ATTRIBUTE] << matcher.group(1)
+                                }
+                                if(matcher.group(2)!=null){
+                                    it.attributes[LOCALE_KEYS_ATTRIBUTE] << matcher.group(2)
+                                }
+                              }
                         }
-                    }
+                }
 
                     keys.addAll( it.attributes[LOCALE_KEYS_ATTRIBUTE] )
                 }
