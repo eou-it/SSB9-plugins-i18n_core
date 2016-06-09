@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
+Copyright 2009-2016 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/ 
 package net.hedtech.banner.i18n
 
@@ -59,7 +59,6 @@ class JavaScriptMessagesTagLib {
         if (names.size() > 0) {
 
             // Search for any place where we are referencing message codes patterns to check .i18n.prop('abc') or ('abc' | xei18n)
-            int count=0;
             def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n/
             names.each { name ->
                 resourceService.getModule(name)?.resources?.findAll { it.sourceUrlExtension == "js" }?.each {
