@@ -1,6 +1,6 @@
 /*******************************************************************************
 Copyright 2009-2016 Ellucian Company L.P. and its affiliates.
-*******************************************************************************/ 
+*******************************************************************************/
 package net.hedtech.banner.i18n
 
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
@@ -39,7 +39,7 @@ class JavaScriptMessagesTagLib {
 
 	names
     }
-    
+
     void addDependendNames(name, list) {
 	     // After moving to submodule, the dependent resources where not picked for bundling the message properties
 	     // We are explicitly adding all the dependend modules to the list so that all the properties defined in the
@@ -59,7 +59,7 @@ class JavaScriptMessagesTagLib {
         if (names.size() > 0) {
 
             // Search for any place where we are referencing message codes patterns to check .i18n.prop('abc') or ('abc' | xei18n)
-            def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n/
+            def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"]\s*\)/
             names.each { name ->
                 resourceService.getModule(name)?.resources?.findAll { it.sourceUrlExtension == "js" }?.each {
 
@@ -91,6 +91,9 @@ class JavaScriptMessagesTagLib {
                                 }
                                 if(matcher.group(2)!=null){
                                     it.attributes[LOCALE_KEYS_ATTRIBUTE] << matcher.group(2)
+                                }
+                                if(matcher.group(3)!=null){
+                                    it.attributes[LOCALE_KEYS_ATTRIBUTE] << matcher.group(3)
                                 }
                               }
                         }
