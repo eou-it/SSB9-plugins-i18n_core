@@ -35,9 +35,6 @@ grails.project.dependency.resolution = {
     plugins {
         compile  ":hibernate:3.6.10.19"
         build ":tomcat:8.0.22"
-        test ':code-coverage:2.0.3-3',
-                {
-                    excludes 'asm' ,'asm-util' , 'asm-commons' ,'asm-analysis' ,'asm-tree'
-                }
+        test ':code-coverage:2.0.3-3'
     }
 }
