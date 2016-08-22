@@ -134,7 +134,7 @@ def currencyFormatService
         } catch (CurrencyNotFoundException e) {
             exception = e;
         }
-        assertTrue(exception.getMessage().contains(INVALID_CODE_MESSAGE))
+        assertTrue(exception.getMessage().contains(INVALID_CODE))
     }
 
 }
