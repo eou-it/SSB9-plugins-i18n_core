@@ -185,7 +185,7 @@
 					$.calendars.picker.changeDay(this, daysInMonth-inst.drawDate._day); }
 			},
             activateNextCalendar: {text: 'activateNextCalendarText', status: 'activateNextCalendarStatus',
-                keystroke: {keyCode: 78, ctrlKey: true, shiftKey:true }, // Ctrl + shift + n
+                keystroke: {keyCode: 83,shiftKey:true }, // shift + s
                 enabled: function(inst) {
                     return true;
                 },
