@@ -1368,20 +1368,6 @@ button.ui-datepicker-cmd {
 
 /* Component containers
 ----------------------------------*/
-.ui-calendar-widget {
-    font-family: "Open Sans", Arial, sans-serif;
-    font-size: 1.2em;
-}
-
-.ui-calendar-widget .ui-calendar-widget {
-    font-size: 1em;
-}
-
-.ui-calendar-widget input, .ui-calendar-widget select, .ui-calendar-widget textarea, .ui-calendar-widget button {
-    font-family: "Open Sans", Arial, sans-serif;
-    font-size: 1em;
-}
-
 #multiCalendarContainer .ui-widget-content {
     background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
     color: #333333;
