@@ -8,7 +8,7 @@
 (function($) { // Hide scope, no $ conflict
 
 var themeRollerRenderer = {
-	picker: '<div{popup:start} id="ui-datepicker-div"{popup:end} class="ui-datepicker ui-widget ' +
+	picker: '<div{popup:start} id="ui-datepicker-div"{popup:end} class="ui-datepicker ui-calendar-widget ' +
 	'ui-widget-content ui-helper-clearfix ui-corner-all{inline:start} ui-datepicker-inline{inline:end}">' +
 	'{months}' +
 	'{popup:start}<div class="ui-datepicker-header ui-datepicker-footer ui-widget-header ui-helper-clearfix ' +
