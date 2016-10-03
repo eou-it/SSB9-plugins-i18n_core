@@ -33,6 +33,13 @@ $(document).ready(function() {
 		dayNamesShort: $.i18n.prop("default.islamic.dayNamesShort"),
         dayNamesMin: $.i18n.prop("default.islamic.dayNamesMin")
     };
+    var ummalquraCalendarLocaleProps = {
+        monthNames: $.i18n.prop("default.ummalqura.monthNames"),
+        monthNamesShort: $.i18n.prop("default.ummalqura.monthNamesShort"),
+        dayNames: $.i18n.prop("default.ummalqura.dayNames"),
+        dayNamesShort: $.i18n.prop("default.ummalqura.dayNamesShort"),
+        dayNamesMin: $.i18n.prop("default.ummalqura.dayNamesMin")
+    };
 
     var gregorianCalendarLocaleProps = {
         monthNames: $.i18n.prop("default.gregorian.monthNames"),
@@ -42,7 +49,7 @@ $(document).ready(function() {
         dayNamesMin: $.i18n.prop("default.gregorian.dayNamesMin")
     };
 
-    var calendarLocaleProps = {islamic: islamicCalendarLocaleProps, gregorian: gregorianCalendarLocaleProps};
+    var calendarLocaleProps = {islamic: islamicCalendarLocaleProps, ummalqura: ummalquraCalendarLocaleProps, gregorian: gregorianCalendarLocaleProps};
     var timeLocaleProps = {
         ampmNames: [$.i18n.prop('default.time.am'), $.i18n.prop('default.time.pm')],
     	spinnerTexts: [$.i18n.prop('default.time.increment'), $.i18n.prop('default.time.decrement')]
@@ -67,7 +74,6 @@ $(document).ready(function() {
                 }
             }
         },
-
         islamicToGregorian: {
             format: {
                 url: dateConverterURL,
@@ -80,7 +86,35 @@ $(document).ready(function() {
                     fromULocale: $.i18n.prop("default.calendar.islamic.ulocale")
                 }
             }
+        },
+        gregorianToUmmalqura: {
+            format: {
+                url: dateConverterURL,
+                nameOfDateParam: 'date',
+                extraParams: {
+                    calendar: 'islamic-umalqura',
+                    fromDateFormat: 'MM/dd/yyyy',
+                    toDateFormat: 'MM/dd/yyyy',
+                    toULocale: $.i18n.prop("default.calendar.ummalqura.ulocale"),
+                    fromULocale: $.i18n.prop("default.calendar.gregorian.translation")
+                }
+            }
+        },
+
+        ummalquraToGregorian: {
+            format: {
+                url: dateConverterURL,
+                nameOfDateParam: 'date',
+                extraParams: {
+                    calendar: 'islamic-umalqura',
+                    fromDateFormat: 'MM/dd/yyyy',
+                    toDateFormat: 'MM/dd/yyyy',
+                    toULocale: $.i18n.prop("default.calendar.gregorian.translation"),
+                    fromULocale: $.i18n.prop("default.calendar.ummalqura.ulocale")
+                }
+            }
         }
+
     };
 
     $.multicalendar.setDefaults({
