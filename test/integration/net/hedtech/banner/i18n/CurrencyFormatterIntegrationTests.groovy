@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2009-2015 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2016 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
@@ -26,8 +26,11 @@ def currencyFormatService
     private final String SAR ="SAR"
     private final String USD_POS_TEST_VALUE = "\$1,234,567,890.24"
     private final String USD_NEG_TEST_VALUE = "(\$1,234,567,890.24)"
-    private final String AUD_POS_TEST_VALUE = "AU\$1,234,567,890.24"
-    private final String AUD_NEG_TEST_VALUE = "(AU\$1,234,567,890.24)"
+    private final String USD_NEG_TEST_VALUE_NUMBER_STYLE = "-1,234,567,890.239"
+    private final String USD_NEG_TEST_VALUE_ISO_STYLE = "-USD1,234,567,890.24"
+    private final String USD_NEG_TEST_VALUE_SCIENTIFIC_STYLE = "-1.234567890239E9"
+    private final String AUD_POS_TEST_VALUE = "A\$1,234,567,890.24"
+    private final String AUD_NEG_TEST_VALUE = "(A\$1,234,567,890.24)"
     private final String CAD_POS_TEST_VALUE = "CA\$1,234,567,890.24"
     private final String CAD_NEG_TEST_VALUE = "(CA\$1,234,567,890.24)"
     private final String GBP_POS_TEST_VALUE = "£1,234,567,890.24"
@@ -40,10 +43,7 @@ def currencyFormatService
     private final String SAR_NEG_TEST_VALUE = "(SAR1,234,567,890.24)"
 
     private final String INVALID_CODE ="XYZ"
-    private final String INVALID_CODE_MESSAGE = "Invalid currency code"
     private final String AR = "ar"
-
-
 
     @Test
     void testInjection() {
@@ -69,6 +69,21 @@ def currencyFormatService
     @Test
     void testUSDNegativeCurrencyFormatter() {
         assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE)),USD_NEG_TEST_VALUE
+    }
+
+    @Test
+    void testUSDNegativeNumberStyleCurrencyFormatter() {
+        assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE),0),USD_NEG_TEST_VALUE_NUMBER_STYLE
+    }
+
+    @Test
+    void testUSDNegativeISOStyleCurrencyFormatter() {
+        assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE),5),USD_NEG_TEST_VALUE_ISO_STYLE
+    }
+
+    @Test
+    void testUSDNegativeScientificStyleCurrencyFormatter() {
+        assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE),3),USD_NEG_TEST_VALUE_SCIENTIFIC_STYLE
     }
     @Test
     void testAUDPositiveCurrencyFormatter() {
@@ -134,7 +149,7 @@ def currencyFormatService
         } catch (CurrencyNotFoundException e) {
             exception = e;
         }
-        assertTrue(exception.getMessage().contains(INVALID_CODE_MESSAGE))
+        assertTrue(exception.getMessage().contains(INVALID_CODE))
     }
 
 }

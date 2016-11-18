@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2009-2014 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2016 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 
 package net.hedtech.banner.i18n
@@ -24,7 +24,7 @@ class CurrencyFormatService {
     public final String EN = "en"
     public final String US = "US"
 
-    public String format(String currencyCode, BigDecimal amount) throws CurrencyNotFoundException {
+    public String format(String currencyCode, BigDecimal amount,int currencyStyle=7) throws CurrencyNotFoundException {
         if(isInvalidCurrencyCode(currencyCode))   {
             throw new CurrencyNotFoundException(currencyCode:currencyCode)
         }
@@ -33,7 +33,7 @@ class CurrencyFormatService {
         locale=locale.toString().equalsIgnoreCase(ARABIC_LOCALE)?new Locale(EN,US):locale
         String fmtMonetaryValue;
         ArabicShaping shaping = new ArabicShaping(ArabicShaping.DIGITS_AN2EN)
-        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale)
+        NumberFormat numberFormat = NumberFormat.getInstance(locale,currencyStyle)
         Currency currency = Currency.getInstance(currencyCode)
         numberFormat.setCurrency(currency)
         fmtMonetaryValue = numberFormat.format(amount)
@@ -42,11 +42,14 @@ class CurrencyFormatService {
     }
 
     private boolean isInvalidCurrencyCode(String currencyCode) {
-        List<String> lstValidCurrencyCode = Currency.getAvailableCurrencyCodes()
+        Set<Currency> lstValidCurrencyCode = Currency.getAvailableCurrencies()
         currencyCode = currencyCode?.toUpperCase()
         boolean bResult = true
-        if(lstValidCurrencyCode.contains(currencyCode)) {
-            bResult = false
+        for (int i = 0; i < lstValidCurrencyCode.size(); i++) {
+            if (lstValidCurrencyCode[i].isoCode.equals(currencyCode)) {
+                bResult = false
+                break
+            }
         }
         return bResult
     }
