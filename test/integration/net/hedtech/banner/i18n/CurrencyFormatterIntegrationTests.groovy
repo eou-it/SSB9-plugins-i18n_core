@@ -27,7 +27,7 @@ def currencyFormatService
     private final String USD_POS_TEST_VALUE = "\$1,234,567,890.24"
     private final String USD_NEG_TEST_VALUE = "(\$1,234,567,890.24)"
     private final String USD_NEG_TEST_VALUE_NUMBER_STYLE = "-1,234,567,890.239"
-    private final String USD_NEG_TEST_VALUE_ISO_STYLE = "-USD1,234,567,890.24"
+    private final String USD_NEG_TEST_VALUE_CURRENCY_STYLE = "-\$1,234,567,890.24"
     private final String USD_NEG_TEST_VALUE_SCIENTIFIC_STYLE = "-1.234567890239E9"
     private final String AUD_POS_TEST_VALUE = "A\$1,234,567,890.24"
     private final String AUD_NEG_TEST_VALUE = "(A\$1,234,567,890.24)"
@@ -78,7 +78,7 @@ def currencyFormatService
 
     @Test
     void testUSDNegativeISOStyleCurrencyFormatter() {
-        assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE),5),USD_NEG_TEST_VALUE_ISO_STYLE
+        assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE),1),USD_NEG_TEST_VALUE_CURRENCY_STYLE
     }
 
     @Test

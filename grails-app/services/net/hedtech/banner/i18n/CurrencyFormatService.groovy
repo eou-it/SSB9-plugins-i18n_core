@@ -45,8 +45,8 @@ class CurrencyFormatService {
         Set<Currency> lstValidCurrencyCode = Currency.getAvailableCurrencies()
         currencyCode = currencyCode?.toUpperCase()
         boolean bResult = true
-        for (int i = 0; i < lstValidCurrencyCode.size(); i++) {
-            if (lstValidCurrencyCode[i].isoCode.equals(currencyCode)) {
+        for (validCurrencyCode in lstValidCurrencyCode) {
+            if (validCurrencyCode.isoCode.equals(currencyCode)) {
                 bResult = false
                 break
             }
