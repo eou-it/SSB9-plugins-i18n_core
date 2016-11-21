@@ -77,7 +77,7 @@ def currencyFormatService
     }
 
     @Test
-    void testUSDNegativeISOStyleCurrencyFormatter() {
+    void testUSDNegativeCurrencyStyleCurrencyFormatter() {
         assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE),1),USD_NEG_TEST_VALUE_CURRENCY_STYLE
     }
 
