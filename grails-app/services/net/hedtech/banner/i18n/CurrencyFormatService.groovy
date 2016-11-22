@@ -20,20 +20,24 @@ import org.springframework.context.i18n.LocaleContextHolder as LCH
 class CurrencyFormatService {
 
     Logger logger = Logger.getLogger(this.getClass())
+
     public final String ARABIC_LOCALE = "ar"
+
     public final String EN = "en"
+
     public final String US = "US"
 
-    public String format(String currencyCode, BigDecimal amount,int currencyStyle=7) throws CurrencyNotFoundException {
-        if(isInvalidCurrencyCode(currencyCode))   {
-            throw new CurrencyNotFoundException(currencyCode:currencyCode)
+
+    public String format(String currencyCode, BigDecimal amount, int currencyStyle = 7) throws CurrencyNotFoundException {
+        if (isInvalidCurrencyCode(currencyCode)) {
+            throw new CurrencyNotFoundException(currencyCode: currencyCode)
         }
 
         Locale locale = LCH.getLocale()
-        locale=locale.toString().equalsIgnoreCase(ARABIC_LOCALE)?new Locale(EN,US):locale
+        locale = locale.toString().equalsIgnoreCase(ARABIC_LOCALE) ? new Locale(EN, US) : locale
         String fmtMonetaryValue;
         ArabicShaping shaping = new ArabicShaping(ArabicShaping.DIGITS_AN2EN)
-        NumberFormat numberFormat = NumberFormat.getInstance(locale,currencyStyle)
+        NumberFormat numberFormat = NumberFormat.getInstance(locale, currencyStyle)
         Currency currency = Currency.getInstance(currencyCode)
         numberFormat.setCurrency(currency)
         fmtMonetaryValue = numberFormat.format(amount)
@@ -41,16 +45,10 @@ class CurrencyFormatService {
         return fmtMonetaryValue
     }
 
+
     private boolean isInvalidCurrencyCode(String currencyCode) {
         Set<Currency> lstValidCurrencyCode = Currency.getAvailableCurrencies()
         currencyCode = currencyCode?.toUpperCase()
-        boolean bResult = true
-        for (validCurrencyCode in lstValidCurrencyCode) {
-            if (validCurrencyCode.isoCode.equals(currencyCode)) {
-                bResult = false
-                break
-            }
-        }
-        return bResult
+        return lstValidCurrencyCode.findAll { it?.isoCode.equals(currencyCode) }.size() < 1
     }
 }

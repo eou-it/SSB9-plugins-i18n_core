@@ -10,9 +10,7 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertTrue
 
-/**
- * Created by shaliyak on 6/19/2015.
- */
+
 class CurrencyFormatterIntegrationTests {
 def currencyFormatService
     private final String POSITIVE_TEST_VALUE = "1234567890.239"
