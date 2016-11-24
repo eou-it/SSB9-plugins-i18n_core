@@ -28,7 +28,7 @@ class CurrencyFormatService {
     public final String US = "US"
 
 
-    public String format(String currencyCode, BigDecimal amount, int currencyStyle = 7) throws CurrencyNotFoundException {
+    public String format(String currencyCode, BigDecimal amount) throws CurrencyNotFoundException {
         if (isInvalidCurrencyCode(currencyCode)) {
             throw new CurrencyNotFoundException(currencyCode: currencyCode)
         }
@@ -37,7 +37,7 @@ class CurrencyFormatService {
         locale = locale.toString().equalsIgnoreCase(ARABIC_LOCALE) ? new Locale(EN, US) : locale
         String fmtMonetaryValue;
         ArabicShaping shaping = new ArabicShaping(ArabicShaping.DIGITS_AN2EN)
-        NumberFormat numberFormat = NumberFormat.getInstance(locale, currencyStyle)
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale)
         Currency currency = Currency.getInstance(currencyCode)
         numberFormat.setCurrency(currency)
         fmtMonetaryValue = numberFormat.format(amount)
