@@ -39,12 +39,17 @@ def currencyFormatService
     private final String SAR_NEG_TEST_VALUE = "-SAR1,234,567,890.24"
     private final String FR_POS_TEST_VALUE  = "1 234 567 890,24 \$US"
     private final String FRCA_POS_TEST_VALUE= "1 234 567 890,24 \$ US"
+    private final String PT_NEG_TEST_VALUE = "-US\$1.234.567.890,24"
+    private final String ES_NEG_TEST_VALUE = "-1.234.567.890,24 \$"
     private final String INVALID_CODE ="XYZ"
     private final String AR = "ar"
     public final String EN = "en"
     public final String US = "US"
     public final String FRCA = "fr-CA"
     public final String FR = "fr"
+    public final String PT = "pt"
+    public final String ES = "es"
+
 
     @After
     public void tearDown() {
@@ -144,6 +149,17 @@ def currencyFormatService
     void testUSDForFrenchLocalePositiveCurrencyFormatter() {
         LCH.setLocale(new Locale(FR))
         assertEquals FR_POS_TEST_VALUE, currencyFormatService.format(USD,new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+    @Test
+    void testUSDForPortugueseLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(PT))
+        assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE)),PT_NEG_TEST_VALUE
+    }
+    @Test
+    void testUSDForSpanishLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES))
+        assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE)),ES_NEG_TEST_VALUE
     }
 
     @Test
