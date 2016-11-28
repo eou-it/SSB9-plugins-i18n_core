@@ -1,6 +1,6 @@
-/*******************************************************************************
-Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
-*******************************************************************************/ 
+/*********************************************************************************
+ Copyright 2012-2016 Ellucian Company L.P. and its affiliates.
+ **********************************************************************************/
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
@@ -29,7 +29,7 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.5'
-        compile 'com.ibm.icu:icu4j:4.8.1.1'
+        compile 'com.ibm.icu:icu4j:57.1'
     }
 
     plugins {

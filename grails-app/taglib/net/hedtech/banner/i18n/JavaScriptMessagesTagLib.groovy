@@ -103,7 +103,18 @@ class JavaScriptMessagesTagLib {
                 }
             }
         } else {
-            keys = ["default.calendar", "default.calendar1", "default.calendar2", "default.calendar.gregorian.ulocale", "default.calendar.islamic.ulocale", "default.date.format", "default.gregorian.dayNames", "default.gregorian.dayNamesMin", "default.gregorian.dayNamesShort", "default.gregorian.monthNames", "default.gregorian.monthNamesShort", "default.gregorian.amPm", "default.islamic.dayNames", "default.islamic.dayNamesMin", "default.islamic.dayNamesShort", "default.islamic.monthNames", "default.islamic.monthNamesShort", "default.islamic.amPm", "default.language.direction", "js.datepicker.dateFormat", "default.century.pivot", "default.century.above.pivot", "default.century.below.pivot", "default.dateEntry.format", "js.datepicker.selectText", "js.datepicker.prevStatus", "js.datepicker.nextStatus","js.datepicker.yearStatus","js.datepicker.monthStatus","default.calendar.islamic.translation","default.calendar.gregorian.translation", "default.firstDayOfTheWeek", "js.datepicker.datetimeFormat","js.input.datepicker.dateformatinfo","js.input.datepicker.info","js.datepicker.info"]
+            keys = ["default.calendar", "default.calendar1", "default.calendar2", "default.calendar.gregorian.ulocale",
+                    "default.calendar.islamic.ulocale", "default.date.format", "default.gregorian.dayNames", "default.gregorian.dayNamesMin",
+                    "default.gregorian.dayNamesShort", "default.gregorian.monthNames", "default.gregorian.monthNamesShort", "default.gregorian.amPm",
+                    "default.islamic.dayNames", "default.islamic.dayNamesMin", "default.islamic.dayNamesShort", "default.islamic.monthNames",
+                    "default.islamic.monthNamesShort", "default.islamic.amPm", "default.language.direction", "js.datepicker.dateFormat", "default.century.pivot",
+                    "default.century.above.pivot", "default.century.below.pivot", "default.dateEntry.format", "js.datepicker.selectText",
+                    "js.datepicker.prevStatus", "js.datepicker.nextStatus","js.datepicker.yearStatus","js.datepicker.monthStatus",
+                    "default.calendar.islamic.translation","default.calendar.gregorian.translation", "default.firstDayOfTheWeek",
+                    "js.datepicker.datetimeFormat","js.input.datepicker.dateformatinfo","js.input.datepicker.info","js.datepicker.info",
+                    "default.calendar.ummalqura.ulocale", "default.ummalqura.dayNames", "default.ummalqura.dayNamesMin", "default.ummalqura.dayNamesShort",
+                    "default.ummalqura.monthNames","default.ummalqura.monthNamesShort", "default.ummalqura.amPm","default.calendar.ummalqura.translation"
+                    ]
             keys.addAll(addTimeKeys())
         }
 

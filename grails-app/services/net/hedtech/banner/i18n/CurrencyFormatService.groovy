@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2009-2014 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2016 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 
 package net.hedtech.banner.i18n
@@ -20,20 +20,25 @@ import org.springframework.context.i18n.LocaleContextHolder as LCH
 class CurrencyFormatService {
 
     Logger logger = Logger.getLogger(this.getClass())
+
     public final String ARABIC_LOCALE = "ar"
+
     public final String EN = "en"
+
     public final String US = "US"
 
-    public String format(String currencyCode, BigDecimal amount) throws CurrencyNotFoundException {
-        if(isInvalidCurrencyCode(currencyCode))   {
-            throw new CurrencyNotFoundException(currencyCode:currencyCode)
+
+    public String format(String currencyCode, BigDecimal amount, int currencyStyle = 1) throws CurrencyNotFoundException {
+        if (isInvalidCurrencyCode(currencyCode)) {
+            throw new CurrencyNotFoundException(currencyCode: currencyCode)
         }
 
         Locale locale = LCH.getLocale()
-        locale=locale.toString().equalsIgnoreCase(ARABIC_LOCALE)?new Locale(EN,US):locale
+        locale = locale.toString().equalsIgnoreCase(ARABIC_LOCALE) ? new Locale(EN, US) : locale
         String fmtMonetaryValue;
         ArabicShaping shaping = new ArabicShaping(ArabicShaping.DIGITS_AN2EN)
-        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale)
+        String defaultCurrencyStyle  = MessageHelper.message("default.currency.formatter.style")
+        NumberFormat numberFormat = defaultCurrencyStyle.isInteger()? NumberFormat.getInstance(locale, new Integer(defaultCurrencyStyle)): NumberFormat.getInstance(locale, currencyStyle)
         Currency currency = Currency.getInstance(currencyCode)
         numberFormat.setCurrency(currency)
         fmtMonetaryValue = numberFormat.format(amount)
@@ -41,13 +46,10 @@ class CurrencyFormatService {
         return fmtMonetaryValue
     }
 
+
     private boolean isInvalidCurrencyCode(String currencyCode) {
-        List<String> lstValidCurrencyCode = Currency.getAvailableCurrencyCodes()
+        Set<Currency> lstValidCurrencyCode = Currency.getAvailableCurrencies()
         currencyCode = currencyCode?.toUpperCase()
-        boolean bResult = true
-        if(lstValidCurrencyCode.contains(currencyCode)) {
-            bResult = false
-        }
-        return bResult
+        return lstValidCurrencyCode.findAll { it?.isoCode.equals(currencyCode) }.size() < 1
     }
 }

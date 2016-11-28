@@ -1,18 +1,17 @@
 /*******************************************************************************
- Copyright 2009-2015 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2016 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
 import net.hedtech.banner.exceptions.CurrencyNotFoundException
 import org.junit.Test
+import org.junit.After
 import org.springframework.context.i18n.LocaleContextHolder as LCH
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertTrue
 
-/**
- * Created by shaliyak on 6/19/2015.
- */
+
 class CurrencyFormatterIntegrationTests {
 def currencyFormatService
     private final String POSITIVE_TEST_VALUE = "1234567890.239"
@@ -25,25 +24,38 @@ def currencyFormatService
     private final String EUR ="EUR"
     private final String SAR ="SAR"
     private final String USD_POS_TEST_VALUE = "\$1,234,567,890.24"
-    private final String USD_NEG_TEST_VALUE = "(\$1,234,567,890.24)"
-    private final String AUD_POS_TEST_VALUE = "AU\$1,234,567,890.24"
-    private final String AUD_NEG_TEST_VALUE = "(AU\$1,234,567,890.24)"
+    private final String USD_NEG_TEST_VALUE = "-\$1,234,567,890.24"
+    private final String AUD_POS_TEST_VALUE = "A\$1,234,567,890.24"
+    private final String AUD_NEG_TEST_VALUE = "-A\$1,234,567,890.24"
     private final String CAD_POS_TEST_VALUE = "CA\$1,234,567,890.24"
-    private final String CAD_NEG_TEST_VALUE = "(CA\$1,234,567,890.24)"
+    private final String CAD_NEG_TEST_VALUE = "-CA\$1,234,567,890.24"
     private final String GBP_POS_TEST_VALUE = "£1,234,567,890.24"
-    private final String GBP_NEG_TEST_VALUE = "(£1,234,567,890.24)"
+    private final String GBP_NEG_TEST_VALUE = "-£1,234,567,890.24"
     private final String PTE_POS_TEST_VALUE = "PTE1,234,567,890.24"
-    private final String PTE_NEG_TEST_VALUE = "(PTE1,234,567,890.24)"
+    private final String PTE_NEG_TEST_VALUE = "-PTE1,234,567,890.24"
     private final String EUR_POS_TEST_VALUE = "€1,234,567,890.24"
-    private final String EUR_NEG_TEST_VALUE = "(€1,234,567,890.24)"
+    private final String EUR_NEG_TEST_VALUE = "-€1,234,567,890.24"
     private final String SAR_POS_TEST_VALUE = "SAR1,234,567,890.24"
-    private final String SAR_NEG_TEST_VALUE = "(SAR1,234,567,890.24)"
-
+    private final String SAR_NEG_TEST_VALUE = "-SAR1,234,567,890.24"
+    private final String FR_POS_TEST_VALUE  = "1 234 567 890,24 \$US"
+    private final String FRCA_POS_TEST_VALUE= "1 234 567 890,24 \$ US"
+    private final String PT_NEG_TEST_VALUE = "-US\$1.234.567.890,24"
+    private final String ES_NEG_TEST_VALUE = "-1.234.567.890,24 \$"
     private final String INVALID_CODE ="XYZ"
-    private final String INVALID_CODE_MESSAGE = "Invalid currency code"
     private final String AR = "ar"
+    public final String EN = "en"
+    public final String US = "US"
+    public final String FRCA = "fr-CA"
+    public final String FR = "fr"
+    public final String PT = "pt"
+    public final String ES = "es"
 
 
+    @After
+    public void tearDown() {
+        LCH.setLocale(new Locale(EN, US))
+
+    }
 
     @Test
     void testInjection() {
@@ -70,6 +82,7 @@ def currencyFormatService
     void testUSDNegativeCurrencyFormatter() {
         assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE)),USD_NEG_TEST_VALUE
     }
+
     @Test
     void testAUDPositiveCurrencyFormatter() {
         assertEquals currencyFormatService.format(AUD,new BigDecimal(POSITIVE_TEST_VALUE)),AUD_POS_TEST_VALUE
@@ -125,6 +138,30 @@ def currencyFormatService
     void testSARNegativeCurrencyFormatter() {
         assertEquals currencyFormatService.format(SAR,new BigDecimal(NEGATIVE_TEST_VALUE)),SAR_NEG_TEST_VALUE
     }
+
+    @Test
+    void testUSDForCanadianFrenchLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(FRCA))
+        assertEquals FRCA_POS_TEST_VALUE, currencyFormatService.format(USD,new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+    @Test
+    void testUSDForFrenchLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(FR))
+        assertEquals FR_POS_TEST_VALUE, currencyFormatService.format(USD,new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+    @Test
+    void testUSDForPortugueseLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(PT))
+        assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE)),PT_NEG_TEST_VALUE
+    }
+    @Test
+    void testUSDForSpanishLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES))
+        assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE)),ES_NEG_TEST_VALUE
+    }
+
     @Test
     void testInvalidCurrencyFormatter() {
         Exception exception = null
