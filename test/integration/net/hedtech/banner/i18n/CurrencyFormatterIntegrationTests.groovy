@@ -3,13 +3,15 @@
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
+
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
+import static org.junit.Assert.assertTrue
 import net.hedtech.banner.exceptions.CurrencyNotFoundException
 import org.junit.Test
 import org.junit.After
 import org.springframework.context.i18n.LocaleContextHolder as LCH
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertTrue
+
 
 
 class CurrencyFormatterIntegrationTests {

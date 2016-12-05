@@ -8,7 +8,6 @@ import com.ibm.icu.text.ArabicShaping
 import com.ibm.icu.text.NumberFormat
 import com.ibm.icu.util.Currency
 import net.hedtech.banner.exceptions.CurrencyNotFoundException
-import org.apache.log4j.Logger
 import org.springframework.context.i18n.LocaleContextHolder as LCH
 
 /**
@@ -18,8 +17,6 @@ import org.springframework.context.i18n.LocaleContextHolder as LCH
 
 
 class CurrencyFormatService {
-
-    Logger logger = Logger.getLogger(this.getClass())
 
     public final String ARABIC_LOCALE = "ar"
 

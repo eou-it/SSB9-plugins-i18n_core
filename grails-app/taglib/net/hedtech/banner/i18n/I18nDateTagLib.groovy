@@ -2,9 +2,6 @@
 Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/
 package net.hedtech.banner.i18n
-
-import org.codehaus.groovy.grails.plugins.web.taglib.ValidationTagLib
-
 /**
  * Created by IntelliJ IDEA.
  * User: naveinf
