@@ -1,3 +1,6 @@
+/*******************************************************************************
+ Copyright 2016 Ellucian Company L.P. and its affiliates.
+ *******************************************************************************/
 package net.hedtech.banner.exceptions
 
 import com.ibm.icu.util.Currency
@@ -16,15 +19,11 @@ class CurrencyNotFoundExceptionIntegrationTests extends GrailsUnitTestCase {
     void testGetMessage() {
         def currencyCode = USD + 'test'
         try {
-            Assert.assertTrue (format (USD + 'test'))
-        } catch(e) {
+            Assert.assertTrue(format(USD + 'test'))
+        } catch (e) {
             Assert.assertNotNull(e.getMessage())
             Assert.assertEquals(e.toString(), e.getMessage())
         }
-    }
-
-    void testToString() {
-
     }
 
     private def format(def currencyCode) throws CurrencyNotFoundException {
@@ -34,7 +33,6 @@ class CurrencyNotFoundExceptionIntegrationTests extends GrailsUnitTestCase {
             return true
         }
     }
-
 
     private boolean isInvalidCurrencyCode(String currencyCode) {
         Set<Currency> lstValidCurrencyCode = Currency.getAvailableCurrencies()
