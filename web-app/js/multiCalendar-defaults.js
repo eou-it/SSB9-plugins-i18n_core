@@ -45,7 +45,35 @@ var converters = {
                 fromULocale: 'en_US@calendar=islamic'
             }
         }
+    },
+    gregorianToUmmalqura: {
+        format: {
+            url: dateConverterURL,
+            nameOfDateParam: 'date',
+            extraParams: {
+                calendar: 'islamic-umalqura',
+                fromDateFormat: 'MM/dd/yyyy',
+                toDateFormat: 'MM/dd/yyyy',
+                toULocale: $.i18n.prop("default.calendar.ummalqura.ulocale"),
+                fromULocale: $.i18n.prop("default.calendar.gregorian.translation")
+            }
+        }
+    },
+
+    ummalquraToGregorian: {
+        format: {
+            url: dateConverterURL,
+            nameOfDateParam: 'date',
+            extraParams: {
+                calendar: 'islamic-umalqura',
+                fromDateFormat: 'MM/dd/yyyy',
+                toDateFormat: 'MM/dd/yyyy',
+                toULocale: $.i18n.prop("default.calendar.gregorian.translation"),
+                fromULocale: $.i18n.prop("default.calendar.ummalqura.ulocale")
+            }
+        }
     }
+
 };
 
 //var dateFormats = {islamic: 'yyyy/mm/dd'};

@@ -21,6 +21,7 @@ modules = {
         resource url:[plugin: 'i18n-core', file: 'js/jquery.multi.calendars.picker.ext.js']
 
         resource url:[plugin: 'i18n-core', file: 'js/multi.calendar.init.js']
+        resource url:[plugin: 'i18n-core', file: 'js/calendars/jquery.calendars.ummalqura.js']
     }
 
 }
