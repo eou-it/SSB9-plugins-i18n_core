@@ -1,8 +1,10 @@
 /*******************************************************************************
- Copyright 2009-2015 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2016 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
 import grails.converters.JSON
 import net.hedtech.banner.i18n.utils.LocaleUtilities
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -13,9 +15,6 @@ import org.springframework.context.i18n.LocaleContextHolder
 
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
-
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
 
 class DateConverterIntegrationTests   {
 
@@ -69,7 +68,6 @@ class DateConverterIntegrationTests   {
     void testformatDateInObjectsToDefaultCalendarDate(){
         def utilDateArgument = new Date((2012 - 1900), 0, 1)
         def defaultCalendarStringDate = "01/01/2012"
-        def defaultCalendarStringDate2 = "01/01/2013"
         def defaultCalendarStringDate3 = "02/01/2012"
         def stringDateArg = "01/01/2012"
         def markedDateFields = ["startDate"]
@@ -269,4 +267,3 @@ class DateConverterIntegrationTests   {
 
 }
 class MockDomain {}
-

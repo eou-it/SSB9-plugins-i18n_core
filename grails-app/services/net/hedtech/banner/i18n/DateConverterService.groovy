@@ -28,10 +28,10 @@ import java.util.regex.Pattern
 class DateConverterService {
 
     static transactional = false
-    Logger logger = Logger.getLogger(this.getClass())
+    private static final def Logger logger = Logger.getLogger(this.getClass())
 
-    public static int FIRST_DAY_OF_MONTH = -1
-    public static int LAST_DAY_OF_MONTH = -2
+    public static final int FIRST_DAY_OF_MONTH = -1
+    public static final int LAST_DAY_OF_MONTH = -2
 
     private static final DATE_YMD_DIGITS_FORMAT = "yyyy/MM/dd"
     private static final SLASH_SEPARATOR = "/"
@@ -268,19 +268,9 @@ class DateConverterService {
         }
         catch (Exception e) {
            //If an exception occurs ignore and return original data.
+            e.printStackTrace()
         }
         return data
-    }
-
-    private JSONObject marshallDateForJSONObject(data, dateFields) {
-           JSONObject jsonObj = new JSONObject();
-           data.each { key, value ->
-              if(dateFields.contains(key) && value != JSONObject.NULL) {
-                   value = parseGregorianToDefaultCalendar(value)
-              }
-              jsonObj.put(key, value);
-           }
-           return jsonObj
     }
 
     public JSONDateUnmarshaller(data, dateFields) {
@@ -300,6 +290,7 @@ class DateConverterService {
            }
         }
         catch (Exception e) {
+            e.printStackTrace()
             //If an exception occurs ignore and return original data.
         }
            return data
@@ -338,6 +329,7 @@ class DateConverterService {
                     }
                 }
             } catch (Exception e ) {
+                e.printStackTrace()
                 //If an exception occurs ignore and return original value.
             }
         }
@@ -384,6 +376,7 @@ class DateConverterService {
               }
            }
        } catch (Exception e) {
+           e.printStackTrace()
            //If an exception occurs ignore and return original value.
        }
        return value
