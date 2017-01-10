@@ -127,20 +127,21 @@ class DateConverterService {
           return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortWeekdays();
     }
    public String[] getMinWeekdays(String uLocaleString) {
-       ArrayList<String> minWeekdays = new ArrayList<String>();
-       String[] shortWeekdays = (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortWeekdays();
-       Pattern p = Pattern.compile("ar_?(US)?@");
-       Matcher m = p.matcher(uLocaleString);
+       ArrayList<String> minWeekdays = new ArrayList<String>()
+       String[] shortWeekdays = (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortWeekdays()
+       Pattern p = Pattern.compile("ar_?(US)?@")
+       Matcher m = p.matcher(uLocaleString)
+       String defaultShortWeekdaysLength  = MessageHelper.getMessage("default.calendar.shortWeekDays.charactersToDisplay") ?: 2
        if(!m.find()) {
            for (String s : shortWeekdays) {
                if (s.trim().length()) {
-                   minWeekdays.add(s.substring(0, 2));
+                   minWeekdays.add(s.substring(0, defaultShortWeekdaysLength as int))
                }
            }
        } else {
-           return shortWeekdays;
+           return shortWeekdays
        }
-       return minWeekdays.toArray(new String[0]);
+       return minWeekdays as String[]
     }
     public String[] getAmPmStrings(String uLocaleString) {
           return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getAmPmStrings();
