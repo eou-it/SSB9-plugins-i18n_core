@@ -9,7 +9,7 @@ class ResourceBundleService {
 
     //Injected
     def messageSource
-    //TextManagerService textManagerService
+    def textManagerService
 
     def list() {
         def result = []
@@ -77,5 +77,4 @@ class ResourceBundleService {
         }
         [error: errors, count: count]
     }
-
 }
