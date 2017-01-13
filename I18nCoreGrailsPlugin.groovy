@@ -6,7 +6,7 @@ Copyright 2009-2017 Ellucian Company L.P. and its affiliates.
  * A Grails Plugin providing core i18n framework for Self Service Banner application.
  **/
 import org.codehaus.groovy.grails.context.support.PluginAwareResourceBundleMessageSource
-import net.hedtech.banner.tools.i18n.BannerMessageSource
+import net.hedtech.banner.i18n.BannerMessageSource
 
 class I18nCoreGrailsPlugin {
 
