@@ -8,7 +8,7 @@ package net.hedtech.banner.i18n
 import grails.test.spock.IntegrationSpec
 import org.junit.Test
 
-class TextManagerServiceIntegrationSpec {
+class TextManagerServiceIntegrationSpec extends IntegrationSpec {
 
     def textManagerService
 
