@@ -173,8 +173,8 @@ class TextManagerService {
         if (localeLoaded[locale] && (t0.getTime() - localeLoaded[locale].getTime()) < timeOut) {
             msg = cacheMsg[key]?cacheMsg[key][locale]:null
         } else {
-            def tmLocale = 'enGB'    //Todo: get mapping between web request locale and TranMan locale
-            def tmProject = 'TM4BT'  //Todo: get from Config (one or more projects could be used)
+            def tmLocale = locale?.toString().replace('_','')    //Todo: get mapping between web request locale and TranMan locale
+            def tmProject = 'TM4TEPROJ1'  //Todo: get from Config (one or more projects could be used)
             def since = new java.sql.Timestamp(localeLoaded[locale]?localeLoaded[locale].getTime():0) // 0 is like beginning of time
             def params = [locale: tmLocale, pc: tmProject, now: new java.sql.Timestamp(t0.getTime()), since: since]
             def tmdbif = new Dbif(connectString, null) // get a standard connection
