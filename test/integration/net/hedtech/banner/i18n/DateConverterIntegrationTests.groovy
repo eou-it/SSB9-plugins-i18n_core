@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2009-2015 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2017 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
@@ -23,6 +23,7 @@ class DateConverterIntegrationTests   {
 
     public static final String ARABIC_LOCALE = "ar"
     public static final String US_LOCALE = "en_US"
+    public static final String PT_LOCALE = "pt"
 
     @After
     public void tearDown() {
@@ -259,6 +260,24 @@ class DateConverterIntegrationTests   {
         def dateFields = ["startDate"]
         def dateParts = dateConverterService.JSONDateUnmarshaller(data, dateFields)
         assertEquals dateParts.startDate, null
+    }
+
+
+    @Test
+    void testGetMinWeekdays(){
+        String[] twoCharMinWeekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+        LocaleContextHolder.setLocale(new Locale(US_LOCALE))
+        String[] minWeekdays = dateConverterService.getMinWeekdays(US_LOCALE)
+        assertEquals twoCharMinWeekdays, minWeekdays
+    }
+
+
+    @Test
+    void testGetMinWeekdaysInPortuguese(){
+        String[] threeCharMinWeekdays = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"]
+        LocaleContextHolder.setLocale(new Locale(PT_LOCALE))
+        String[] minWeekdays = dateConverterService.getMinWeekdays(PT_LOCALE)
+        assertEquals threeCharMinWeekdays, minWeekdays
     }
 
 
