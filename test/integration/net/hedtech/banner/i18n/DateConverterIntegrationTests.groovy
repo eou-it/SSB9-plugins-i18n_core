@@ -274,7 +274,7 @@ class DateConverterIntegrationTests   {
 
     @Test
     void testGetMinWeekdaysInPortuguese(){
-        String[] threeCharMinWeekdays = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"]
+        String[] threeCharMinWeekdays = ["dom", "seg", "ter", "qua", "qui", "sex", "s\u00E1b"]
         LocaleContextHolder.setLocale(new Locale(PT_LOCALE))
         String[] minWeekdays = dateConverterService.getMinWeekdays(PT_LOCALE)
         assertEquals threeCharMinWeekdays, minWeekdays
