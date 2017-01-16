@@ -173,7 +173,7 @@ class TextManagerService {
         if (localeLoaded[locale] && (t0.getTime() - localeLoaded[locale].getTime()) < timeOut) {
             msg = cacheMsg[key]?cacheMsg[key][locale]:null
         } else {
-            def tmLocale = locale?.toString().replace('_','')    //Todo: get mapping between web request locale and TranMan locale
+            def tmLocale = locale?.toString().replace('_','')
             def tmProject = tranManProject()
             def since = new java.sql.Timestamp(localeLoaded[locale]?localeLoaded[locale].getTime():0) // 0 is like beginning of time
             def params = [locale: tmLocale, pc: tmProject, now: new java.sql.Timestamp(t0.getTime()), since: since]
