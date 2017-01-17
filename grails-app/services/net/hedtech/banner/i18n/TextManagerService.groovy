@@ -196,7 +196,7 @@ class TextManagerService {
                 rows = sql.rows(statement, params, null)
             }
             catch (e) {
-                println(e)
+                log.error("Exception in findMessage for key=$key, locale=$locale \n$e")
             }
             finally {
                 sql.close()
