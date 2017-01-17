@@ -174,6 +174,7 @@ class TextManagerService {
             msg = cacheMsg[key]?cacheMsg[key][locale]:null
         } else {
             def tmLocale = locale?.toString().replace('_','')
+            tmLocale = (tmLocale =="enUS")? ROOT_LOCALE_TM:tmLocale
             def tmProject = tranManProject()
             def since = new java.sql.Timestamp(localeLoaded[locale]?localeLoaded[locale].getTime():0) // 0 is like beginning of time
             def params = [locale: tmLocale, pc: tmProject, now: new java.sql.Timestamp(t0.getTime()), since: since]
