@@ -17,7 +17,7 @@ class ResourceBundleService {
         messageSource.getNormalizedNames().each { basename ->
             result << [ id: id++, basename: basename,  enableTranslation: false]
         }
-        result
+        result.toList()
     }
 
     def save(data) {
