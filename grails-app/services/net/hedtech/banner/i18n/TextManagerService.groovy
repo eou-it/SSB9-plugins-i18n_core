@@ -179,7 +179,8 @@ class TextManagerService {
             def since = new java.sql.Timestamp(localeLoaded[locale]?localeLoaded[locale].getTime():0) // 0 is like beginning of time
             def params = [locale: tmLocale, pc: tmProject, now: new java.sql.Timestamp(t0.getTime()), since: since]
             def tmdbif = new Dbif(connectString, null) // get a standard connection
-            def sql = new Sql(tmdbif.conn)
+            Sql sql = new Sql(tmdbif.conn)
+            sql.cacheStatements = false
             //Query fetching changed messages. Don't use message with status pending (11).
             //Can change to use mod_date > :since when changing :since to time in database timezone.
             def statement = """select parent_name||object_name as key
