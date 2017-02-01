@@ -14,7 +14,7 @@ class TextManagerServiceIntegrationSpec extends IntegrationSpec {
 
     def setup() {
         textManagerService = new TextManagerService()
-        textManagerService.createProjectForApp('ZZZ_INTEGTEST', 'Integration Test Banner Core')
+        textManagerService.createProjectForApp('ZZZ_INTEGTEST', 'Integration Test i18n Core')
     }
 
     def cleanup() {
