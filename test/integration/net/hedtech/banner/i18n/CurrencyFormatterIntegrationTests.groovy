@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2009-2016 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2017 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
@@ -45,6 +45,7 @@ def currencyFormatService
     private final String ES_NEG_TEST_VALUE = "-1.234.567.890,24 \$"
     private final String INVALID_CODE ="XYZ"
     private final String AR = "ar"
+    private final String ARSA = "ar_SA"
     public final String EN = "en"
     public final String US = "US"
     public final String FRCA = "fr-CA"
@@ -162,6 +163,18 @@ def currencyFormatService
     void testUSDForSpanishLocalePositiveCurrencyFormatter() {
         LCH.setLocale(new Locale(ES))
         assertEquals currencyFormatService.format(USD,new BigDecimal(NEGATIVE_TEST_VALUE)),ES_NEG_TEST_VALUE
+    }
+
+    @Test
+    void testUSDForSaudiArabicLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ARSA))
+        assertEquals currencyFormatService.format(USD, new BigDecimal(POSITIVE_TEST_VALUE)), USD_POS_TEST_VALUE
+    }
+
+    @Test
+    void testUSDForSaudiArabicLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ARSA))
+        assertEquals currencyFormatService.format(USD, new BigDecimal(NEGATIVE_TEST_VALUE)), USD_NEG_TEST_VALUE
     }
 
     @Test

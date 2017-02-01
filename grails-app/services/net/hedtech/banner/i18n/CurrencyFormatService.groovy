@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2009-2016 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2017 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 
 package net.hedtech.banner.i18n
@@ -24,6 +24,7 @@ class CurrencyFormatService {
 
     public final String US = "US"
 
+    public final String ARABIC_SUB_LOCALE = "ar_"
 
     public String format(String currencyCode, BigDecimal amount, int currencyStyle = 1) throws CurrencyNotFoundException {
         if (isInvalidCurrencyCode(currencyCode)) {
@@ -31,7 +32,7 @@ class CurrencyFormatService {
         }
 
         Locale locale = LCH.getLocale()
-        locale = locale.toString().equalsIgnoreCase(ARABIC_LOCALE) ? new Locale(EN, US) : locale
+        locale = (locale.toString().equalsIgnoreCase(ARABIC_LOCALE) || locale.toString().toLowerCase().startsWith(ARABIC_SUB_LOCALE)) ? new Locale(EN, US) : locale
         String fmtMonetaryValue;
         ArabicShaping shaping = new ArabicShaping(ArabicShaping.DIGITS_AN2EN)
         String defaultCurrencyStyle  = MessageHelper.message("default.currency.formatter.style")
