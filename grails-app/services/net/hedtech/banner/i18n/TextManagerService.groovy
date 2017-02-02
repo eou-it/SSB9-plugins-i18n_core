@@ -39,16 +39,16 @@ class TextManagerService {
         def appName = grails.util.Holders.grailsApplication.metadata['app.name']
         def result = ""
         def matches = 0
-        // Find projects with a matching application name in tmcfg
+        // Find projects with a matching application name in GMRPCFG
         // If more matches exist pick the project with the latest activity date
         def statement = """
-          select project_code from tmcfg natural join tmproj
-          where cfg_key = $PROJECT_CFG_KEY_APP
-          and cfg_value = $appName
-          order by project_acty_date
+          select GMRPCFG_PROJECT from GMRPCFG natural join GMBPROJ
+          where GMRPCFG_KEY = $PROJECT_CFG_KEY_APP
+          and GMRPCFG_VALUE = $appName
+          order by GMRPCFG_ACTIVITY_DATE
         """
         sql.eachRow(statement) { row ->
-            result = row.PROJECT_CODE
+            result = row.GMRPCFG_PROJECT
             matches++
         }
         tmdbif.closeConnection()
@@ -70,12 +70,12 @@ class TextManagerService {
             def appName = grails.util.Holders.grailsApplication.metadata['app.name']
             try {
                 def statement = """
-                   insert into tmproj (project_code, project_acty_date, project_desc, owner)
+                   insert into GMBPROJ (GMBPROJ_PROJECT, GMBPROJ_ACTIVITY_DATE, GMBPROJ_DESC, GMBPROJ_OWNER)
                    values ($projectCode, sysdate, $projectDescription, 'TRANMGR')
                 """
                 sql.execute(statement)
                 statement = """
-                   insert into tmcfg (project_code, cfg_key, cfg_value,cfg_desc)
+                   insert into GMRPCFG (GMRPCFG_PROJECT, GMRPCFG_KEY, GMRPCFG_VALUE,GMRPCFG_DESC)
                    values ($projectCode, $PROJECT_CFG_KEY_APP, $appName, 'Banner Application in this project')
                 """
                 sql.execute(statement)
@@ -96,11 +96,11 @@ class TextManagerService {
             try {
                 def statement = """
                   begin
-                    delete from tmcfg where project_code=$project;
-                    delete from tmstrprop where project_code=$project;
-                    delete from tmstrprhst where project_code=$project;
-                    delete from tmobject where project_code=$project;
-                    delete from tmproj where project_code=$project;
+                    delete from GMRPCFG where project_code=$project;
+                    delete from GMRSPRP where project_code=$project;
+                    delete from GMRSHST where project_code=$project;
+                    delete from GMRPOBJ where project_code=$project;
+                    delete from GMBPROJ where project_code=$project;
                   end;
                 """
                 sql.execute(statement)
@@ -114,16 +114,18 @@ class TextManagerService {
 
     def save(properties, name, sourceLocale=ROOT_LOCALE_APP, locale){
         def project = tranManProject()
+        project = project!=""?project:"TM4TEPROJ1"
         if (project) {
             def ctx = new TmCtx()
             def tmdbif
             int cnt = 0;
+            String sl = sourceLocale.replace('_','')
             try {
                 String[] args = [
                         "pc=${project}", //Todo configure project in translation manager
                         "lo=${connectString}",
                         "mn=${name.toUpperCase()}",
-                        "sl=$ROOT_LOCALE_TM",
+                        "sl=$sl",
                         locale == "$ROOT_LOCALE_APP" ? "sf=${name}.properties" : "sf=${name}_${locale}.properties",
                         locale == "$sourceLocale" ? 'mo=s' : 'mo=r',
                         locale == "$sourceLocale" ? '' : "tl=${locale.replace('_', '')}"
@@ -167,6 +169,11 @@ class TextManagerService {
     def localeLoaded=[:]
     def timeOut = 60*1000 as long //milli seconds
 
+    @Override
+    void setProperty(String property, Object newValue) {
+        super.setProperty(property, newValue)
+    }
+
     def findMessage(key, locale) {
         def msg
         def t0 = new Date()
@@ -183,14 +190,15 @@ class TextManagerService {
             sql.cacheStatements = false
             //Query fetching changed messages. Don't use message with status pending (11).
             //Can change to use mod_date > :since when changing :since to time in database timezone.
-            def statement = """select parent_name||object_name as key
-                              ,decode(status,11,null,pre_str||string||pst_str) as string
-                               from tmstr natural join tmstrprop
-                               where project_code = :pc
-                                 and module_type = 'J'
-                                 and lang_code = :locale
-                                 and (sysdate - mod_date) <= (cast(:now as date) - cast(:since as date) )
+            def statement = """select GMRSPRP_PARENT_NAME||GMRSPRP_OBJECT_NAME as key
+                              ,decode(GMRSPRP_STAT_CODE,11,null,GMRSPRP_PRE_STR||GMBSTRG_STRING||GMRSPRP_PST_STR) as string
+                               from GMBSTRG natural join GMRSPRP
+                               where GMRSPRP_PROJECT = :pc
+                                 and GMRSPRP_MODULE_TYPE = 'J'
+                                 and GMRSPRP_LANG_CODE = :locale
+                                and (sysdate - GMRSPRP_ACTIVITY_DATE) <= (cast(:now as date) - cast(:since as date) )
                             """
+
             //and parent_type = 10 and parent_name = :pn and object_type = 26 and object_name = :on and object_prop = 438
             def rows
             try {
