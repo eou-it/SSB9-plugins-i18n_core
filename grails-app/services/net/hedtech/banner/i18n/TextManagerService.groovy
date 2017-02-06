@@ -114,7 +114,6 @@ class TextManagerService {
 
     def save(properties, name, sourceLocale=ROOT_LOCALE_APP, locale){
         def project = tranManProject()
-        project = project!=""?project:"TM4TEPROJ1"
         if (project) {
             def ctx = new TmCtx()
             def tmdbif
@@ -182,7 +181,6 @@ class TextManagerService {
         } else {
             def tmLocale = locale?.toString().replace('_','')
             def tmProject = tranManProject()
-            tmLocale = (tmLocale =="enUS")? ROOT_LOCALE_TM:tmLocale
             def since = new java.sql.Timestamp(localeLoaded[locale]?localeLoaded[locale].getTime():0) // 0 is like beginning of time
             def params = [locale: tmLocale, pc: tmProject, now: new java.sql.Timestamp(t0.getTime()), since: since]
             def tmdbif = new Dbif(connectString, null) // get a standard connection
@@ -192,7 +190,7 @@ class TextManagerService {
             //Can change to use mod_date > :since when changing :since to time in database timezone.
             def statement = """select GMRSPRP_PARENT_NAME||GMRSPRP_OBJECT_NAME as key
                               ,decode(GMRSPRP_STAT_CODE,11,null,GMRSPRP_PRE_STR||GMBSTRG_STRING||GMRSPRP_PST_STR) as string
-                               from GMBSTRG natural join GMRSPRP
+                               from GMBSTRG join GMRSPRP on GMBSTRG_STRCODE=GMRSPRP_STRCODE
                                where GMRSPRP_PROJECT = :pc
                                  and GMRSPRP_MODULE_TYPE = 'J'
                                  and GMRSPRP_LANG_CODE = :locale
