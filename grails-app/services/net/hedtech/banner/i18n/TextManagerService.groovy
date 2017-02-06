@@ -180,6 +180,7 @@ class TextManagerService {
             msg = cacheMsg[key]?cacheMsg[key][locale]:null
         } else {
             def tmLocale = locale?.toString().replace('_','')
+            tmLocale = getAppropriateLocale(tmLocale)
             def tmProject = tranManProject()
             def since = new java.sql.Timestamp(localeLoaded[locale]?localeLoaded[locale].getTime():0) // 0 is like beginning of time
             def params = [locale: tmLocale, pc: tmProject, now: new java.sql.Timestamp(t0.getTime()), since: since]
@@ -222,5 +223,13 @@ class TextManagerService {
             println "$t0: Reloaded ${rows.size()} modified texts in ${ t2.getTime() - t0.getTime()} ms . Query+Fetch time: ${t1.getTime() - t0.getTime()}"
         }
         msg
+    }
+
+    String getAppropriateLocale(String locale){
+        if(locale.contains("ar"))
+            return "arSA"
+        else if(locale.contains("es"))
+            return "esMX"
+        else return locale
     }
 }
