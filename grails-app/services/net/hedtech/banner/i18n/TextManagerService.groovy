@@ -212,7 +212,7 @@ class TextManagerService {
             def t1 = new Date()
             if (rows.size()) {
                 rows.each { row ->
-                    def translations = cacheMsg[row.key]?cacheMsg[key]:[:]
+                    def translations = [:]
                     translations[locale] = row.string
                     cacheMsg[row.key.substring(1)] = translations
                 }
