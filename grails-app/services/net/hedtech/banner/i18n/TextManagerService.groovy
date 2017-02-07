@@ -21,9 +21,9 @@ class TextManagerService {
     final def PROJECT_CFG_KEY_VERSION = 'BAN_APP_VERSION'
 
     private def dbUrl =
-            (Holders.config?.tranManDataSource?.url?:Holders.config.bannerDataSource.url).minus("jdbc:oracle:thin:@")
-    private def username = Holders.config?.tranManDataSource?.username?:Holders.config.bannerDataSource.username
-    private def password = Holders.config?.tranManDataSource?.password?:Holders.config.bannerDataSource.password
+            (Holders.config?.tranManDataSource?.url?:Holders.config.bannerSsbDataSource.url).minus("jdbc:oracle:thin:@")
+    private def username = Holders.config?.tranManDataSource?.username?:Holders.config.bannerSsbDataSource.username
+    private def password = Holders.config?.tranManDataSource?.password?:Holders.config.bannerSsbDataSource.password
     final def connectString = "${username}/${password}@${dbUrl}"  // Eventually just use Banner connection
 
     private def tranManProjectCache
