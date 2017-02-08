@@ -42,7 +42,7 @@ class TextManagerService {
         // Find projects with a matching application name in GMRPCFG
         // If more matches exist pick the project with the latest activity date
         def statement = """
-          select GMRPCFG_PROJECT from GMRPCFG natural join GMBPROJ
+          select GMRPCFG_PROJECT from GMRPCFG join GMBPROJ on GMBPROJ_PROJECT=GMRPCFG_PROJECT
           where GMRPCFG_KEY = $PROJECT_CFG_KEY_APP
           and GMRPCFG_VALUE = $appName
           order by GMRPCFG_ACTIVITY_DATE
