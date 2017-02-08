@@ -124,7 +124,7 @@ class TextManagerService {
                         "pc=${project}", //Todo configure project in translation manager
                         "lo=${connectString}",
                         "mn=${name.toUpperCase()}",
-                        "sl=$sl",
+                        "sl=$ROOT_LOCALE_TM",
                         locale == "$ROOT_LOCALE_APP" ? "sf=${name}.properties" : "sf=${name}_${locale}.properties",
                         locale == "$sourceLocale" ? 'mo=s' : 'mo=r',
                         locale == "$sourceLocale" ? '' : "tl=${locale.replace('_', '')}"
