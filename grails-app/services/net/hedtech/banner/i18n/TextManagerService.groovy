@@ -28,8 +28,12 @@ class TextManagerService {
 
     private def tranManProjectCache
     private def cacheTime
+    private def tmEnabled = true
 
     private def tranManProject() {
+        if (!tmEnabled) {
+            return
+        }
         if ( cacheTime && ( new Date().getTime() - cacheTime.getTime() ) < 5 * 60 * 1000 ) {
             return tranManProjectCache
         }
@@ -39,19 +43,24 @@ class TextManagerService {
         def appName = grails.util.Holders.grailsApplication.metadata['app.name']
         def result = ""
         def matches = 0
-        // Find projects with a matching application name in GMRPCFG
-        // If more matches exist pick the project with the latest activity date
-        def statement = """
+        try {
+            // Find projects with a matching application name in GMRPCFG
+            // If more matches exist pick the project with the latest activity date
+            def statement = """
           select GMRPCFG_PROJECT from GMRPCFG join GMBPROJ on GMBPROJ_PROJECT=GMRPCFG_PROJECT
           where GMRPCFG_KEY = $PROJECT_CFG_KEY_APP
           and GMRPCFG_VALUE = $appName
           order by GMRPCFG_ACTIVITY_DATE
         """
-        sql.eachRow(statement) { row ->
-            result = row.GMRPCFG_PROJECT
-            matches++
+            sql.eachRow(statement) { row ->
+                result = row.GMRPCFG_PROJECT
+                matches++
+            }
+        } catch (e) {
+            tmEnabled = false
+        } finally {
+            tmdbif.closeConnection()
         }
-        tmdbif.closeConnection()
         if (matches > 1) {
             log.warn "Multiple TranMan projects configured for application $appName. Please correct."
         }
@@ -64,6 +73,9 @@ class TextManagerService {
     }
 
     def createProjectForApp(projectCode, projectDescription) {
+        if (!tmEnabled) {
+            return
+        }
         if (!tranManProject()) {
             def tmdbif = new Dbif(connectString, null) // get a standard connection
             def sql = new Sql(tmdbif.conn)
@@ -89,6 +101,9 @@ class TextManagerService {
 
     //Used to clean test project
     def deleteProjectforApp(){
+        if (!tmEnabled) {
+            return
+        }
         def project = tranManProject()
         if (project) {
             def tmdbif = new Dbif(connectString, null) // get a standard connection
@@ -113,6 +128,9 @@ class TextManagerService {
     }
 
     def save(properties, name, sourceLocale=ROOT_LOCALE_APP, locale){
+        if (!tmEnabled) {
+            return
+        }
         def project = tranManProject()
         if (project) {
             def ctx = new TmCtx()
@@ -174,6 +192,9 @@ class TextManagerService {
     }
 
     def findMessage(key, locale) {
+        if (!tmEnabled) {
+            return null
+        }
         def msg
         def t0 = new Date()
         if (localeLoaded[locale] && (t0.getTime() - localeLoaded[locale].getTime()) < timeOut) {
@@ -182,6 +203,9 @@ class TextManagerService {
             def tmLocale = locale?.toString().replace('_','')
             tmLocale = getAppropriateLocale(tmLocale)
             def tmProject = tranManProject()
+            if (!tmEnabled) {
+                return null
+            }
             def since = new java.sql.Timestamp(localeLoaded[locale]?localeLoaded[locale].getTime():0) // 0 is like beginning of time
             def params = [locale: tmLocale, pc: tmProject, now: new java.sql.Timestamp(t0.getTime()), since: since]
             def tmdbif = new Dbif(connectString, null) // get a standard connection
