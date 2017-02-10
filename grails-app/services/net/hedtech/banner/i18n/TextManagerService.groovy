@@ -186,11 +186,6 @@ class TextManagerService {
     def localeLoaded=[:]
     def timeOut = 60*1000 as long //milli seconds
 
-    @Override
-    void setProperty(String property, Object newValue) {
-        super.setProperty(property, newValue)
-    }
-
     def findMessage(key, locale) {
         if (!tmEnabled) {
             return null
