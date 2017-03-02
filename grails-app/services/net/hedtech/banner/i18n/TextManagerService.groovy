@@ -20,11 +20,11 @@ class TextManagerService {
     final def PROJECT_CFG_KEY_APP  = 'BAN_APP'
     final def PROJECT_CFG_KEY_VERSION = 'BAN_APP_VERSION'
 
-    private def dbUrl =
-            (Holders.config?.tranManDataSource?.url?:Holders.config.bannerSsbDataSource.url).minus("jdbc:oracle:thin:@")
-    private def username = Holders.config?.tranManDataSource?.username?:Holders.config.bannerSsbDataSource.username
-    private def password = Holders.config?.tranManDataSource?.password?:Holders.config.bannerSsbDataSource.password
-    final def connectString = "${username}/${password}@${dbUrl}"  // Eventually just use Banner connection
+    String dbUrl =Holders.config.bannerSsbDataSource.url
+    def url = dbUrl.substring(dbUrl.lastIndexOf("@") + 1)
+    def username = Holders.config.bannerSsbDataSource.username
+    def password = Holders.config.bannerSsbDataSource.password
+    final def connectString = "${username}/${password}@${url}" // Eventually just use Banner connection
 
     private def tranManProjectCache
     private def cacheTime
@@ -80,15 +80,16 @@ class TextManagerService {
             def tmdbif = new Dbif(connectString, null) // get a standard connection
             def sql = new Sql(tmdbif.conn)
             def appName = grails.util.Holders.grailsApplication.metadata['app.name']
+            def curDate = new Date()
             try {
                 def statement = """
-                   insert into GMBPROJ (GMBPROJ_PROJECT, GMBPROJ_ACTIVITY_DATE, GMBPROJ_DESC, GMBPROJ_OWNER)
-                   values ($projectCode, sysdate, $projectDescription, 'TRANMGR')
+                   insert into GMBPROJ (GMBPROJ_PROJECT, GMBPROJ_ACTIVITY_DATE, GMBPROJ_DESC, GMBPROJ_OWNER,GMBPROJ_USER_ID)
+                   values ($projectCode, sysdate, $projectDescription, 'TRANMGR','ban_ss_user')
                 """
                 sql.execute(statement)
                 statement = """
-                   insert into GMRPCFG (GMRPCFG_PROJECT, GMRPCFG_KEY, GMRPCFG_VALUE,GMRPCFG_DESC)
-                   values ($projectCode, $PROJECT_CFG_KEY_APP, $appName, 'Banner Application in this project')
+                   insert into GMRPCFG (GMRPCFG_PROJECT, GMRPCFG_KEY, GMRPCFG_VALUE,GMRPCFG_DESC,GMRPCFG_USER_ID,GMRPCFG_ACTIVITY_DATE)
+                   values ($projectCode, $PROJECT_CFG_KEY_APP, $appName, 'Banner Application in this project','ban_ss_user',sysdate )
                 """
                 sql.execute(statement)
                 cacheTime = null
@@ -111,11 +112,11 @@ class TextManagerService {
             try {
                 def statement = """
                   begin
-                    delete from GMRPCFG where project_code=$project;
-                    delete from GMRSPRP where project_code=$project;
-                    delete from GMRSHST where project_code=$project;
-                    delete from GMRPOBJ where project_code=$project;
-                    delete from GMBPROJ where project_code=$project;
+                    delete from GMRPCFG where GMRPCFG_project=$project;
+                    delete from GMRSPRP where GMRSPRP_project=$project;
+                    delete from GMRSHST where GMRSHST_project=$project;
+                    delete from GMRPOBJ where GMRPOBJ_project=$project;
+                    delete from GMBPROJ where GMBPROJ_project=$project;
                   end;
                 """
                 sql.execute(statement)

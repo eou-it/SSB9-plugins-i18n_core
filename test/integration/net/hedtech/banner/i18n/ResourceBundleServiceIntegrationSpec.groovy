@@ -4,6 +4,7 @@
 package net.hedtech.banner.i18n
 
 import grails.test.spock.IntegrationSpec
+import grails.util.Holders
 
 class ResourceBundleServiceIntegrationSpec extends IntegrationSpec {
 
@@ -25,6 +26,9 @@ class ResourceBundleServiceIntegrationSpec extends IntegrationSpec {
     ]
 
     def setup() {
+        Holders.config.bannerSsbDataSource.username="general"
+        Holders.config.bannerSsbDataSource.url="10.42.4.24:1521:BAN83"//"localhost:1521:BAN83"//
+        Holders.config.bannerSsbDataSource.password="u_pick_it"
         def subDir = new File(externalLocation)
         subDir.mkdirs()
         new File(externalLocation+"/test.properties").write("key = Text")

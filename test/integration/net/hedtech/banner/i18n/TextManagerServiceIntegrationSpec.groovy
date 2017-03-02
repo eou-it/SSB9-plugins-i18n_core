@@ -6,6 +6,7 @@ package net.hedtech.banner.i18n
 
 
 import grails.test.spock.IntegrationSpec
+import grails.util.Holders
 import org.junit.Test
 
 class TextManagerServiceIntegrationSpec extends IntegrationSpec {
@@ -13,8 +14,11 @@ class TextManagerServiceIntegrationSpec extends IntegrationSpec {
     def textManagerService
 
     def setup() {
+        Holders.config.bannerSsbDataSource.username="general"
+        Holders.config.bannerSsbDataSource.url="10.42.4.24:1521:BAN83"//"localhost:1521:BAN83"//
+        Holders.config.bannerSsbDataSource.password="u_pick_it"
         textManagerService = new TextManagerService()
-        textManagerService.createProjectForApp('ZZZ_INTEGTEST', 'Integration Test i18n Core')
+        textManagerService.createProjectForApp('UNITTEST', 'Integration Test i18n Core')
     }
 
     def cleanup() {
