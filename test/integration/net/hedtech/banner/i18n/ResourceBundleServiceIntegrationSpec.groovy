@@ -10,6 +10,7 @@ class ResourceBundleServiceIntegrationSpec extends IntegrationSpec {
 
     def messageSource
     def resourceBundleService
+    def textManagerService
 
     def externalLocation = 'target/i18n'
 
@@ -29,6 +30,7 @@ class ResourceBundleServiceIntegrationSpec extends IntegrationSpec {
         Holders.config.bannerSsbDataSource.username="general"
         Holders.config.bannerSsbDataSource.url="10.42.4.24:1521:BAN83"//"localhost:1521:BAN83"//
         Holders.config.bannerSsbDataSource.password="u_pick_it"
+        textManagerService= new TextManagerService();
         def subDir = new File(externalLocation)
         subDir.mkdirs()
         new File(externalLocation+"/test.properties").write("key = Text")
@@ -38,11 +40,14 @@ class ResourceBundleServiceIntegrationSpec extends IntegrationSpec {
                 externalLocation, 'testExternalResource',
                 "Setting up external message for integration test")
         messageSource?.setExternalMessageSource(externalMessageSource)
+        resourceBundleService.textManagerService = textManagerService
+        textManagerService.createProjectForApp('UNITTEST', 'Integration Test i18n Core')
     }
 
     def cleanup() {
         def subDir = new File(externalLocation)
         subDir.deleteDir()
+        textManagerService.deleteProjectforApp()
     }
 
     void "tests"() {
