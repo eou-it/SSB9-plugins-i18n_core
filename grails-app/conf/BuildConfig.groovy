@@ -5,6 +5,8 @@ grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 
+grails.plugin.location.'banner-codenarc'      = "../banner_codenarc.git"
+
 grails.project.dependency.resolver="maven"
 
 grails.project.dependency.resolution = {

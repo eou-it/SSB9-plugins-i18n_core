@@ -3055,11 +3055,14 @@ div.ui-calendar-widget div.ui-widget-header{
         padding: 1.6em 1em 0;
         width: auto;
     }
-    .ui-datepicker-weekheader ul li{
-        margin-right:1.5em;
+    :lang(pt) .ui-datepicker-weekheader ul li {
+        margin-right:1.2em;
     }
     #multiCalendarContainer .ui-datepicker{
         width:100%;
+    }
+    .ui-datepicker-weekheader ul li:nth-last-child(1){
+        margin-right: auto;
     }
 
 
