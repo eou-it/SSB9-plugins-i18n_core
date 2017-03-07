@@ -40,11 +40,13 @@ class TextManagerServiceIntegrationSpec extends IntegrationSpec {
         when: "Saved OK"
         def sourceStatus = textManagerService.save(sourceProperties, name, sourceLocale, sourceLocale)
         def targetStatus = textManagerService.save(targetProperties, name, sourceLocale, targetLocale)
+        def message = textManagerService.findMessage("dummy.label1",targetLocale)
         then: "Great"
         sourceStatus.error == null
         sourceStatus.count == 2
         targetStatus.error == null
         targetStatus.count == 2
+        message !=null
     }
 
     //Test result of saving when the query part is implemented
