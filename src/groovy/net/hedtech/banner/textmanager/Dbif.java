@@ -260,7 +260,7 @@ public class Dbif {
             op.status=setStmt.getInt(8);
             System.out.println("  "+op.statusX);
         }   catch (SQLException e) {
-            TmjProps.exitFromMainOrThrow(1,"Error in setPropString",e);
+            TmjProps.exitFromMainOrThrow(1,"Error in setPropString string="+op.string,e);
         }
     }
 
