@@ -1,8 +1,10 @@
 /*******************************************************************************
- Copyright 2009-2015 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2017 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
 import grails.converters.JSON
 import net.hedtech.banner.i18n.utils.LocaleUtilities
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -14,15 +16,13 @@ import org.springframework.context.i18n.LocaleContextHolder
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-
 class DateConverterIntegrationTests   {
 
     def dateConverterService
 
     public static final String ARABIC_LOCALE = "ar"
     public static final String US_LOCALE = "en_US"
+    public static final String PT_LOCALE = "pt"
 
     @After
     public void tearDown() {
@@ -69,7 +69,6 @@ class DateConverterIntegrationTests   {
     void testformatDateInObjectsToDefaultCalendarDate(){
         def utilDateArgument = new Date((2012 - 1900), 0, 1)
         def defaultCalendarStringDate = "01/01/2012"
-        def defaultCalendarStringDate2 = "01/01/2013"
         def defaultCalendarStringDate3 = "02/01/2012"
         def stringDateArg = "01/01/2012"
         def markedDateFields = ["startDate"]
@@ -262,6 +261,24 @@ class DateConverterIntegrationTests   {
     }
 
 
+    @Test
+    void testGetMinWeekdays(){
+        String[] twoCharMinWeekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+        LocaleContextHolder.setLocale(new Locale(US_LOCALE))
+        String[] minWeekdays = dateConverterService.getMinWeekdays(US_LOCALE)
+        assertEquals twoCharMinWeekdays, minWeekdays
+    }
+
+
+    @Test
+    void testGetMinWeekdaysInPortuguese(){
+        String[] threeCharMinWeekdays = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"]
+        LocaleContextHolder.setLocale(new Locale(PT_LOCALE))
+        String[] minWeekdays = dateConverterService.getMinWeekdays(PT_LOCALE)
+        assertEquals threeCharMinWeekdays, minWeekdays
+    }
+
+
     private String formatDate(date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         dateFormat.format(date);
@@ -269,4 +286,3 @@ class DateConverterIntegrationTests   {
 
 }
 class MockDomain {}
-
