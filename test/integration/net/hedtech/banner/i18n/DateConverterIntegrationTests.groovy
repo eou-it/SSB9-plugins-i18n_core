@@ -3,7 +3,11 @@
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
+import com.ibm.icu.util.Calendar
+import com.ibm.icu.util.ULocale
+
 import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertNotNull
 import grails.converters.JSON
 import net.hedtech.banner.i18n.utils.LocaleUtilities
@@ -15,6 +19,8 @@ import org.springframework.context.i18n.LocaleContextHolder
 
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
+
+import static org.junit.Assert.assertTrue
 
 class DateConverterIntegrationTests   {
 
@@ -278,6 +284,124 @@ class DateConverterIntegrationTests   {
         assertEquals threeCharMinWeekdays, minWeekdays
     }
 
+
+    @Test
+    void testGetMonthsInEnglishUSLocale(){
+        String[] months = dateConverterService.getMonths(US_LOCALE)
+        months.size()>0?assertTrue(true):assertFalse(true)
+
+    }
+
+    @Test
+    void testGetShortMonthsInEnglishUSLocale(){
+        String[] shortMonths = dateConverterService.getShortMonths(US_LOCALE)
+        shortMonths.size()>0?assertTrue(true):assertFalse(true)
+
+    }
+
+    @Test
+    void testGetWeekDaysInEnglishUSLocale(){
+        String[] weekDays = dateConverterService.getWeekdays(US_LOCALE)
+        weekDays.size()>0?assertTrue(true):assertFalse(true)
+
+    }
+    @Test
+    void testGetShortWeekDaysInEnglishUSLocale(){
+        String[] shortWeekdays = dateConverterService.getShortWeekdays(US_LOCALE)
+        shortWeekdays.size()>0?assertTrue(true):assertFalse(true)
+
+    }
+
+    @Test
+    void testGetAMPMSettingInEnglishUSLocale(){
+        String[] amPmSettings = dateConverterService.getAmPmStrings(US_LOCALE)
+        amPmSettings.size()>0?assertTrue(true):assertFalse(true)
+
+    }
+
+    @Test
+    void testGetGregorianULocaleString(){
+        String gregorianULocaleString = dateConverterService.getGregorianULocaleString()
+        gregorianULocaleString!=null?assertTrue(true):assertFalse(true)
+
+    }
+    @Test
+    void testGetGregorianFromDefaultCalendar(){
+       Date gregorianULocaleString = dateConverterService.getGregorianFromDefaultCalendar(2012,10,20)
+       gregorianULocaleString!=null?assertTrue(true):assertFalse(true)
+
+    }
+    @Test
+    void testGetGregorianFromDefaultCalendarFirstDay(){
+       Date gregorianULocaleString = dateConverterService.getGregorianFromDefaultCalendar(2012,10,-1)
+       gregorianULocaleString!=null?assertTrue(true):assertFalse(true)
+
+    }
+    @Test
+    void testGetGregorianFromDefaultCalendarLastDay(){
+       Date gregorianULocaleString = dateConverterService.getGregorianFromDefaultCalendar(2012,10,-2)
+       gregorianULocaleString!=null?assertTrue(true):assertFalse(true)
+
+    }
+    @Test
+    void testConvertGregorianToDefaultCalendarWithOneArg(){
+       def date = dateConverterService.convertGregorianToDefaultCalendar(new Date((2012 - 1900),0,01))
+       assertEquals("01/01/2012",date)
+    }
+
+    @Test
+    void testConvertDefaultCalendarToGregorianrWithOneArg(){
+      assertEquals(dateConverterService.convertDefaultCalendarToGregorian(new Date((2012 - 1900),0,01)),"01/01/2012")
+    }
+    @Test
+    void testConvertDefaultCalendarToGregorian(){
+      assertEquals(dateConverterService.convertDefaultCalendarToGregorian(new Date((2012 - 1900),0,01),"yyyy/MM/dd"),"01/01/2012")
+    }
+    @Test
+    void testParseDefaultCalendarToGregorian(){
+      def date = dateConverterService.parseDefaultCalendarToGregorian("01012013")
+      date!=null?assertTrue(true):assertFalse(true)
+    }
+
+    @Test
+    void testAdjustCalendarDays(){
+      ULocale toULocale = new ULocale("en_US@calendar=gregorian")
+      Calendar toCalendar = Calendar.getInstance(toULocale);
+      dateConverterService.adjustDate(toCalendar,"3")!=null ?assertTrue(true):assertFalse(true)
+
+    }
+
+    @Test
+    void testAdjustCalendarDaysWithNoAdjustDate(){
+      ULocale toULocale = new ULocale("en_US@calendar=gregorian")
+      Calendar toCalendar = Calendar.getInstance(toULocale);
+      dateConverterService.adjustDate(toCalendar,null)!=null ?assertTrue(true):assertFalse(true)
+
+    }
+
+    @Test
+    void testConvertGregorianToDefaultCalendarWithTime(){
+        assertEquals(dateConverterService.convertGregorianToDefaultCalendarWithTime(new Date((2012 - 1900),0,1),"yyyy/MM/dd"),"2012/01/01")
+    }
+
+    @Test
+    void testConvertDefaultCalendarToGregorianWithTime(){
+        assertEquals(dateConverterService.convertDefaultCalendarToGregorianWithTime(new Date((2012 - 1900),0,1),"yyyy/MM/dd"),"2012/01/01")
+    }
+    @Test
+    void testGetGregorianTranslationULocaleString(){
+        assertEquals(dateConverterService.getGregorianTranslationULocaleString(),"en_US@calendar=gregorian")
+    }
+
+    @Test
+    void testJSONDateMarshaller(){
+        assertEquals(dateConverterService.JSONDateMarshaller("01/01/2012",null),"01/01/2012")
+    }
+
+    @Test
+    void testJSONDateUnmarshaller(){
+        assertEquals(dateConverterService.JSONDateUnmarshaller("01/01/2012",null),"01/01/2012")
+    }
 
     private String formatDate(date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
