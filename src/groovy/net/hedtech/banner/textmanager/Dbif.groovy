@@ -1,15 +1,13 @@
 /******************************************************************************
  *  Copyright 2017 Ellucian Company L.P. and its affiliates.                  *
  ******************************************************************************/
-//This class originates from TranMan. Can we include it as a submodule from a plain java project?
-//ToDo: Refactor package to include net.hedtech and use common java style conventions
 package net.hedtech.banner.textmanager;
 import java.sql.*;
 import oracle.jdbc.*;
 import java.util.Properties;
 
 
-public class Dbif {
+class Dbif {
     String project_code;
     String lang_code_src;
     String lang_code_tgt;
@@ -31,7 +29,7 @@ public class Dbif {
         String	statusX;
 
         public ObjectProperty() {
-            parentType=10; //Module
+            parentType=10;  //Module
             objectType=26;  //Property Class;
             propCode=438;  //D2FP_TEXT;
             status=0;

@@ -15,20 +15,23 @@ class TextManagerService {
 
     static transactional = false //Transaction not managed by hibernate
 
+    def dataSource
+
     final def ROOT_LOCALE_APP  = 'en_US' // This will be the locale assumed for properties without locale
     final def ROOT_LOCALE_TM   = 'root'  // Save the chosen source language as root (as user cannot change translation)
     final def PROJECT_CFG_KEY_APP  = 'BAN_APP'
-    final def PROJECT_CFG_KEY_VERSION = 'BAN_APP_VERSION'
-
-    String dbUrl =Holders.config.bannerSsbDataSource.url
-    def url = dbUrl.substring(dbUrl.lastIndexOf("@") + 1)
-    def username = Holders.config.bannerSsbDataSource.username
-    def password = Holders.config.bannerSsbDataSource.password
-    final def connectString = "${username}/${password}@${url}" // Eventually just use Banner connection
 
     private def tranManProjectCache
     private def cacheTime
     private def tmEnabled = true
+
+    def getConnectionString() {
+        String dbUrl =dataSource.underlyingSsbDataSource.url
+        def url = dbUrl.substring(dbUrl.lastIndexOf("@") + 1)
+        def username = dataSource.underlyingSsbDataSource.username
+        def password = dataSource.underlyingSsbDataSource.password
+        return "${username}/${password}@${url}" // Eventually just use Banner connection
+    }
 
     private def tranManProject() {
         if (!tmEnabled) {
@@ -38,7 +41,7 @@ class TextManagerService {
             return tranManProjectCache
         }
 
-        def tmdbif = new Dbif(connectString, null) // get a standard connection
+        def tmdbif = new Dbif(getConnectionString(), null) // get a standard connection
         def sql = new Sql(tmdbif.conn)
         def appName = grails.util.Holders.grailsApplication.metadata['app.name']
         def result = ""
@@ -77,7 +80,7 @@ class TextManagerService {
             return
         }
         if (!tranManProject()) {
-            def tmdbif = new Dbif(connectString, null) // get a standard connection
+            def tmdbif = new Dbif(getConnectionString(), null) // get a standard connection
             def sql = new Sql(tmdbif.conn)
             def appName = grails.util.Holders.grailsApplication.metadata['app.name']
             def curDate = new Date()
@@ -107,7 +110,7 @@ class TextManagerService {
         }
         def project = tranManProject()
         if (project) {
-            def tmdbif = new Dbif(connectString, null) // get a standard connection
+            def tmdbif = new Dbif(getConnectionString(), null) // get a standard connection
             def sql = new Sql(tmdbif.conn)
             try {
                 def statement = """
@@ -141,7 +144,7 @@ class TextManagerService {
             try {
                 String[] args = [
                         "pc=${project}", //Todo configure project in translation manager
-                        "lo=${connectString}",
+                        "lo=${getConnectionString()}",
                         "mn=${name.toUpperCase()}",
                         "sl=$ROOT_LOCALE_TM",
                         locale == "$ROOT_LOCALE_APP" ? "sf=${name}.properties" : "sf=${name}_${locale}.properties",
@@ -204,7 +207,7 @@ class TextManagerService {
             }
             def since = new java.sql.Timestamp(localeLoaded[locale]?localeLoaded[locale].getTime():0) // 0 is like beginning of time
             def params = [locale: tmLocale, pc: tmProject, now: new java.sql.Timestamp(t0.getTime()), since: since]
-            def tmdbif = new Dbif(connectString, null) // get a standard connection
+            def tmdbif = new Dbif(getConnectionString(), null) // get a standard connection
             Sql sql = new Sql(tmdbif.conn)
             sql.cacheStatements = false
             //Query fetching changed messages. Don't use message with status pending (11).

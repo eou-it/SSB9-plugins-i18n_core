@@ -1,8 +1,7 @@
 /******************************************************************************
  *  Copyright 2017 Ellucian Company L.P. and its affiliates.                  *
  ******************************************************************************/
-//This class originates from TranMan. Can we include it as a submodule from a plain java project?
-//ToDo: Refactor package to include net.hedtech and use common java style conventions
+
 package net.hedtech.banner.textmanager;
 
 import java.io.*;
@@ -10,7 +9,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 
-public class TmjProps {
+class TmjProps {
     private static Dbif tmdbif;
     private static Properties jprops;
     //private static Properties translations;
@@ -126,7 +125,7 @@ public class TmjProps {
         String fname;
         String copyrtxt = "# Copyright 2008-2013 Ellucian Company L.P. and its affiliates.\n"
                         + "#\n";
-        byte copyrbuf[] = copyrtxt.getBytes();
+        byte[] copyrbuf= copyrtxt.getBytes();
         ctx=new TmCtx();
         ctx.parseArgs(args);
         redirectStdout(ctx.get(TmCtx.logFile));

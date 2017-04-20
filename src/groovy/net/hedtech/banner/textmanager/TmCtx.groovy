@@ -1,14 +1,11 @@
 /******************************************************************************
  *  Copyright 2017 Ellucian Company L.P. and its affiliates.                  *
  ******************************************************************************/
-//This class originates from TranMan. Can we include it as a submodule from a plain java project?
-//ToDo: Refactor package to include net.hedtech and use common java style conventions
-
 package net.hedtech.banner.textmanager;
 
 import java.util.HashMap;
 
-public class TmCtx {
+class TmCtx {
     //valdb stores key - value pairs, obtained from arguments
     // In newer version of Java one can use strongly typed HashMaps using
     // C++ template class type syntax
