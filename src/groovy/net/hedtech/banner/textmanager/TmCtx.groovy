@@ -1,7 +1,9 @@
 /******************************************************************************
  *  Copyright 2017 Ellucian Company L.P. and its affiliates.                  *
  ******************************************************************************/
-package net.hedtech.banner.textmanager;
+package net.hedtech.banner.textmanager
+
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 
@@ -21,6 +23,8 @@ class TmCtx {
     public static final String targetFile="tf";
     public static final String logFile="lf";
 
+    private static final def log = Logger.getLogger(getClass())
+
     private void exitError(String msg) throws Exception {
         String message = msg + "\n"+
                          "Arguments: mo=<mode> ba=<batch> lo=<db logon> pc=<TranMan Project> sl=<source language>"+
@@ -33,14 +37,14 @@ class TmCtx {
     public void parseArgs(String[] args) throws Exception {
         //loop through the arguments and parse key=value pairs
         //store the pairs in tmctx
-        System.out.println("Arguments:");
+        log.debug("Arguments:");
         for (int i=0;i<args.length;i++) {
             int eqp=args[i].indexOf("=");
             if (eqp>=0) {
                 String key=args[i].substring(0,eqp).toLowerCase();
                 String val=args[i].substring(eqp+1);
                 valdb.put(key,val);
-                System.out.println(key+"="+val);
+                log.debug(key+"="+val);
             }
         }
         if (valdb.get(logon)==null) {
