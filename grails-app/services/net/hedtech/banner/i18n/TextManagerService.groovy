@@ -6,9 +6,9 @@ package net.hedtech.banner.i18n
 
 import grails.util.Holders
 import groovy.sql.Sql
-import net.hedtech.banner.textmanager.Dbif
-import net.hedtech.banner.textmanager.ReplaceProps
-import net.hedtech.banner.textmanager.TmCtx
+import java.sql.Timestamp
+import net.hedtech.banner.textmanager.TextManagerDB
+import net.hedtech.banner.textmanager.TextManagerUtil
 
 
 class TextManagerService {
@@ -25,7 +25,8 @@ class TextManagerService {
     private def cacheTime
     private def tmEnabled = true
 
-    def getConnectionString() {
+
+    private String getConnectionString() {
         String dbUrl =dataSource.underlyingSsbDataSource.url
         def url = dbUrl.substring(dbUrl.lastIndexOf("@") + 1)
         def username = dataSource.underlyingSsbDataSource.username
@@ -41,9 +42,9 @@ class TextManagerService {
             return tranManProjectCache
         }
 
-        def tmdbif = new Dbif(getConnectionString(), null) // get a standard connection
-        def sql = new Sql(tmdbif.conn)
-        def appName = grails.util.Holders.grailsApplication.metadata['app.name']
+        def textManagerDB = new TextManagerDB(getConnectionString(), null) // get a standard connection
+        def sql = new Sql(textManagerDB.conn)
+        def appName = Holders.grailsApplication.metadata['app.name']
         def result = ""
         def matches = 0
         try {
@@ -62,7 +63,7 @@ class TextManagerService {
         } catch (e) {
             tmEnabled = false
         } finally {
-            tmdbif.closeConnection()
+            textManagerDB.closeConnection()
         }
         if (matches > 1) {
             log.warn "Multiple TranMan projects configured for application $appName. Please correct."
@@ -80,9 +81,9 @@ class TextManagerService {
             return
         }
         if (!tranManProject()) {
-            def tmdbif = new Dbif(getConnectionString(), null) // get a standard connection
-            def sql = new Sql(tmdbif.conn)
-            def appName = grails.util.Holders.grailsApplication.metadata['app.name']
+            def textManagerDB = new TextManagerDB(getConnectionString(), null) // get a standard connection
+            def sql = new Sql(textManagerDB.conn)
+            def appName = Holders.grailsApplication.metadata['app.name']
             def curDate = new Date()
             try {
                 def statement = """
@@ -98,7 +99,7 @@ class TextManagerService {
                 cacheTime = null
                 log.info "Created TranMan project $projectCode"
             } finally {
-                tmdbif.closeConnection()
+                textManagerDB.closeConnection()
             }
         }
     }
@@ -110,8 +111,8 @@ class TextManagerService {
         }
         def project = tranManProject()
         if (project) {
-            def tmdbif = new Dbif(getConnectionString(), null) // get a standard connection
-            def sql = new Sql(tmdbif.conn)
+            def textManagerDB = new TextManagerDB(getConnectionString(), null) // get a standard connection
+            def sql = new Sql(textManagerDB.conn)
             try {
                 def statement = """
                   begin
@@ -126,7 +127,7 @@ class TextManagerService {
                 cacheTime = null
                 log.info "Deleted TranMan project $project"
             } finally {
-                tmdbif.closeConnection()
+                textManagerDB.closeConnection()
             }
         }
     }
@@ -137,8 +138,8 @@ class TextManagerService {
         }
         def project = tranManProject()
         if (project) {
-            def ctx = new TmCtx()
-            def tmdbif
+            def textManagerUtil = new TextManagerUtil()
+            def textManagerDB
             int cnt = 0;
             String sl = sourceLocale.replace('_','')
             try {
@@ -152,9 +153,9 @@ class TextManagerService {
                         locale == "$sourceLocale" ? '' : "tl=${locale.replace('_', '')}"
                 ]
 
-                ctx.parseArgs(args);
-                tmdbif = new Dbif(ctx.get(ctx.logon), ctx)
-                def op = tmdbif.getDefaultObjectProp();
+                textManagerUtil.parseArgs(args);
+                textManagerDB = new TextManagerDB(textManagerUtil.get(textManagerUtil.logon), textManagerUtil)
+                def op = textManagerDB.getDefaultObjectProp();
 
                 properties.each { property ->
                     final String sep = ".";
@@ -167,19 +168,19 @@ class TextManagerService {
                     }
                     op.parentName = "." + key.substring(0, seploc); //. plus expression between brackets in [x.y...].z
                     op.objectName = key.substring(seploc);       // expression between brackets in x.y....[z]
-                    op.string = ReplaceProps.smartQuotesReplace(value);
+                    op.string = TextManagerUtil.smartQuotesReplace(value);
                     log.info key + " = " + op.string
-                    tmdbif.setPropString(op);
+                    textManagerDB.setPropString(op);
                     cnt++;
                 }
                 //Invalidate strings that are in db but not in property file
-                if (ctx.get(ctx.mo).equals("s")) {
-                    tmdbif.invalidateStrings();
+                if (textManagerUtil.get(textManagerUtil.mo).equals("s")) {
+                    textManagerDB.invalidateStrings();
                 }
-                tmdbif.setModuleRecord(ctx);
+                textManagerDB.setModuleRecord(textManagerUtil);
 
             } finally {
-                tmdbif?.closeConnection();
+                textManagerDB?.closeConnection();
             }
             return [error: null, count: cnt]
         }
@@ -205,10 +206,10 @@ class TextManagerService {
             if (!tmEnabled) {
                 return null
             }
-            def since = new java.sql.Timestamp(localeLoaded[locale]?localeLoaded[locale].getTime():0) // 0 is like beginning of time
-            def params = [locale: tmLocale, pc: tmProject, now: new java.sql.Timestamp(t0.getTime()), since: since]
-            def tmdbif = new Dbif(getConnectionString(), null) // get a standard connection
-            Sql sql = new Sql(tmdbif.conn)
+            def since = new Timestamp(localeLoaded[locale]?localeLoaded[locale].getTime():0) // 0 is like beginning of time
+            def params = [locale: tmLocale, pc: tmProject, now: new Timestamp(t0.getTime()), since: since]
+            def textManagerDB = new TextManagerDB(getConnectionString(), null) // get a standard connection
+            Sql sql = new Sql(textManagerDB.conn)
             sql.cacheStatements = false
             //Query fetching changed messages. Don't use message with status pending (11).
             //Can change to use mod_date > :since when changing :since to time in database timezone.
