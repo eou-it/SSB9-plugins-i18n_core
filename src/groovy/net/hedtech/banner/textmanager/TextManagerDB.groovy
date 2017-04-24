@@ -41,69 +41,9 @@ class TextManagerDB {
     public Connection conn
     ObjectProperty defaultProp
     OracleCallableStatement setStmt
-    OracleCallableStatement getStmt
 
     public ObjectProperty getDefaultObjectProp() {
         return defaultProp
-    }
-
-    String getModuleName(String filen, String modn) {
-        int sep1, sep2
-        if (modn != null)
-            return modn
-        sep1 = filen.lastIndexOf("/")
-        sep2 = filen.lastIndexOf("\\")
-        if (sep2 >= 0 && sep1 < sep2)
-            sep1 = sep2
-        if (sep1 < 0)
-            sep1 = 0
-        else
-            sep1++
-        sep2 = filen.lastIndexOf(".")
-        return filen.substring(sep1, sep2).toUpperCase()
-    }
-
-    void setDBContext(TextManagerUtil tmUtil) throws SQLException {
-        int def_status = 1 //set to 1 for properties - assume translatable by default
-        int SQLTrace = 0
-        OracleCallableStatement stmt
-        long timestamp = System.currentTimeMillis()
-        project_code = tmUtil.get(TextManagerUtil.pc)
-        lang_code_src = tmUtil.get(TextManagerUtil.sl)
-        lang_code_tgt = tmUtil.get(TextManagerUtil.tl)
-        module_type = "J"
-        module_name = getModuleName(tmUtil.get(TextManagerUtil.sourceFile), tmUtil.get(TextManagerUtil.moduleName))
-        //Reverse extract.
-        if (tmUtil.get(TextManagerUtil.mo).equals("r")) {
-            def_status = 7 //set to Reverse extracted
-        }
-        try {
-            stmt = (OracleCallableStatement) conn.prepareCall(
-                    "Begin \n" +
-                            "   if :1>0 then \n" +
-                            "         DBMS_SESSION.SET_SQL_TRACE(TRUE) \n" +
-                            "   end if \n" +
-                            "   GMKOBJI.P_SETCONTEXT( \n" +
-                            "             :2,\n" +
-                            "             :3,\n" +
-                            "             :4,\n" +
-                            "             :5,\n" +
-                            "             :6,\n" +
-                            "             :7)\n" +
-                            "End")
-            stmt.setInt(1, SQLTrace)
-            stmt.setString(2, project_code)
-            stmt.setString(3, lang_code_src)
-            stmt.setString(4, lang_code_tgt)
-            stmt.setString(5, module_type)
-            stmt.setString(6, module_name)
-            stmt.setInt(7, def_status)
-            stmt.execute()
-        } catch (SQLException e) {
-            log.error("Error in SetDBContext", e)
-        }
-        timestamp = System.currentTimeMillis() - timestamp
-        log.debug("SetDBContext done in " + timestamp + " ms")
     }
 
     // Constructor
@@ -156,6 +96,65 @@ class TextManagerDB {
                 defaultProp.lang_code = tmUtil.get(TextManagerUtil.tl)
             }
         }
+    }
+
+    String getModuleName(String fileName, String moduleName) {
+        int begin, end
+        if (moduleName != null)
+            return moduleName
+        begin = fileName.lastIndexOf("/")
+        end = fileName.lastIndexOf("\\")
+        if (end >= 0 && begin < end)
+            begin = end
+        if (begin < 0)
+            begin = 0
+        else
+            begin++
+        end = fileName.lastIndexOf(".")
+        return fileName.substring(begin, end).toUpperCase()
+    }
+
+    void setDBContext(TextManagerUtil tmUtil) throws SQLException {
+        int def_status = 1 //set to 1 for properties - assume translatable by default
+        int SQLTrace = 0
+        OracleCallableStatement stmt
+        long timestamp = System.currentTimeMillis()
+        project_code   = tmUtil.get(TextManagerUtil.pc)
+        lang_code_src  = tmUtil.get(TextManagerUtil.sl)
+        lang_code_tgt  = tmUtil.get(TextManagerUtil.tl)
+        module_type = "J"
+        module_name = getModuleName(tmUtil.get(TextManagerUtil.sourceFile), tmUtil.get(TextManagerUtil.moduleName))
+        //Reverse extract.
+        if (tmUtil.get(TextManagerUtil.mo).equals("r")) {
+            def_status = 7 //set to Reverse extracted
+        }
+        try {
+            stmt = (OracleCallableStatement) conn.prepareCall(
+                    "Begin \n" +
+                            "   if :1>0 then \n" +
+                            "         DBMS_SESSION.SET_SQL_TRACE(TRUE) \n" +
+                            "   end if \n" +
+                            "   GMKOBJI.P_SETCONTEXT( \n" +
+                            "             :2,\n" +
+                            "             :3,\n" +
+                            "             :4,\n" +
+                            "             :5,\n" +
+                            "             :6,\n" +
+                            "             :7)\n" +
+                            "End")
+            stmt.setInt(1, SQLTrace)
+            stmt.setString(2, project_code)
+            stmt.setString(3, lang_code_src)
+            stmt.setString(4, lang_code_tgt)
+            stmt.setString(5, module_type)
+            stmt.setString(6, module_name)
+            stmt.setInt(7, def_status)
+            stmt.execute()
+        } catch (SQLException e) {
+            log.error("Error in SetDBContext", e)
+        }
+        timestamp = System.currentTimeMillis() - timestamp
+        log.debug("SetDBContext done in " + timestamp + " ms")
     }
 
     public void closeConnection() throws SQLException {
