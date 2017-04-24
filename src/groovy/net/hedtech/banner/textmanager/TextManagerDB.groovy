@@ -63,7 +63,7 @@ class TextManagerDB {
         return filen.substring(sep1, sep2).toUpperCase()
     }
 
-    void setDBContext(TextManagerUtil tmUtil) throws Exception {
+    void setDBContext(TextManagerUtil tmUtil) throws SQLException {
         int def_status = 1 //set to 1 for properties - assume translatable by default
         int SQLTrace = 0
         OracleCallableStatement stmt
@@ -103,11 +103,11 @@ class TextManagerDB {
             log.error("Error in SetDBContext", e)
         }
         timestamp = System.currentTimeMillis() - timestamp
-        log.debug("SetDBContext done in " + timestamp + " ms\n")
+        log.debug("SetDBContext done in " + timestamp + " ms")
     }
 
     // Constructor
-    public TextManagerDB(String thinURL, TextManagerUtil tmUtil) throws Exception {
+    public TextManagerDB(String thinURL, TextManagerUtil tmUtil) throws SQLException {
         String usr, passwd, host
         int up_sep = thinURL.indexOf("/")
         int at_sep = thinURL.indexOf("@")
@@ -165,7 +165,7 @@ class TextManagerDB {
         }
     }
 
-    void setPropString(ObjectProperty op) throws Exception {
+    void setPropString(ObjectProperty op) throws SQLException {
         try {
             if (setStmt == null) {
                 setStmt = (OracleCallableStatement) conn.prepareCall(
@@ -202,57 +202,7 @@ class TextManagerDB {
         }
     }
 
-    String getPropString(ObjectProperty op) throws Exception {
-        try {
-            if (getStmt == null) {
-                getStmt = (OracleCallableStatement) conn.prepareCall(
-                        "Begin\n" +
-                                "  :1:= GMKOBJI.F_GETPROPTRANSGUI(\n" +
-                                "      pLang_code     => :2,   \n" +
-                                "      pParent_type   => :3,   \n" +
-                                "      pParent_name   => :4,   \n" +
-                                "      pObject_type   => :5,   \n" +
-                                "      pObject_name   => :6,   \n" +
-                                "      pObject_prop   => :7,   \n" +
-                                "      pTransl_stat   => :8,   \n" +
-                                "      pString        => :9,   \n" +
-                                "      pVerify        => :10,  \n" +
-                                "      pWantAttributes=> :11,  \n" +
-                                "      pAttributes    => :12   \n" +
-                                "      )  \n" +
-                                "End")
-
-                getStmt.registerOutParameter(1, OracleTypes.INTEGER)
-                getStmt.registerOutParameter(8, OracleTypes.INTEGER)
-                getStmt.registerOutParameter(9, OracleTypes.VARCHAR)
-                getStmt.registerOutParameter(11, OracleTypes.INTEGER)
-                getStmt.registerOutParameter(12, OracleTypes.VARCHAR)
-            }
-
-            getStmt.setString(2, op.lang_code)
-            getStmt.setInt(3, op.parentType)
-            getStmt.setString(4, op.parentName)
-            getStmt.setInt(5, op.objectType)
-            getStmt.setString(6, op.objectName)
-            getStmt.setInt(7, op.propCode)
-            getStmt.setInt(8, 0) //don't have to provide status
-            getStmt.setString(9, op.string)
-            getStmt.setInt(10, 1) // do verify
-            getStmt.setInt(11, 0) // no attributes needed
-            getStmt.execute()
-            if (getStmt.getInt(1) == 1)
-                op.string = getStmt.getString(9)
-            else
-                op.string = null // no matching translation
-            if (op.string != null && op.string.charAt(0) == '\0')
-                op.string = null // C Null string
-        } catch (SQLException e) {
-            log.error("Error Getting Property String", e)
-        }
-        return op.string
-    }
-
-    void invalidateStrings() throws Exception {
+    void invalidateStrings() throws SQLException {
         OracleCallableStatement stmt
         long timestamp = System.currentTimeMillis()
         try {
@@ -275,7 +225,7 @@ class TextManagerDB {
             stmt.registerOutParameter(5, OracleTypes.INTEGER)
             stmt.execute()
             timestamp = System.currentTimeMillis() - timestamp
-            log.debug("\nObsoleted " + stmt.getInt(5) + " properties in " + timestamp + " ms")
+            log.debug("Obsoleted " + stmt.getInt(5) + " properties in " + timestamp + " ms")
         } catch (SQLException e) {
             log.error("Error in dbif.invalidateStrings", e)
         }
