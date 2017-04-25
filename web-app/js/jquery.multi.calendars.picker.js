@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
+ Copyright 2012-2017 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 
 (function($) {
@@ -70,13 +70,11 @@
 
             if(isRTLMode() && screen.width <768)
             {
-                console.log("innn");
                 $('#multiCalendar2').addClass('activeCalendar');
                 $('#multiCalendar1').addClass('activeCalendar');
 
             }
             else{
-                console.log("567");
                 $('#multiCalenderIdCheck').css('display','none');
             }
 
