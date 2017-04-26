@@ -16,7 +16,7 @@ class TextManagerDB {
     String lang_code_tgt
     String module_type
     String module_name
-    private static final def log = Logger.getLogger(getClass())
+    private static final def log = Logger.getLogger(TextManagerDB.class)
 
     static class ObjectProperty {
         String lang_code

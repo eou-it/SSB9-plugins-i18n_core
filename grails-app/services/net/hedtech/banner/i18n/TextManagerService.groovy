@@ -23,11 +23,11 @@ class TextManagerService {
 
     private def tranManProjectCache
     private def cacheTime
-    private def tmEnabled = true
+    private Boolean tmEnabled = true
 
 
     private String getConnectionString() {
-        String dbUrl =dataSource.underlyingSsbDataSource.url
+        String dbUrl = dataSource.underlyingSsbDataSource.url
         def url = dbUrl.substring(dbUrl.lastIndexOf("@") + 1)
         def username = dataSource.underlyingSsbDataSource.username
         def password = dataSource.underlyingSsbDataSource.password
@@ -61,6 +61,7 @@ class TextManagerService {
                 matches++
             }
         } catch (e) {
+            log.error "Error initializing text manager $e"
             tmEnabled = false
         } finally {
             textManagerDB.closeConnection()

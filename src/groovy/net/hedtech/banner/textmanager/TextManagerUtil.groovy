@@ -6,7 +6,7 @@ package net.hedtech.banner.textmanager
 import org.apache.log4j.Logger
 
 class TextManagerUtil {
-    private HashMap<String, String> valdb = new HashMap<String, String>()
+    private def dbValues = [:]
     public static final String logon = "lo"
     public static final String pc = "pc"
     public static final String sl = "sl"
@@ -17,7 +17,7 @@ class TextManagerUtil {
     public static final String moduleName = "mn"
     public static final String targetFile = "tf"
 
-    private static final def log = Logger.getLogger(getClass())
+    private static final def log = Logger.getLogger(TextManagerUtil.class)
 
     private void logError(String msg) {
         String message = msg + "\n" +
@@ -31,53 +31,46 @@ class TextManagerUtil {
     public void parseArgs(String[] args) {
         //loop through the arguments and parse key=value pairs
         log.debug("Arguments:")
-        for (int i = 0; i < args.length; i++) {
-            int eqp = args[i].indexOf("=")
-            if (eqp >= 0) {
-
-                String key = args[i].substring(0, eqp).toLowerCase()
-                String val = args[i].substring(eqp + 1)
-                valdb.put(key, val)
+        args.each{ item ->
+            int pos = item.indexOf("=")
+            if (pos >= 0) {
+                String key = item.substring(0, pos).toLowerCase()
+                String val = item.substring(pos + 1)
+                dbValues << [key:val]
                 log.debug(key + "=" + val)
             }
         }
-        if (valdb.get(logon) == null) {
+        if (dbValues.logon == null) {
             logError("No log on specified(lo=user/passwd@connect [tns or jdbc connection])")
         }
-        if (valdb.get(sourceFile) == null) {
+        if (dbValues.sourceFile == null) {
             logError("No source file specified (sf=...)")
         }
-        if (valdb.get(mo) == null) {
-            valdb.put(mo, "s")
-        } else if (valdb.get(mo).equals("t")) {
-            if (valdb.get(targetFile) == null) {
+        if (dbValues.mo == null) {
+            dbValues << [mo:"s"]
+        } else if (dbValues.mo.equals("t")) {
+            if (dbValues.targetFile == null) {
                 logError("No target file specified (tf=...)")
             }
-            if (valdb.get(tl) == null) {
+            if (dbValues.tl == null) {
                 logError("No target language specified (tl=...)")
             }
-        } else if (valdb.get(mo).equals("r")) {
-            if (valdb.get(tl) == null) {
+        } else if (dbValues.mo.equals("r")) {
+            if (dbValues.tl == null) {
                 logError("No target language specified (tl=...)")
             }
         }
-    }
-
-    public String get(String key) {
-        return valdb.get(key)
     }
 
     static String smartQuotesReplace(String s) {
         StringBuffer res = new StringBuffer()
         char c
-        int len = s.length()
-        for (int i = 0; i < len; i++) {
-            c = s.charAt(i)
+        s.eachWithIndex{ item, index ->
+            c = item
             if (c == '\'') {
                 // look ahead
-                if (i + 1 < len && s.charAt(i + 1) == '\'') {
+                if (index + 1 < s.length() && s[index + 1] == '\'') {
                     res.append(c)
-                    i++
                 } else {
                     res.append("\u2019")
                 }
