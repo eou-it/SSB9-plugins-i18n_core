@@ -146,7 +146,7 @@ class TextManagerService {
         if (project) {
             def textManagerUtil = new TextManagerUtil()
             def textManagerDB
-            int cnt = 0;
+            int cnt = 0
             String sl = sourceLocale.replace('_', '')
             try {
                 String[] args = [
@@ -159,34 +159,35 @@ class TextManagerService {
                         locale == "$sourceLocale" ? '' : "tl=${locale.replace('_', '')}"
                 ]
 
-                textManagerUtil.parseArgs(args);
+                textManagerUtil.parseArgs(args)
                 textManagerDB = new TextManagerDB(textManagerUtil.get(textManagerUtil.logon), textManagerUtil)
-                def op = textManagerDB.getDefaultObjectProp();
+                def defaultObjectProp = textManagerDB.getDefaultObjectProp()
+                final String sep = "."
+                int sepLoc
 
                 properties.each { property ->
-                    final String sep = ".";
-                    int seploc;
-                    String key = property.key;
-                    String value = property.value;
-                    seploc = key.lastIndexOf(sep);
-                    if (seploc == -1) {
-                        seploc = 0;
+                    sepLoc = 0
+                    String key = property.key
+                    String value = property.value
+                    sepLoc = key.lastIndexOf(sep)
+                    if (sepLoc == -1) {
+                        sepLoc = 0
                     }
-                    op.parentName = "." + key.substring(0, seploc); //. plus expression between brackets in [x.y...].z
-                    op.objectName = key.substring(seploc);       // expression between brackets in x.y....[z]
-                    op.string = TextManagerUtil.smartQuotesReplace(value);
-                    log.info key + " = " + op.string
-                    textManagerDB.setPropString(op);
-                    cnt++;
+                    defaultObjectProp.parentName = sep + key.substring(0, sepLoc) //. plus expression between brackets in [x.y...].z
+                    defaultObjectProp.objectName = key.substring(sepLoc)       // expression between brackets in x.y....[z]
+                    defaultObjectProp.string = TextManagerUtil.smartQuotesReplace(value)
+                    log.info key + " = " + defaultObjectProp.string
+                    textManagerDB.setPropString(op)
+                    cnt++
                 }
                 //Invalidate strings that are in db but not in property file
                 if (textManagerUtil.get(textManagerUtil.mo).equals("s")) {
-                    textManagerDB.invalidateStrings();
+                    textManagerDB.invalidateStrings()
                 }
-                textManagerDB.setModuleRecord(textManagerUtil);
+                textManagerDB.setModuleRecord(textManagerUtil)
 
             } finally {
-                textManagerDB?.closeConnection();
+                textManagerDB?.closeConnection()
             }
             return [error: null, count: cnt]
         }
