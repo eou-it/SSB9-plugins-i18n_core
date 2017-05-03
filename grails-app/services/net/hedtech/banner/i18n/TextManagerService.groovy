@@ -6,43 +6,52 @@ package net.hedtech.banner.i18n
 
 import grails.util.Holders
 import groovy.sql.Sql
-import net.hedtech.banner.textmanager.Dbif
-import net.hedtech.banner.textmanager.ReplaceProps
-import net.hedtech.banner.textmanager.TmCtx
+import net.hedtech.banner.textmanager.TextManagerDB
+import net.hedtech.banner.textmanager.TextManagerUtil
 
+import javax.annotation.PostConstruct
+import java.sql.Timestamp
 
 class TextManagerService {
 
     static transactional = false //Transaction not managed by hibernate
 
-    final def ROOT_LOCALE_APP  = 'en_US' // This will be the locale assumed for properties without locale
-    final def ROOT_LOCALE_TM   = 'root'  // Save the chosen source language as root (as user cannot change translation)
-    final def PROJECT_CFG_KEY_APP  = 'BAN_APP'
-    final def PROJECT_CFG_KEY_VERSION = 'BAN_APP_VERSION'
+    def dataSource
 
-    String dbUrl =Holders.config.bannerSsbDataSource.url
-    def url = dbUrl.substring(dbUrl.lastIndexOf("@") + 1)
-    def username = Holders.config.bannerSsbDataSource.username
-    def password = Holders.config.bannerSsbDataSource.password
-    final def connectString = "${username}/${password}@${url}" // Eventually just use Banner connection
+    static final String ROOT_LOCALE_APP = 'en_US' // This will be the locale assumed for properties without locale
+    static final String ROOT_LOCALE_TM = 'root'
+    // Save the chosen source language as root (as user cannot change translation)
+    static final String PROJECT_CFG_KEY_APP = 'BAN_APP'
+
+    String connectionString
 
     private def tranManProjectCache
     private def cacheTime
-    private def tmEnabled = true
+    private Boolean tmEnabled = true
+
+    
+    @PostConstruct
+    def init() {
+        String dbUrl = dataSource.underlyingSsbDataSource.url
+        String url = dbUrl.substring(dbUrl.lastIndexOf("@") + 1)
+        String username = dataSource.underlyingSsbDataSource.username
+        String password = dataSource.underlyingSsbDataSource.password
+        connectionString = "${username}/${password}@${url}"
+    }
 
     private def tranManProject() {
         if (!tmEnabled) {
             return
         }
-        if ( cacheTime && ( new Date().getTime() - cacheTime.getTime() ) < 5 * 60 * 1000 ) {
+        if (cacheTime && (new Date().getTime() - cacheTime.getTime()) < 5 * 60 * 1000) {
             return tranManProjectCache
         }
 
-        def tmdbif = new Dbif(connectString, null) // get a standard connection
-        def sql = new Sql(tmdbif.conn)
-        def appName = grails.util.Holders.grailsApplication.metadata['app.name']
-        def result = ""
-        def matches = 0
+        TextManagerDB textManagerDB = new TextManagerDB(connectionString, null) // get a standard connection
+        Sql sql = new Sql(textManagerDB.conn)
+        String appName = Holders.grailsApplication.metadata['app.name']
+        String result = ""
+        int matches = 0
         try {
             // Find projects with a matching application name in GMRPCFG
             // If more matches exist pick the project with the latest activity date
@@ -57,9 +66,10 @@ class TextManagerService {
                 matches++
             }
         } catch (e) {
+            log.error "Error initializing text manager $e"
             tmEnabled = false
         } finally {
-            tmdbif.closeConnection()
+            textManagerDB.closeConnection()
         }
         if (matches > 1) {
             log.warn "Multiple TranMan projects configured for application $appName. Please correct."
@@ -77,9 +87,9 @@ class TextManagerService {
             return
         }
         if (!tranManProject()) {
-            def tmdbif = new Dbif(connectString, null) // get a standard connection
-            def sql = new Sql(tmdbif.conn)
-            def appName = grails.util.Holders.grailsApplication.metadata['app.name']
+            def textManagerDB = new TextManagerDB(connectionString, null) // get a standard connection
+            def sql = new Sql(textManagerDB.conn)
+            def appName = Holders.grailsApplication.metadata['app.name']
             def curDate = new Date()
             try {
                 def statement = """
@@ -95,20 +105,20 @@ class TextManagerService {
                 cacheTime = null
                 log.info "Created TranMan project $projectCode"
             } finally {
-                tmdbif.closeConnection()
+                textManagerDB.closeConnection()
             }
         }
     }
 
     //Used to clean test project
-    def deleteProjectforApp(){
+    def deleteProjectforApp() {
         if (!tmEnabled) {
             return
         }
         def project = tranManProject()
         if (project) {
-            def tmdbif = new Dbif(connectString, null) // get a standard connection
-            def sql = new Sql(tmdbif.conn)
+            def textManagerDB = new TextManagerDB(connectionString, null) // get a standard connection
+            def sql = new Sql(textManagerDB.conn)
             try {
                 def statement = """
                   begin
@@ -123,25 +133,25 @@ class TextManagerService {
                 cacheTime = null
                 log.info "Deleted TranMan project $project"
             } finally {
-                tmdbif.closeConnection()
+                textManagerDB.closeConnection()
             }
         }
     }
 
-    def save(properties, name, sourceLocale=ROOT_LOCALE_APP, locale){
+    def save(properties, name, sourceLocale = ROOT_LOCALE_APP, locale) {
         if (!tmEnabled) {
             return
         }
         def project = tranManProject()
         if (project) {
-            def ctx = new TmCtx()
-            def tmdbif
-            int cnt = 0;
-            String sl = sourceLocale.replace('_','')
+            def textManagerUtil = new TextManagerUtil()
+            def textManagerDB
+            int cnt = 0
+            String sl = sourceLocale.replace('_', '')
             try {
                 String[] args = [
                         "pc=${project}", //Todo configure project in translation manager
-                        "lo=${connectString}",
+                        "lo=${connectionString}",
                         "mn=${name.toUpperCase()}",
                         "sl=$ROOT_LOCALE_TM",
                         locale == "$ROOT_LOCALE_APP" ? "sf=${name}.properties" : "sf=${name}_${locale}.properties",
@@ -149,43 +159,44 @@ class TextManagerService {
                         locale == "$sourceLocale" ? '' : "tl=${locale.replace('_', '')}"
                 ]
 
-                ctx.parseArgs(args);
-                tmdbif = new Dbif(ctx.get(ctx.logon), ctx)
-                def op = tmdbif.getDefaultObjectProp();
+                textManagerUtil.parseArgs(args)
+                textManagerDB = new TextManagerDB(textManagerUtil.get(textManagerUtil.logon), textManagerUtil)
+                def defaultObjectProp = textManagerDB.getDefaultObjectProp()
+                final String sep = "."
+                int sepLoc
 
                 properties.each { property ->
-                    final String sep = ".";
-                    int seploc;
-                    String key = property.key;
-                    String value = property.value;
-                    seploc = key.lastIndexOf(sep);
-                    if (seploc == -1) {
-                        seploc = 0;
+                    sepLoc = 0
+                    String key = property.key
+                    String value = property.value
+                    sepLoc = key.lastIndexOf(sep)
+                    if (sepLoc == -1) {
+                        sepLoc = 0
                     }
-                    op.parentName = "." + key.substring(0, seploc); //. plus expression between brackets in [x.y...].z
-                    op.objectName = key.substring(seploc);       // expression between brackets in x.y....[z]
-                    op.string = ReplaceProps.smartQuotesReplace(value);
-                    log.info key + " = " + op.string
-                    tmdbif.setPropString(op);
-                    cnt++;
+                    defaultObjectProp.parentName = sep + key.substring(0, sepLoc) //. plus expression between brackets in [x.y...].z
+                    defaultObjectProp.objectName = key.substring(sepLoc)       // expression between brackets in x.y....[z]
+                    defaultObjectProp.string = TextManagerUtil.smartQuotesReplace(value)
+                    log.info key + " = " + defaultObjectProp.string
+                    textManagerDB.setPropString(op)
+                    cnt++
                 }
                 //Invalidate strings that are in db but not in property file
-                if (ctx.get(ctx.mo).equals("s")) {
-                    tmdbif.invalidateStrings();
+                if (textManagerUtil.get(textManagerUtil.mo).equals("s")) {
+                    textManagerDB.invalidateStrings()
                 }
-                tmdbif.setModuleRecord(ctx);
+                textManagerDB.setModuleRecord(textManagerUtil)
 
             } finally {
-                tmdbif?.closeConnection();
+                textManagerDB?.closeConnection()
             }
             return [error: null, count: cnt]
         }
         return [error: "Unable to save - no Project configured", count: 0]
     }
 
-    def cacheMsg=[:]
-    def localeLoaded=[:]
-    def timeOut = 60*1000 as long //milli seconds
+    def cacheMsg = [:]
+    def localeLoaded = [:]
+    def timeOut = 60 * 1000 as long //milli seconds
 
     def findMessage(key, locale) {
         if (!tmEnabled) {
@@ -194,18 +205,19 @@ class TextManagerService {
         def msg
         def t0 = new Date()
         if (localeLoaded[locale] && (t0.getTime() - localeLoaded[locale].getTime()) < timeOut) {
-            msg = cacheMsg[key]?cacheMsg[key][locale]:null
+            msg = cacheMsg[key] ? cacheMsg[key][locale] : null
         } else {
-            def tmLocale = locale?.toString().replace('_','')
+            def tmLocale = locale?.toString().replace('_', '')
             tmLocale = getAppropriateLocale(tmLocale)
             def tmProject = tranManProject()
             if (!tmEnabled) {
                 return null
             }
-            def since = new java.sql.Timestamp(localeLoaded[locale]?localeLoaded[locale].getTime():0) // 0 is like beginning of time
-            def params = [locale: tmLocale, pc: tmProject, now: new java.sql.Timestamp(t0.getTime()), since: since]
-            def tmdbif = new Dbif(connectString, null) // get a standard connection
-            Sql sql = new Sql(tmdbif.conn)
+            def since = new Timestamp(localeLoaded[locale] ? localeLoaded[locale].getTime() : 0)
+            // 0 is like beginning of time
+            def params = [locale: tmLocale, pc: tmProject, now: new Timestamp(t0.getTime()), since: since]
+            def textManagerDB = new TextManagerDB(connectionString, null) // get a standard connection
+            Sql sql = new Sql(textManagerDB.conn)
             sql.cacheStatements = false
             //Query fetching changed messages. Don't use message with status pending (11).
             //Can change to use mod_date > :since when changing :since to time in database timezone.
@@ -232,23 +244,23 @@ class TextManagerService {
             def t1 = new Date()
             if (rows.size()) {
                 rows.each { row ->
-                    def translations = cacheMsg[row.key]?cacheMsg[key]:[:]
+                    def translations = cacheMsg[row.key] ? cacheMsg[key] : [:]
                     translations[locale] = row.string
                     cacheMsg[row.key.substring(1)] = translations
                 }
             }
-            localeLoaded[locale]=t0
-            msg = cacheMsg[key]?cacheMsg[key][locale]:null
+            localeLoaded[locale] = t0
+            msg = cacheMsg[key] ? cacheMsg[key][locale] : null
             def t2 = new Date()
-            println "$t0: Reloaded ${rows.size()} modified texts in ${ t2.getTime() - t0.getTime()} ms . Query+Fetch time: ${t1.getTime() - t0.getTime()}"
+            println "$t0: Reloaded ${rows.size()} modified texts in ${t2.getTime() - t0.getTime()} ms . Query+Fetch time: ${t1.getTime() - t0.getTime()}"
         }
         msg
     }
 
-    String getAppropriateLocale(String locale){
-        if(locale.contains("ar"))
+    String getAppropriateLocale(String locale) {
+        if (locale.contains("ar"))
             return "arSA"
-        else if(locale.contains("es"))
+        else if (locale.contains("es"))
             return "esMX"
         else return locale
     }
