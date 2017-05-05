@@ -160,7 +160,7 @@ class TextManagerService {
                 ]
 
                 textManagerUtil.parseArgs(args)
-                textManagerDB = new TextManagerDB(textManagerUtil.get(textManagerUtil.logon), textManagerUtil)
+                textManagerDB = new TextManagerDB(connectionString, textManagerUtil)
                 def defaultObjectProp = textManagerDB.getDefaultObjectProp()
                 final String sep = "."
                 int sepLoc
@@ -177,11 +177,11 @@ class TextManagerService {
                     defaultObjectProp.objectName = key.substring(sepLoc)       // expression between brackets in x.y....[z]
                     defaultObjectProp.string = TextManagerUtil.smartQuotesReplace(value)
                     log.info key + " = " + defaultObjectProp.string
-                    textManagerDB.setPropString(op)
+                    textManagerDB.setPropString(defaultObjectProp)
                     cnt++
                 }
                 //Invalidate strings that are in db but not in property file
-                if (textManagerUtil.get(textManagerUtil.mo).equals("s")) {
+                if (TextManagerUtil.mo.equals("s")) {
                     textManagerDB.invalidateStrings()
                 }
                 textManagerDB.setModuleRecord(textManagerUtil)

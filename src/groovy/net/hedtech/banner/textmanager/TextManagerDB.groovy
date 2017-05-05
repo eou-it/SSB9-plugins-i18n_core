@@ -9,6 +9,7 @@ import org.apache.log4j.Logger
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
+import net.hedtech.banner.textmanager.TextManagerUtil
 
 class TextManagerDB {
     String project_code
@@ -90,10 +91,10 @@ class TextManagerDB {
         if (tmUtil != null) {
             setDBContext(tmUtil)
             defaultProp = new ObjectProperty()
-            if (tmUtil.get(TextManagerUtil.mo).equals("s")) {
-                defaultProp.lang_code = tmUtil.get(TextManagerUtil.sl)
+            if (TextManagerUtil.mo.equals("s")) {
+                defaultProp.lang_code = TextManagerUtil.sl
             } else {
-                defaultProp.lang_code = tmUtil.get(TextManagerUtil.tl)
+                defaultProp.lang_code = TextManagerUtil.tl
             }
         }
     }
@@ -119,13 +120,13 @@ class TextManagerDB {
         int SQLTrace = 0
         OracleCallableStatement stmt
         long timestamp = System.currentTimeMillis()
-        project_code   = tmUtil.get(TextManagerUtil.pc)
-        lang_code_src  = tmUtil.get(TextManagerUtil.sl)
-        lang_code_tgt  = tmUtil.get(TextManagerUtil.tl)
+        project_code   = TextManagerUtil.pc
+        lang_code_src  = TextManagerUtil.sl
+        lang_code_tgt  = TextManagerUtil.tl
         module_type = "J"
-        module_name = getModuleName(tmUtil.get(TextManagerUtil.sourceFile), tmUtil.get(TextManagerUtil.moduleName))
+        module_name = getModuleName(TextManagerUtil.sourceFile, TextManagerUtil.moduleName)
         //Reverse extract.
-        if (tmUtil.get(TextManagerUtil.mo).equals("r")) {
+        if (TextManagerUtil.mo.equals("r")) {
             def_status = 7 //set to Reverse extracted
         }
         try {
@@ -157,10 +158,67 @@ class TextManagerDB {
         log.debug("SetDBContext done in " + timestamp + " ms")
     }
 
-    public void closeConnection() throws SQLException {
-        if (!conn.isClosed()) {
-            conn.commit()
-            conn.close()
+
+    void setModuleRecord(TextManagerUtil tmUtil) throws SQLException {
+        OracleCallableStatement stmt
+        String data_source=TextManagerUtil.sourceFile
+        String lang_code=lang_code_src
+        String mod_desc
+
+        switch ( TextManagerUtil.mo.charAt(0) ) {
+            case 's':
+                data_source=TextManagerUtil.sourceFile
+                lang_code=lang_code_src
+                mod_desc="Properties batch extract"
+                break
+            case 'r':
+                data_source=TextManagerUtil.sourceFile
+                lang_code=lang_code_tgt
+                mod_desc="Properties batch reverse extract"
+                break
+            default: //q and t both translate
+                data_source=TextManagerUtil.targetFile
+                lang_code=lang_code_tgt
+                mod_desc="Properties batch translate"
+        }
+        try{
+            stmt=(OracleCallableStatement)conn.prepareCall(
+                    "Declare \n"+
+                            "   b1 GMRMDUL.GMRMDUL_PROJECT%type :=:1;\n"+
+                            "   b2 GMRMDUL.GMRMDUL_MODULE_NAME%type  :=:2;\n"+
+                            "   b3 GMRMDUL.GMRMDUL_MODULE_TYPE%type  :=:3;\n"+
+                            "   b4 GMRMDUL.GMRMDUL_LANG_CODE%type    :=:4;\n"+
+                            "   b5 GMRMDUL.GMRMDUL_SRC_LANG_CODE%type:=:5;\n"+
+                            "   b6 GMRMDUL.GMRMDUL_MOD_DESC%type     :=:6;\n"+
+                            "   b7 GMRMDUL.GMRMDUL_DATASOURCE%type   :=:7;\n"+
+                            "Begin \n" +
+                            "   insert into \n" +
+                            "   GMRMDUL (GMRMDUL_PROJECT,GMRMDUL_MODULE_NAME,GMRMDUL_MODULE_TYPE, \n" +
+                            "          GMRMDUL_LANG_CODE,GMRMDUL_SRC_LANG_CODE,GMRMDUL_MOD_DESC,GMRMDUL_DATASOURCE,\n" +
+                            "        GMRMDUL_USER_ID,GMRMDUL_ACTIVITY_DATE)\n" +
+                            "   values (b1,b2,b3,b4,b5,b6,b7,user,sysdate);\n"+
+                            "Exception when dup_val_on_index then\n"+
+                            "   update GMRMDUL \n"+
+                            "      set GMRMDUL_ACTIVITY_DATE = sysdate\n"+
+                            "         ,GMRMDUL_MOD_DESC  = b6 \n"+
+                            "         ,GMRMDUL_DATASOURCE= b7 \n"+
+                            "         ,GMRMDUL_USER_ID   = user\n"+
+                            "   where GMRMDUL_PROJECT = b1 \n"+
+                            "     and GMRMDUL_MODULE_NAME  = b2 \n"+
+                            "     and GMRMDUL_MODULE_TYPE  = b3 \n"+
+                            "     and GMRMDUL_LANG_CODE    = b4;\n"+
+                            "End;"   )
+            stmt.setString(1,project_code)
+            stmt.setString(2,module_name)
+            stmt.setString(3,module_type)
+            stmt.setString(4,lang_code)
+            stmt.setString(5,lang_code_src)
+            stmt.setString(6,mod_desc)
+            stmt.setString(7,data_source)
+
+            stmt.execute()
+        }   catch (SQLException e) {
+            log.error("Error in setModuleRecord",e)
         }
     }
 
@@ -229,5 +287,12 @@ class TextManagerDB {
             log.error("Error in dbif.invalidateStrings", e)
         }
 
+    }
+
+    public void closeConnection() throws SQLException {
+        if (!conn.isClosed()) {
+            conn.commit()
+            conn.close()
+        }
     }
 }
