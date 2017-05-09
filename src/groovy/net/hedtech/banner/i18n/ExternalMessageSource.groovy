@@ -18,7 +18,7 @@ class ExternalMessageSource extends ReloadableResourceBundleMessageSource {
 
     String bundleLocation
     String bundleName
-    TextManagerService textManagerService
+    def textManagerService
     protected def basenamesExposed = [] // will go into basenames in superclass, since that cannot be accessed, we keep a copy
 
     @Override
