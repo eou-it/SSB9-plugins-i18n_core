@@ -142,7 +142,7 @@ class TextManagerDB {
                             "             :5,\n" +
                             "             :6,\n" +
                             "             :7)\n" +
-                            "End")
+                            "End;")
             stmt.setInt(1, SQLTrace)
             stmt.setString(2, project_code)
             stmt.setString(3, lang_code_src)
@@ -238,7 +238,7 @@ class TextManagerDB {
                                 "      pProp_string  => :9    \n" +
                                 "   )\n" +
                                 //"   commit\n"+
-                                "End")
+                                "End;")
                 setStmt.registerOutParameter(1, OracleTypes.VARCHAR)
                 setStmt.registerOutParameter(8, OracleTypes.INTEGER)
             }
@@ -272,7 +272,7 @@ class TextManagerDB {
                             "  and GMRSPRP_MODULE_NAME =:4\n" +
                             "  and GMRSPRP_ACTIVITY_DATE<GMKOBJI.g_session_time\n" +
                             ":5:=GMKOBJI.f_CleanUp(-5)\n" +
-                            "End"
+                            "End;"
             )
 
             stmt.setString(1, project_code)
