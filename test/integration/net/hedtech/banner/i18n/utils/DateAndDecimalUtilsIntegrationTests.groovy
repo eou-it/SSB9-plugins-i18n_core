@@ -9,11 +9,14 @@ import org.codehaus.groovy.grails.plugins.testing.GrailsMockHttpServletRequest
 import org.junit.Test
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import java.text.ParseException
+
+import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertNotNull
 
 /**
- * Integraton test cases for DateAndDecimalUtils.
+ * Integration test cases for DateAndDecimalUtils.
  */
 class DateAndDecimalUtilsIntegrationTests {
 
@@ -46,6 +49,28 @@ class DateAndDecimalUtilsIntegrationTests {
     public void testFormatDate() {
         def formatDate = DateAndDecimalUtils.formatDate(new Date())
         assertNotNull(formatDate)
+    }
+
+    @Test
+    void testFormatManualDate() {
+        assertEquals(DateAndDecimalUtils.formatDate("dd/MM/yyyy"), "MM/dd/yyyy")
+    }
+
+    @Test
+    void testParseDate() {
+        ParseException pe
+        try {
+            DateAndDecimalUtils.parseDate("12/12/2012")
+        } catch (ParseException e) {
+            pe = e
+        }
+        assertEquals(null, pe)
+    }
+
+    @Test
+    void testConvertToCommaDelimitedWithEmptyList() {
+        String[] list
+        assertEquals(DateAndDecimalUtils.convertToCommaDelimited(list), "")
     }
 
 }
