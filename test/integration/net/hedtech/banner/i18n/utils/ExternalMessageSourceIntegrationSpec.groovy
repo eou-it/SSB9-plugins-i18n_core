@@ -4,16 +4,13 @@
 package net.hedtech.banner.i18n.utils
 
 import grails.test.spock.IntegrationSpec
-import grails.util.Holders
 import net.hedtech.banner.i18n.ExternalMessageSource
-import net.hedtech.banner.i18n.TextManagerService
 
 class ExternalMessageSourceIntegrationSpec extends IntegrationSpec {
 
     def messageSource
     def externalLocation = 'target/i18n'
     def externalMessageSource
-    def textManagerService
 
     def setup() {
         def subDir = new File(externalLocation)
