@@ -22,11 +22,6 @@ class ExternalMessageSourceIntegrationSpec extends IntegrationSpec {
                 externalLocation, 'integrationTest',
                 "Setting up external message for integration test")
         messageSource?.setExternalMessageSource(externalMessageSource)
-        /*Holders.config.bannerSsbDataSource.username="general"
-        Holders.config.bannerSsbDataSource.url="10.42.4.24:1521:BAN83"//"localhost:1521:BAN83"//
-        Holders.config.bannerSsbDataSource.password="u_pick_it"
-        textManagerService = new TextManagerService()
-        textManagerService.createProjectForApp('UNITTEST', 'Integration Test i18n Core')*/
     }
 
     def cleanup() {
@@ -49,13 +44,8 @@ class ExternalMessageSourceIntegrationSpec extends IntegrationSpec {
 
     void "test add baseName" (){
         given:
-        /*def sourceProperties = new Properties()
-        def sourceLocale = textManagerService.ROOT_LOCALE_APP
-        sourceProperties.put("dummy.label1", "Dummy English text1")*/
         when:
-        /*textManagerService.save(sourceProperties, "integrationTest", sourceLocale, sourceLocale)*/
         externalMessageSource.addBasename("Dummy French text1")
-        /*externalMessageSource.resolveCodeWithoutArguments("dummy.label1",sourceLocale)*/
         then:
         noExceptionThrown()
     }
