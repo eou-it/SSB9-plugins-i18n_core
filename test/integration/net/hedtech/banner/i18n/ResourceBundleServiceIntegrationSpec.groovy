@@ -4,15 +4,11 @@
 package net.hedtech.banner.i18n
 
 import grails.test.spock.IntegrationSpec
-import grails.util.Holders
 
 class ResourceBundleServiceIntegrationSpec extends IntegrationSpec {
 
     def messageSource
     def resourceBundleService
-    def textManagerService
-
-    def externalLocation = 'target/i18n'
 
     def testLocales = ['en_GB','fr_FR']
     def testLocalesSave =   [
@@ -25,30 +21,6 @@ class ResourceBundleServiceIntegrationSpec extends IntegrationSpec {
                 "code": "fr_FR"
             ]
     ]
-
-    def setup() {
-        Holders.config.bannerSsbDataSource.username="general"
-        Holders.config.bannerSsbDataSource.url="10.42.4.24:1521:BAN83"//"localhost:1521:BAN83"//
-        Holders.config.bannerSsbDataSource.password="u_pick_it"
-        textManagerService= new TextManagerService();
-        def subDir = new File(externalLocation)
-        subDir.mkdirs()
-        new File(externalLocation+"/test.properties").write("key = Text")
-        new File(externalLocation+"/test_fr.properties").write("key = Fr Text")
-        //Set up the externalMessageSource
-        def externalMessageSource = new ExternalMessageSource(
-                externalLocation, 'testExternalResource',
-                "Setting up external message for integration test")
-        messageSource?.setExternalMessageSource(externalMessageSource)
-        resourceBundleService.textManagerService = textManagerService
-        textManagerService.createProjectForApp('UNITTEST', 'Integration Test i18n Core')
-    }
-
-    def cleanup() {
-        def subDir = new File(externalLocation)
-        subDir.deleteDir()
-        textManagerService.deleteProjectforApp()
-    }
 
     void "tests"() {
         when:
@@ -69,7 +41,7 @@ class ResourceBundleServiceIntegrationSpec extends IntegrationSpec {
         then:
         resources.size() > 0
         resList.size() > 0
-        fr.properties.key == "Fr Text"
+        fr.locale == "fr_FR"
         saveResult.count > 0 //Note the saving to TranMan is mocked and the value of count is not really meaningful
     }
 
