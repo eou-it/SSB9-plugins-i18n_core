@@ -9,7 +9,7 @@ import com.ibm.icu.text.NumberFormat
 import com.ibm.icu.util.Currency
 import net.hedtech.banner.exceptions.CurrencyNotFoundException
 import org.springframework.context.i18n.LocaleContextHolder as LCH
-
+import com.ibm.icu.text.DecimalFormatSymbols
 /**
  * This utility class is used to format the amount based on the locale format and the amount will
  * be still mentioned with the base currency
@@ -26,6 +26,8 @@ class CurrencyFormatService {
 
     public final String ARABIC_SUB_LOCALE = "ar_"
 
+    public final String SPANISH_COSTA_RICA_LOCALE = "es_CR"
+
     public String format(String currencyCode, BigDecimal amount, int currencyStyle = 1) throws CurrencyNotFoundException {
         if (isInvalidCurrencyCode(currencyCode)) {
             throw new CurrencyNotFoundException(currencyCode: currencyCode)
@@ -38,12 +40,26 @@ class CurrencyFormatService {
         String defaultCurrencyStyle  = MessageHelper.message("default.currency.formatter.style")
         NumberFormat numberFormat = defaultCurrencyStyle.isInteger()? NumberFormat.getInstance(locale, new Integer(defaultCurrencyStyle)): NumberFormat.getInstance(locale, currencyStyle)
         Currency currency = Currency.getInstance(currencyCode)
+
+
+        if(locale.toString().equalsIgnoreCase(SPANISH_COSTA_RICA_LOCALE)){
+            DecimalFormatSymbols decimalFormatSymbols=setGroupingSeparator(locale)
+            numberFormat.setDecimalFormatSymbols(decimalFormatSymbols)
+        }
+
         numberFormat.setCurrency(currency)
         fmtMonetaryValue = numberFormat.format(amount)
         fmtMonetaryValue = shaping.shape(fmtMonetaryValue)
         return fmtMonetaryValue
     }
 
+    private DecimalFormatSymbols setGroupingSeparator(Locale locale){
+        DecimalFormatSymbols decimalFormatSymbols=new DecimalFormatSymbols(locale)
+        char groupingSeparator='.'
+        decimalFormatSymbols.setGroupingSeparator(groupingSeparator)
+        decimalFormatSymbols.setMonetaryGroupingSeparator(groupingSeparator)
+        return decimalFormatSymbols
+    }
 
     private boolean isInvalidCurrencyCode(String currencyCode) {
         Set<Currency> lstValidCurrencyCode = Currency.getAvailableCurrencies()
