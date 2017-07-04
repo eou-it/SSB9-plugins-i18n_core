@@ -7,6 +7,7 @@ import net.hedtech.banner.i18n.DateAndDecimalUtils
 import net.hedtech.banner.i18n.DateConverterService
 import org.codehaus.groovy.grails.plugins.testing.GrailsMockHttpServletRequest
 import org.junit.Test
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import java.text.ParseException
@@ -53,12 +54,14 @@ class DateAndDecimalUtilsIntegrationTests {
 
     @Test
     void testFormatManualDate() {
+        LocaleContextHolder.setLocale(new Locale("EN"))
         assertEquals(DateAndDecimalUtils.formatDate("dd/MM/yyyy"), "MM/dd/yyyy")
     }
 
     @Test
     void testParseDate() {
         ParseException pe
+        LocaleContextHolder.setLocale(new Locale("EN"))
         try {
             DateAndDecimalUtils.parseDate("12/12/2012")
         } catch (ParseException e) {
