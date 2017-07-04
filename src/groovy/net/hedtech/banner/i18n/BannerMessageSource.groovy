@@ -5,6 +5,8 @@ package net.hedtech.banner.i18n
 
 import grails.util.Holders as CH
 import org.codehaus.groovy.grails.context.support.PluginAwareResourceBundleMessageSource
+import org.codehaus.groovy.grails.web.context.ServletContextHolder
+import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 
 import java.text.MessageFormat
 
@@ -18,6 +20,8 @@ class BannerMessageSource extends PluginAwareResourceBundleMessageSource {
     protected def basenamesExposed
 
     LinkedHashMap normalizedNamesIndex
+
+    def textManagerService
 
     public def setExternalMessageSource(messageSource){
         if (messageSource) {
@@ -114,7 +118,15 @@ class BannerMessageSource extends PluginAwareResourceBundleMessageSource {
 
     @Override
     protected String resolveCodeWithoutArguments(String code, Locale locale) {
-        String msg = externalMessageSource?.resolveCodeWithoutArguments(code, locale)
+        if (!textManagerService) {
+            textManagerService = ServletContextHolder.getServletContext()
+                    .getAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT)
+                    .getBean("textManagerService")
+        }
+        String msg = textManagerService.findMessage(code,getLocale(locale.toString()))
+        if(msg == null) {
+            msg = externalMessageSource?.resolveCodeWithoutArguments(code, locale)
+        }
         if(msg == null) {
             return super.resolveCodeWithoutArguments(code, getLocale(locale))    //To change body of overridden methods use File | Settings | File Templates.
         } else {

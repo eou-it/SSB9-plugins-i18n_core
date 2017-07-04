@@ -69,15 +69,6 @@ class ExternalMessageSource extends ReloadableResourceBundleMessageSource {
 
     @Override
     protected String resolveCodeWithoutArguments(String code, Locale locale) {
-        if (!textManagerService) {
-            textManagerService = ServletContextHolder.getServletContext()
-                    .getAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT)
-                    .getBean("textManagerService")
-        }
-        def dbMsg = textManagerService.findMessage(code,getLocale(locale.toString()))
-        if (dbMsg) {
-            return dbMsg
-        }
         return super.resolveCodeWithoutArguments(code, getLocale(locale))
     }
 
