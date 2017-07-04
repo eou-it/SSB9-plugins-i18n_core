@@ -1,6 +1,6 @@
 /*******************************************************************************
-Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
-*******************************************************************************/ 
+Copyright 2009-2017 Ellucian Company L.P. and its affiliates.
+*******************************************************************************/
 package net.hedtech.banner.i18n
 
 import grails.util.Holders
@@ -9,7 +9,8 @@ import java.text.DateFormatSymbols
 import java.text.DecimalFormatSymbols
 import org.springframework.context.i18n.LocaleContextHolder as LCH
 import java.text.ParseException
-
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 /**
  * This utility class is used to generate the default date and decimal formats used by
  * the UI.
@@ -98,17 +99,22 @@ class DateAndDecimalUtils {
         def messageSource =  Holders.grailsApplication.mainContext.getBean('messageSource')
         if(calendars != null) {
             def dateConverterService = new DateConverterService();
-
+            String shortMonths
             for(int i = 0; i < calendars.size(); i++) {
-               String calendar = calendars.get(i);
-               String uLocale = messageSource.getMessage("default.calendar." + calendar + ".translation" , null, locale)
-
-               propertyMap.put("default." + calendar + ".monthNames", convertToCommaDelimited(dateConverterService.getMonths(uLocale)))
-               propertyMap.put("default." + calendar + ".monthNamesShort", convertToCommaDelimited(dateConverterService.getShortMonths(uLocale)))
-               propertyMap.put("default." + calendar + ".dayNames", convertToCommaDelimited(dateConverterService.getWeekdays(uLocale)))
-               propertyMap.put("default." + calendar + ".dayNamesShort", convertToCommaDelimited(dateConverterService.getShortWeekdays(uLocale)))
-               propertyMap.put("default." + calendar + ".dayNamesMin", convertToCommaDelimited(dateConverterService.getMinWeekdays(uLocale)))
-               propertyMap.put("default." + calendar + ".amPm", convertToCommaDelimited(dateConverterService.getAmPmStrings(uLocale)))
+                String calendar = calendars.get(i);
+                String uLocale = messageSource.getMessage("default.calendar." + calendar + ".translation" , null, locale)
+                if(isSpanishLocaleString(uLocale)){
+                    shortMonths = convertToCommaDelimited(dateConverterService.getShortMonthsForSpanishLocale(uLocale).getShortMonths())
+                }
+                else{
+                    shortMonths = convertToCommaDelimited(dateConverterService.getShortMonths(uLocale))
+                }
+                propertyMap.put("default." + calendar + ".monthNames", convertToCommaDelimited(dateConverterService.getMonths(uLocale)))
+                propertyMap.put("default." + calendar + ".monthNamesShort", shortMonths)
+                propertyMap.put("default." + calendar + ".dayNames", convertToCommaDelimited(dateConverterService.getWeekdays(uLocale)))
+                propertyMap.put("default." + calendar + ".dayNamesShort", convertToCommaDelimited(dateConverterService.getShortWeekdays(uLocale)))
+                propertyMap.put("default." + calendar + ".dayNamesMin", convertToCommaDelimited(dateConverterService.getMinWeekdays(uLocale)))
+                propertyMap.put("default." + calendar + ".amPm", convertToCommaDelimited(dateConverterService.getAmPmStrings(uLocale)))
             }
         }
         //propertyMap.put("js.datepicker.dateFormat", "mm/dd/yyyy")
@@ -158,5 +164,12 @@ class DateAndDecimalUtils {
        }
 
        return value
-   }
+    }
+
+
+    public static boolean isSpanishLocaleString(String toULocaleString){
+        Pattern p = Pattern.compile("es_?.*?@")
+        Matcher m = p.matcher(toULocaleString)
+        return m.find()
+    }
 }

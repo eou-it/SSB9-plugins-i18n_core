@@ -59,12 +59,20 @@ class DateConverterService {
                 ULocale fromULocale = new ULocale(fromULocaleString)
                 Calendar fromCalendar = Calendar.getInstance(fromULocale);
                 com.ibm.icu.text.DateFormat fromDateFormat = fromCalendar.handleGetDateFormat(fromDateFormatString, fromULocale)
+                if(DateAndDecimalUtils.isSpanishLocaleString(fromULocaleString)){
+                    DateFormatSymbols dateFormatSymbols = getShortMonthsForSpanishLocale(fromULocaleString)
+                    fromDateFormat.setDateFormatSymbols(dateFormatSymbols)
+                }
                 fromDate = fromDateFormat.parse(fromDateValue)
             } else if ( fromDateValue instanceof Date){
                 ULocale fromULocale = new ULocale(fromULocaleString)
                 Calendar fromCalendar = Calendar.getInstance(fromULocale);
                 fromCalendar.setTime(fromDateValue)
                 com.ibm.icu.text.DateFormat fromDateFormat = fromCalendar.handleGetDateFormat(fromDateFormatString, fromULocale)
+                if(DateAndDecimalUtils.isSpanishLocaleString(fromULocaleString)){
+                    DateFormatSymbols dateFormatSymbols = getShortMonthsForSpanishLocale(fromULocaleString)
+                    fromDateFormat.setDateFormatSymbols(dateFormatSymbols)
+                }
                 fromDateValue = fromDateFormat.format(fromCalendar)
                 fromDate = fromDateFormat.parse(fromDateValue)
             }
@@ -81,6 +89,12 @@ class DateConverterService {
             if (adjustDays) toCalendar = adjustDate(toCalendar, adjustDays)
 
             com.ibm.icu.text.DateFormat toDateFormat = toCalendar.handleGetDateFormat(toDateFormatString, toULocale)
+
+            if(DateAndDecimalUtils.isSpanishLocaleString(toULocaleString)){
+                DateFormatSymbols dateFormatSymbols = getShortMonthsForSpanishLocale(toULocaleString)
+                toDateFormat.setDateFormatSymbols(dateFormatSymbols)
+            }
+
             if(fromDateValue instanceof Date){
                 return toCalendar.getTime()
             } else {
@@ -117,6 +131,13 @@ class DateConverterService {
 
     public String[] getShortMonths(String uLocaleString) {
           return (new com.ibm.icu.text.DateFormatSymbols(new ULocale(uLocaleString))).getShortMonths();
+    }
+
+    public DateFormatSymbols getShortMonthsForSpanishLocale(String toULocaleString) {
+        String[] shortMonthNames=[MessageHelper.getMessage("dateFormatSymbol.shortMonths.january"),MessageHelper.getMessage("dateFormatSymbol.shortMonths.february"),MessageHelper.getMessage("dateFormatSymbol.shortMonths.march"),MessageHelper.getMessage("dateFormatSymbol.shortMonths.april"),MessageHelper.getMessage("dateFormatSymbol.shortMonths.may"),MessageHelper.getMessage("dateFormatSymbol.shortMonths.jun"),MessageHelper.getMessage("dateFormatSymbol.shortMonths.july"),MessageHelper.getMessage("dateFormatSymbol.shortMonths.august"),MessageHelper.getMessage("dateFormatSymbol.shortMonths.september"),MessageHelper.getMessage("dateFormatSymbol.shortMonths.october"),MessageHelper.getMessage("dateFormatSymbol.shortMonths.november"),MessageHelper.getMessage("dateFormatSymbol.shortMonths.december")]
+        DateFormatSymbols dateFormatSymbols = new com.ibm.icu.text.DateFormatSymbols(new ULocale(toULocaleString))
+        dateFormatSymbols.setShortMonths(shortMonthNames)
+        return dateFormatSymbols
     }
 
      public String[] getWeekdays(String uLocaleString) {
