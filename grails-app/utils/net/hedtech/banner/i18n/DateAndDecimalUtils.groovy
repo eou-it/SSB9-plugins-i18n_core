@@ -100,20 +100,43 @@ class DateAndDecimalUtils {
         if(calendars != null) {
             def dateConverterService = new DateConverterService();
             String shortMonths
+            String[] monthNamesArray
+            String[] dayNamesArray
+            String[] dayNamesShortArray
+            String[] dayNamesMinArray
+            String monthNames
+            String dayNames
+            String dayNamesShort
+            String dayNamesMin
+
             for(int i = 0; i < calendars.size(); i++) {
                 String calendar = calendars.get(i);
                 String uLocale = messageSource.getMessage("default.calendar." + calendar + ".translation" , null, locale)
                 if(isSpanishLocaleString(uLocale)){
                     shortMonths = convertToCommaDelimited(dateConverterService.getShortMonthsForSpanishLocale(uLocale).getShortMonths())
+                    monthNamesArray = dateConverterService.getMonths(uLocale).collect {it.capitalize()}
+                    monthNames = convertToCommaDelimited(monthNamesArray)
+                    dayNamesArray= dateConverterService.getWeekdays(uLocale).collect {it.capitalize()}
+                    dayNames = convertToCommaDelimited(dayNamesArray)
+                    dayNamesShortArray = dateConverterService.getShortWeekdays(uLocale).collect {it.capitalize()}
+                    dayNamesShort = convertToCommaDelimited(dayNamesShortArray)
+                    dayNamesMinArray= dateConverterService.getMinWeekdays(uLocale).collect {it.capitalize()}
+                    dayNamesMin = convertToCommaDelimited(dayNamesMinArray)
                 }
                 else{
                     shortMonths = convertToCommaDelimited(dateConverterService.getShortMonths(uLocale))
+                    monthNames = convertToCommaDelimited(dateConverterService.getMonths(uLocale))
+                    dayNames = convertToCommaDelimited(dateConverterService.getWeekdays(uLocale))
+                    dayNamesShort = convertToCommaDelimited(dateConverterService.getShortWeekdays(uLocale))
+                    dayNamesMin = convertToCommaDelimited(dateConverterService.getMinWeekdays(uLocale))
                 }
-                propertyMap.put("default." + calendar + ".monthNames", convertToCommaDelimited(dateConverterService.getMonths(uLocale)))
+
+
+                propertyMap.put("default." + calendar + ".monthNames", monthNames )
                 propertyMap.put("default." + calendar + ".monthNamesShort", shortMonths)
-                propertyMap.put("default." + calendar + ".dayNames", convertToCommaDelimited(dateConverterService.getWeekdays(uLocale)))
-                propertyMap.put("default." + calendar + ".dayNamesShort", convertToCommaDelimited(dateConverterService.getShortWeekdays(uLocale)))
-                propertyMap.put("default." + calendar + ".dayNamesMin", convertToCommaDelimited(dateConverterService.getMinWeekdays(uLocale)))
+                propertyMap.put("default." + calendar + ".dayNames", dayNames)
+                propertyMap.put("default." + calendar + ".dayNamesShort", dayNamesShort )
+                propertyMap.put("default." + calendar + ".dayNamesMin", dayNamesMin)
                 propertyMap.put("default." + calendar + ".amPm", convertToCommaDelimited(dateConverterService.getAmPmStrings(uLocale)))
             }
         }
