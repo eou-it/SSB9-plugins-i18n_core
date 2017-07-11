@@ -28,6 +28,14 @@ class CurrencyFormatService {
 
     public final String SPANISH_COSTA_RICA_LOCALE = "es_CR"
 
+    public final String SPANISH_DOMINICAN_REPUBLIC_LOCALE = "es_DO"
+
+    public final String SPANISH_DOMINICAN_REPUBLIC_CURRENCY_CODE = "DOP"
+
+    public final String SPANISH_DOMINICAN_REPUBLIC_POS_CURRENCY_SYMBOL = "\$"
+
+    public final String SPANISH_DOMINICAN_REPUBLIC_NEG_CURRENCY_SYMBOL = "-\$"
+
     public String format(String currencyCode, BigDecimal amount, int currencyStyle = 1) throws CurrencyNotFoundException {
         if (isInvalidCurrencyCode(currencyCode)) {
             throw new CurrencyNotFoundException(currencyCode: currencyCode)
@@ -47,6 +55,10 @@ class CurrencyFormatService {
             numberFormat.setDecimalFormatSymbols(decimalFormatSymbols)
         }
 
+        if(locale.toString().equalsIgnoreCase(SPANISH_DOMINICAN_REPUBLIC_LOCALE) && currencyCode.equalsIgnoreCase(SPANISH_DOMINICAN_REPUBLIC_CURRENCY_CODE)){
+            numberFormat.setPositivePrefix(SPANISH_DOMINICAN_REPUBLIC_POS_CURRENCY_SYMBOL)
+            numberFormat.setNegativePrefix(SPANISH_DOMINICAN_REPUBLIC_NEG_CURRENCY_SYMBOL)
+        }
         numberFormat.setCurrency(currency)
         fmtMonetaryValue = numberFormat.format(amount)
         fmtMonetaryValue = shaping.shape(fmtMonetaryValue)
