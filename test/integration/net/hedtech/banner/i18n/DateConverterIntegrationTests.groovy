@@ -5,10 +5,6 @@ package net.hedtech.banner.i18n
 
 import com.ibm.icu.util.Calendar
 import com.ibm.icu.util.ULocale
-
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotNull
 import grails.converters.JSON
 import net.hedtech.banner.i18n.utils.LocaleUtilities
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -20,7 +16,7 @@ import org.springframework.context.i18n.LocaleContextHolder
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
-import static org.junit.Assert.assertTrue
+import static org.junit.Assert.*
 
 class DateConverterIntegrationTests   {
 
@@ -29,6 +25,8 @@ class DateConverterIntegrationTests   {
     public static final String ARABIC_LOCALE = "ar"
     public static final String US_LOCALE = "en_US"
     public static final String PT_LOCALE = "pt"
+    private final String ES = "es"
+    private final String DEFAULT_DATETIME_FORMAT_EN ="MM/dd/yyyy HH:mm:ss"
 
     @After
     public void tearDown() {
@@ -402,6 +400,45 @@ class DateConverterIntegrationTests   {
     void testJSONDateUnmarshaller(){
         assertEquals(dateConverterService.JSONDateUnmarshaller("01/01/2012",null),"01/01/2012")
     }
+
+
+    @Test
+    void testConvertGregorianToDefaultCalendarForSpanishLocale(){
+        Locale oldLocale = LocaleContextHolder.getLocale()
+        LocaleContextHolder.setLocale(new Locale(ES))
+        DateAndDecimalUtils.properties(new Locale(ES))
+        assertEquals( dateConverterService.convert(new Date((2012 - 1900),0,01),"en_US@calendar\\=gregorian","es@calendar\\=gregorian","dd-MMM-yyyy","dd-MMM-yyyy"), "01-Ene-2012")
+        LocaleContextHolder.setLocale(oldLocale)
+
+    }
+
+    @Test
+    void testConvertDefaultCalendarToGregorianSpanishLocale(){
+        Locale oldLocale = LocaleContextHolder.getLocale()
+        LocaleContextHolder.setLocale(new Locale(US_LOCALE))
+        DateAndDecimalUtils.properties(new Locale(US_LOCALE))
+        assertEquals( dateConverterService.convert(new Date((2012 - 1900),0,01),"es@calendar\\=gregorian","en_US@calendar\\=gregorian","dd-MMM-yyyy","dd-MMM-yyyy"), "01-Jan-2012")
+        LocaleContextHolder.setLocale(oldLocale)
+
+    }
+
+    @Test
+    void testConvertDefaultCalendarSpanishLocaleToGregorianWithStringFormat(){
+        Locale oldLocale = LocaleContextHolder.getLocale()
+        LocaleContextHolder.setLocale(new Locale(US_LOCALE))
+        DateAndDecimalUtils.properties(new Locale(US_LOCALE))
+        assertEquals( dateConverterService.convert("01/01/2012","es@calendar\\=gregorian","en_US@calendar\\=gregorian","dd/MM/yyyy","dd-MMM-yyyy"), "01-Jan-2012")
+        LocaleContextHolder.setLocale(oldLocale)
+
+    }
+
+
+    @Test
+    void testGetDefaultCalendarWithTime(){
+        Date today = new Date(117,03,12,13,32,12)
+        assertEquals(dateConverterService.getDefaultCalendarWithTime(today, DEFAULT_DATETIME_FORMAT_EN), "04/12/2017 13:32:12")
+    }
+
 
     private String formatDate(date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
