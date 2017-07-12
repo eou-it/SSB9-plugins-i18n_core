@@ -25,6 +25,17 @@ def currencyFormatService
     private final String PTE ="PTE"
     private final String EUR ="EUR"
     private final String SAR ="SAR"
+    private final String CLP = "CLP"
+    private final String COP = "COP"
+    private final String CRC = "CRC"
+    private final String MXN = "MXN"
+    private final String PEN = "PEN"
+    private final String DOP = "DOP"
+    private final String VEF = "VEF"
+    private final String ARS = "ARS"
+    private final String GTQ = "GTQ"
+    private final String PAB = "PAB"
+
     private final String USD_POS_TEST_VALUE = "\$1,234,567,890.24"
     private final String USD_NEG_TEST_VALUE = "-\$1,234,567,890.24"
     private final String AUD_POS_TEST_VALUE = "A\$1,234,567,890.24"
@@ -43,6 +54,31 @@ def currencyFormatService
     private final String FRCA_POS_TEST_VALUE= "1 234 567 890,24 \$ US"
     private final String PT_NEG_TEST_VALUE = "-US\$1.234.567.890,24"
     private final String ES_NEG_TEST_VALUE = "-1.234.567.890,24 \$"
+    private final String ES_CL_POS_TEST_VALUE = "\$1.234.567.890"
+    private final String ES_CL_NEG_TEST_VALUE = "\$-1.234.567.890"
+    private final String ES_CO_POS_TEST_VALUE = "\$ 1.234.567.890"
+    private final String ES_CO_NEG_TEST_VALUE = "-\$ 1.234.567.890"
+    private final String ES_CR_POS_TEST_VALUE = "₡1.234.567.890"
+    private final String ES_CR_NEG_TEST_VALUE = "-₡1.234.567.890"
+    private final String ES_EC_POS_TEST_VALUE = "\$1.234.567.890,24"
+    private final String ES_EC_NEG_TEST_VALUE = "-\$1.234.567.890,24"
+    private final String ES_MX_POS_TEST_VALUE = "\$1,234,567,890.24"
+    private final String ES_MX_NEG_TEST_VALUE = "-\$1,234,567,890.24"
+    private final String ES_PE_POS_TEST_VALUE = "S/.1,234,567,890.24"
+    private final String ES_PE_NEG_TEST_VALUE = "-S/.1,234,567,890.24"
+    private final String ES_PR_POS_TEST_VALUE = "\$1,234,567,890.24"
+    private final String ES_PR_NEG_TEST_VALUE = "-\$1,234,567,890.24"
+    private final String ES_DO_POS_TEST_VALUE = "\$1,234,567,890.24"
+    private final String ES_DO_NEG_TEST_VALUE = "-\$1,234,567,890.24"
+    private final String ES_VE_POS_TEST_VALUE = "Bs.1.234.567.890,24"
+    private final String ES_VE_NEG_TEST_VALUE = "-Bs.1.234.567.890,24"
+    private final String ES_AR_POS_TEST_VALUE = "\$ 1.234.567.890,24"
+    private final String ES_AR_NEG_TEST_VALUE = "-\$ 1.234.567.890,24"
+    private final String ES_GT_POS_TEST_VALUE = "Q1,234,567,890.24"
+    private final String ES_GT_NEG_TEST_VALUE = "-Q1,234,567,890.24"
+    private final String ES_PA_POS_TEST_VALUE = "B/.1,234,567,890.24"
+    private final String ES_PA_NEG_TEST_VALUE = "-B/.1,234,567,890.24"
+
     private final String INVALID_CODE ="XYZ"
     private final String AR = "ar"
     private final String ARSA = "ar_SA"
@@ -52,6 +88,18 @@ def currencyFormatService
     public final String FR = "fr"
     public final String PT = "pt"
     public final String ES = "es"
+    public final String ES_CL = "es_CL"
+    public final String ES_CO = "es_CO"
+    public final String ES_CR = "es_CR"
+    public final String ES_EC = "es_EC"
+    public final String ES_MX = "es_MX"
+    public final String ES_PE = "es_PE"
+    public final String ES_PR = "es_PR"
+    public final String ES_DO = "es_DO"
+    public final String ES_VE = "es_VE"
+    public final String ES_AR = "es_AR"
+    public final String ES_GT = "es_GT"
+    public final String ES_PA = "es_PA"
 
 
     @After
@@ -176,6 +224,173 @@ def currencyFormatService
         LCH.setLocale(new Locale(ARSA))
         assertEquals currencyFormatService.format(USD, new BigDecimal(NEGATIVE_TEST_VALUE)), USD_NEG_TEST_VALUE
     }
+
+
+    @Test
+    void testCLPForSpanishChileLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_CL))
+        assertEquals ES_CL_POS_TEST_VALUE, currencyFormatService.format(CLP, new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testCLPForSpanishChileLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_CL))
+        assertEquals ES_CL_NEG_TEST_VALUE, currencyFormatService.format(CLP, new BigDecimal(NEGATIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testCOPForSpanishColombiaLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_CO))
+        assertEquals ES_CO_POS_TEST_VALUE, currencyFormatService.format(COP, new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testCOPForSpanishColombiaLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_CO))
+        assertEquals ES_CO_NEG_TEST_VALUE, currencyFormatService.format(COP, new BigDecimal(NEGATIVE_TEST_VALUE))
+    }
+
+    @Test
+    void testCRCForSpanishCostaRicaLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_CR))
+        assertEquals ES_CR_POS_TEST_VALUE, currencyFormatService.format(CRC, new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testCRCForFSpanishCostaRicaLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_CR))
+        assertEquals ES_CR_NEG_TEST_VALUE, currencyFormatService.format(CRC, new BigDecimal(NEGATIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testUSDForSpanishEcuadorLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_EC))
+        assertEquals ES_EC_POS_TEST_VALUE, currencyFormatService.format(USD, new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testUSDForSpanishEcuadorLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_EC))
+        assertEquals ES_EC_NEG_TEST_VALUE, currencyFormatService.format(USD, new BigDecimal(NEGATIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testMXNForSpanishMexicanLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_MX))
+        assertEquals ES_MX_POS_TEST_VALUE, currencyFormatService.format(MXN, new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testMXNForSpanishMexicanLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_MX))
+        assertEquals ES_MX_NEG_TEST_VALUE, currencyFormatService.format(MXN, new BigDecimal(NEGATIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testPENForSpanishPeruLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_PE))
+        assertEquals ES_PE_POS_TEST_VALUE, currencyFormatService.format(PEN, new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testPENForSpanishPeruLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_PE))
+        assertEquals ES_PE_NEG_TEST_VALUE, currencyFormatService.format(PEN, new BigDecimal(NEGATIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testUSDForSpanishPeurtoRicoLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_PR))
+        assertEquals ES_PR_POS_TEST_VALUE, currencyFormatService.format(USD, new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testUSDForSpanishPeurtoRicoLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_PR))
+        assertEquals ES_PR_NEG_TEST_VALUE, currencyFormatService.format(USD, new BigDecimal(NEGATIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testDOPForSpanishDominicanRepublicLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_DO))
+        assertEquals ES_DO_POS_TEST_VALUE, currencyFormatService.format(DOP, new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testDOPForSpanishDominicanRepublicLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_DO))
+        assertEquals ES_DO_NEG_TEST_VALUE, currencyFormatService.format(DOP, new BigDecimal(NEGATIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testVEFForSpanishVenezuelaLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_VE))
+        assertEquals ES_VE_POS_TEST_VALUE, currencyFormatService.format(VEF, new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testVEFForSpanishVenezuelaLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_VE))
+        assertEquals ES_VE_NEG_TEST_VALUE, currencyFormatService.format(VEF, new BigDecimal(NEGATIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testARSForSpanishArgentinaLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_AR))
+        assertEquals ES_AR_POS_TEST_VALUE, currencyFormatService.format(ARS, new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testARSForSpanishArgentinaLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_AR))
+        assertEquals ES_AR_NEG_TEST_VALUE, currencyFormatService.format(ARS, new BigDecimal(NEGATIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testGTQForSpanishGuatemalaLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_GT))
+        assertEquals ES_GT_POS_TEST_VALUE, currencyFormatService.format(GTQ, new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testGTQForSpanishGuatemalaLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_GT))
+        assertEquals ES_GT_NEG_TEST_VALUE, currencyFormatService.format(GTQ, new BigDecimal(NEGATIVE_TEST_VALUE))
+    }
+
+    @Test
+    void testPABForSpanishPanamaLocalePositiveCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_PA))
+        assertEquals ES_PA_POS_TEST_VALUE, currencyFormatService.format(PAB, new BigDecimal(POSITIVE_TEST_VALUE))
+    }
+
+
+    @Test
+    void testPABForSpanishPanamaLocaleNegativeCurrencyFormatter() {
+        LCH.setLocale(new Locale(ES_PA))
+        assertEquals ES_PA_NEG_TEST_VALUE, currencyFormatService.format(PAB, new BigDecimal(NEGATIVE_TEST_VALUE))
+    }
+
 
     @Test
     void testInvalidCurrencyFormatter() {
