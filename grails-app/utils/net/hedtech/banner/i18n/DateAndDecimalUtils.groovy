@@ -182,7 +182,7 @@ class DateAndDecimalUtils {
                }
            }
            catch (Exception x) {
-               throw new ParseException(x)
+               throw new ParseException(x.getMessage(),0)
            }
        }
 
