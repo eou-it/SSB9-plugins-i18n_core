@@ -85,7 +85,7 @@ class DateAndDecimalUtilsIntegrationTests {
 
         LocaleContextHolder.setLocale(new Locale(ARSA))
         dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
-        assertEquals("dd/MMMM/yyyy", dateFormat)
+        assertEquals("MM/dd/yyyy", dateFormat)
     }
 
 

@@ -3,6 +3,7 @@
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
+import org.junit.Before
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
@@ -101,12 +102,19 @@ def currencyFormatService
     public final String ES_GT = "es_GT"
     public final String ES_PA = "es_PA"
 
+    @Before
+    public void setUp() {
+        LCH.setLocale(new Locale(EN, US))
+
+    }
+
 
     @After
     public void tearDown() {
         LCH.setLocale(new Locale(EN, US))
 
     }
+
 
     @Test
     void testInjection() {
