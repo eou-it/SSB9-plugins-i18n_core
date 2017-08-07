@@ -4,21 +4,16 @@
 package net.hedtech.banner.i18n
 
 import org.codehaus.groovy.grails.context.support.ReloadableResourceBundleMessageSource
-import org.codehaus.groovy.grails.web.context.ServletContextHolder
-import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
 import grails.util.Holders as CH
-
-// Inspired by ssh://git@devgit1/banner/plugins/banner_tools.git
 // Implements an external message source, which is used by BannerMessageSource
 class ExternalMessageSource extends ReloadableResourceBundleMessageSource {
 
     String bundleLocation
     String bundleName
-    def textManagerService
     protected def basenamesExposed = [] // will go into basenames in superclass, since that cannot be accessed, we keep a copy
 
     @Override
@@ -65,19 +60,8 @@ class ExternalMessageSource extends ReloadableResourceBundleMessageSource {
         setBasenames((String []) basenamesExposed)
     }
 
-
-
     @Override
     protected String resolveCodeWithoutArguments(String code, Locale locale) {
-        if (!textManagerService) {
-            textManagerService = ServletContextHolder.getServletContext()
-                    .getAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT)
-                    .getBean("textManagerService")
-        }
-        def dbMsg = textManagerService.findMessage(code,getLocale(locale.toString()))
-        if (dbMsg) {
-            return dbMsg
-        }
         return super.resolveCodeWithoutArguments(code, getLocale(locale))
     }
 

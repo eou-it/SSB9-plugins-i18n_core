@@ -5,10 +5,11 @@ package net.hedtech.banner.i18n
 
 import grails.util.Holders as CH
 import org.codehaus.groovy.grails.context.support.PluginAwareResourceBundleMessageSource
+import org.codehaus.groovy.grails.web.context.ServletContextHolder
+import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
+import org.springframework.beans.factory.NoSuchBeanDefinitionException
 
 import java.text.MessageFormat
-
-// Inspired by ssh://git@devgit1/banner/plugins/banner_tools.git
 class BannerMessageSource extends PluginAwareResourceBundleMessageSource {
 
     static final String APPLICATION_PATH = 'WEB-INF/grails-app/i18n/'
@@ -18,6 +19,8 @@ class BannerMessageSource extends PluginAwareResourceBundleMessageSource {
     protected def basenamesExposed
 
     LinkedHashMap normalizedNamesIndex
+
+    def textManagerService
 
     public def setExternalMessageSource(messageSource){
         if (messageSource) {
@@ -114,7 +117,18 @@ class BannerMessageSource extends PluginAwareResourceBundleMessageSource {
 
     @Override
     protected String resolveCodeWithoutArguments(String code, Locale locale) {
-        String msg = externalMessageSource?.resolveCodeWithoutArguments(code, locale)
+        if (!textManagerService) {
+            try {
+                textManagerService = ServletContextHolder.getServletContext()?.getAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT)?.getBean("textManagerService")
+            } catch(NoSuchBeanDefinitionException ex)
+            {
+                logger.warn("Unable to find the bean: ${ex.message}")
+            }
+        }
+        String msg = textManagerService?.findMessage(code,getLocale(locale.toString()))
+        if(msg == null) {
+            msg = externalMessageSource?.resolveCodeWithoutArguments(code, locale)
+        }
         if(msg == null) {
             return super.resolveCodeWithoutArguments(code, getLocale(locale))    //To change body of overridden methods use File | Settings | File Templates.
         } else {
