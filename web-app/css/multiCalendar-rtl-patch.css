@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
+Copyright 2012-2017 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/
 #multiCalendarContainer {
     right:0 ;
@@ -28,16 +28,6 @@ Copyright 2012-2014 Ellucian Company L.P. and its affiliates.
 }
 #multiCalendarContainer::after{
     border-style:none;
-}
-
-.ui-datepicker-weekheader ul li {
-    margin-right: 0.5em;
-}
-.ui-datepicker-weekheader ul li {
-    margin-left: 0em;
-}
-.ui-datepicker-weekheader ul li:nth-last-child(1) {
-    margin-right: 0.4em;
 }
 #multiCalendarContainer .hasCalendarsPicker > div {
     opacity: 1;
