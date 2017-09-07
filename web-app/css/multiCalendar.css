@@ -27,9 +27,7 @@ Copyright 2012-2017 Ellucian Company L.P. and its affiliates.
     border: 1px solid #cccccc !important;
     color:transparent !important
 }
-.ui-datepicker-weekheader ul{
-    list-style-type:none;
-}
+
 #closeId {
     display: none;
 
@@ -106,6 +104,13 @@ Copyright 2012-2017 Ellucian Company L.P. and its affiliates.
     color: #222222;
 }
 
+.ui-datepicker-weekheader td {
+    border:none !important;
+}
+
+.ui-datepicker-weekheader td span {
+    text-align: center !important;
+}
 #multiCalendarContainer .ui-widget-header a {
     margin: 6px 0px;
     width: 10%;
@@ -2796,21 +2801,6 @@ input.hasMultiCalendarPicker.component-error:focus  {
     border-top:2px solid #eee;
     border-bottom:2px solid #eee;
 }
-.ui-datepicker-weekheader ul{
-    margin:0;
-    padding:0;
-    display:inline-block;
-}
-.ui-datepicker-weekheader ul li{
-    float:left;
-    line-height:2.5em;
-}
-.ui-datepicker-weekheader ul li{
-    margin-right:1.4em;
-}
-.ui-datepicker-weekheader ul li:nth-last-child(1){
-    margin-right:auto;
-}
 .ui-datepicker-calendar tbody:before {
     content: "-";
     display: block;
@@ -2979,7 +2969,7 @@ div.ui-calendar-widget div.ui-widget-header{
 
 
 
-    #multiCalendarContainer .ui-widget-header > span,.ui-datepicker-weekheader ul li,.ui-state-default, .ui-widget-content .ui-state-default {
+    #multiCalendarContainer .ui-widget-header > span,.ui-state-default, .ui-widget-content .ui-state-default {
         line-height:2.7em;
     }
     .ui-widget-header .ui-icon.ui-icon-circle-triangle-ww, .ui-widget-header .ui-icon.ui-icon-circle-triangle-ee {
@@ -2989,7 +2979,7 @@ div.ui-calendar-widget div.ui-widget-header{
     .ui-widget-header .ui-icon.ui-icon-circle-triangle-w, .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
         background-size: 1em 1em !important;
     }
-    #multiCalendarContainer .ui-widget-header,.ui-datepicker-weekheader,.ui-datepicker-weekheader ul li, .ui-widget-header > span {
+    #multiCalendarContainer .ui-widget-header,.ui-datepicker-weekheader,.ui-widget-header > span {
         height:2.7em;
     }
     .ui-icon,.ui-datepicker-cmd-prev, .ui-datepicker-cmd-next, .ui-widget-header .ui-icon.ui-icon-circle-triangle-w, .ui-widget-header .ui-icon.ui-icon-circle-triangle-e{
@@ -3029,15 +3019,8 @@ div.ui-calendar-widget div.ui-widget-header{
         float: left;
         width: auto;
     }
-    :lang(pt) .ui-datepicker-weekheader ul li {
-        margin-right:1.2em;
-    }
     #multiCalendarContainer .ui-datepicker{
         width:100%;
     }
-    .ui-datepicker-weekheader ul li:nth-last-child(1){
-        margin-right: auto;
-    }
-
 
 }

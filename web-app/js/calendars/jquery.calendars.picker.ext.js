@@ -1,8 +1,8 @@
 ﻿/* http://keith-wood.name/calendars.html
    Calendars date picker extensions for jQuery v1.1.4.
    Written by Keith Wood (kbwood{at}iinet.com.au) August 2009.
-   Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and 
-   MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. 
+   Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and
+   MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses.
    Please attribute the author if you use it. */
 
 (function($) { // Hide scope, no $ conflict
@@ -18,8 +18,8 @@ var themeRollerRenderer = {
 	month: '<div class="ui-datepicker-group">' +
 	'<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">{link:prevJump}<div class="vertical-line">|</div>{link:prev}<span>{monthHeader:MM yyyy}</span>{link:next}<div class="vertical-line">|</div>{link:nextJump}{link:close}</div>' +
 	'<div class="ui-datepicker-weekheader">{weekHeader}</div><table class="ui-datepicker-calendar"><tbody>{weeks}</tbody></table></div>',
-	weekHeader: '<ul>{days}</ul>',
-	dayHeader: '<li>{day}</li>',
+	weekHeader: '<table class=""><tbody><tr>{days}</tr></tbody></table>',
+	dayHeader: '<td>{day}</td>',
 
 	week: '<tr>{days}</tr>',
 	day: '<td>{day}</td>',
