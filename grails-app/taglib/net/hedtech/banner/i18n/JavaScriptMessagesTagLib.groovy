@@ -59,7 +59,7 @@ class JavaScriptMessagesTagLib {
         if (names.size() > 0) {
 
             // Search for any place where we are referencing message codes patterns to check .i18n.prop('abc') or ('abc' | xei18n)
-            def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"]\s*\)/
+            def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?\)/
             names.each { name ->
                 resourceService.getModule(name)?.resources?.findAll { it.sourceUrlExtension == "js" }?.each {
 
