@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright 2012-2017 Ellucian Company L.P. and its affiliates.
+Copyright 2012-2018 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/
 
 /**
@@ -9,7 +9,7 @@ class I18nCoreGrailsPlugin {
 
     String groupId = "net.hedtech"
 
-    def version = "9.26"
+    def version = "9.27"
 
     def grailsVersion = "2.2.1 > *"
 
