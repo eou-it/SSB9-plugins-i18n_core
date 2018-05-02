@@ -2579,12 +2579,9 @@ button.ui-datepicker-cmd {
     background: url('images/date-picker-sprites.png') no-repeat scroll -7px 1px transparent;
 }
 
-input.hasMultiCalendarPicker:hover {
-    border-color: #4282B3;
-}
-
 input.hasMultiCalendarPicker:focus {
-    border-color: #4282B3;
+    border-color: #81C8FF; /*EDS*/
+    outline: none;
 }
 
 input.hasMultiCalendarPicker:hover .calendar-img, .calendar-img:hover {
@@ -2608,7 +2605,7 @@ input.hasMultiCalendarPicker {
     margin: 0 -22px 0 0; /* leave space for button width */
     padding: 0 25px 0 0;
     height: 22px;
-    border: 1px solid #778FA0;
+    border: 1px solid #B2B3B7; /*EDS*/
     border-radius: 0 3px 3px 0;
 }
 
