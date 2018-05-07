@@ -1263,7 +1263,7 @@ Copyright 2012-2018 Ellucian Company L.P. and its affiliates.
 }
 
 .ui-datepicker.ui-widget-content {
-    border: 1px solid #DDDDDD;
+    border: none;
 }
 
 /* ThemeRoller override style sheet for jQuery Calendars Picker v1.1.4. */
@@ -2502,7 +2502,7 @@ button.ui-datepicker-cmd {
 }
 
 .ui-datepicker.ui-widget-content {
-    border: 1px solid #DDDDDD;
+    border: none;
 }
 
 /* ThemeRoller override style sheet for jQuery Calendars Picker v1.1.4. */
