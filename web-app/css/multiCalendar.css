@@ -1404,7 +1404,7 @@ button.ui-datepicker-cmd {
 
 #multiCalendarContainer .ui-datepicker-other-month {
     background: #f8f8f8;
-    color:#585E65;
+    color:#5B5E65;
 }
 
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
@@ -2580,7 +2580,7 @@ button.ui-datepicker-cmd {
 }
 
 input.hasMultiCalendarPicker:focus {
-    border-color: #81C8FF; /*EDS*/
+    border-color: #026BC8; /*EDS*/
     outline: none;
 }
 
