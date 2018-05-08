@@ -97,7 +97,7 @@ Copyright 2012-2018 Ellucian Company L.P. and its affiliates.
 }
 
 .ui-widget-content a {
-    color: #151618;
+    color: #151618; /*EDS*/
 }
 
 .ui-widget-header a {
@@ -141,20 +141,20 @@ Copyright 2012-2018 Ellucian Company L.P. and its affiliates.
 .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
     color: #FFFFFF;
     font-weight: normal;
-    background-color: #026BC8;
+    background-color: #026BC8; /*EDS*/
 }
 
 #multiCalendarContainer .ui-state-hover a, #multiCalendarContainer .ui-state-hover a:hover {
     color: #FFFFFF!important;
     text-decoration: none;
-    background-color: #026BC8;
+    background-color: #026BC8; /*EDS*/
     background: -moz-linear-gradient(50% 11.8085% -90deg, rgba(27, 86, 145, 1) 0%, rgba(16, 73, 122, 1) 24.633%, rgba(4, 59, 98, 1) 57.0096%, rgba(0, 54, 89, 1) 76.9302%);
     background: -webkit-gradient(linear, 50% 11.8085%, 50% 79.654%, color-stop(0, rgba(27, 86, 145, 1)), color-stop(0.3202, rgba(16, 73, 122, 1)), color-stop(0.741057, rgba(4, 59, 98, 1)), color-stop(1, rgba(0, 54, 89, 1)));
 }
 
 #multiCalendarContainer .ui-state-active, #multiCalendarContainer .ui-widget-content .ui-state-active, #multiCalendarContainer .ui-widget-header .ui-state-active {
     background: none;
-    background-color: #026BC8;
+    background-color: #026BC8; /*EDS*/
     color: #FFFFFF;
     background: -moz-linear-gradient(50% 11.8085% -90deg, rgba(27, 86, 145, 1) 0%, rgba(16, 73, 122, 1) 24.633%, rgba(4, 59, 98, 1) 57.0096%, rgba(0, 54, 89, 1) 76.9302%);
     background: -webkit-gradient(linear, 50% 11.8085%, 50% 79.654%, color-stop(0, rgba(27, 86, 145, 1)), color-stop(0.3202, rgba(16, 73, 122, 1)), color-stop(0.741057, rgba(4, 59, 98, 1)), color-stop(1, rgba(0, 54, 89, 1)));
@@ -1403,8 +1403,8 @@ button.ui-datepicker-cmd {
 }
 
 #multiCalendarContainer .ui-datepicker-other-month {
-    background: #f8f8f8;
-    color:#5B5E65;
+    background: #f8f8f8; /*EDS*/
+    color:#5B5E65; /*EDS*/
 }
 
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
@@ -1427,8 +1427,8 @@ button.ui-datepicker-cmd {
 }
 
 #multiCalendarContainer .ui-state-active, #multiCalendarContainer .ui-widget-content .ui-state-active, #multiCalendarContainer .ui-widget-header .ui-state-active {
-    background: none repeat scroll 0 0 #026BC8 !important;
-    border: 1px solid #026BC8;
+    background: none repeat scroll 0 0 #026BC8 !important; /*EDS*/
+    border: 1px solid #026BC8; /*EDS*/
     color: #FFFFFF !important;
     filter: none;
 }
@@ -2746,8 +2746,8 @@ input.hasMultiCalendarPicker.component-error:focus  {
 }
 .ui-datepicker .ui-datepicker-calendar .ui-state-highlight, .ui-datepicker .ui-datepicker-calendar .ui-state-hover {
     text-align:center;
-    background: #5B5E65 none repeat scroll 0 0 !important;
-    color: #FFFFFF!important;
+    background: #5B5E65 none repeat scroll 0 0 !important; /*EDS*/
+    color: #FFFFFF !important; /*EDS*/
     font-weight: bold;
 }
 .ui-datepicker table {
@@ -2878,10 +2878,10 @@ div.ui-calendar-widget div.ui-widget-header{
     background: transparent url("images/arrowright.svg") no-repeat scroll center center;
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-e:hover {
-    background: transparent url("images/arrowrightBlue.svg") no-repeat scroll center center;
+    background: transparent url("images/arrowrightBlue.svg") no-repeat scroll center center; /*EDS*/
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w:hover {
-    background: transparent url("images/arrowleftBlue.svg") no-repeat scroll center center;
+    background: transparent url("images/arrowleftBlue.svg") no-repeat scroll center center; /*EDS*/
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w, .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
     background-size:1.3em;
@@ -2990,7 +2990,7 @@ div.ui-calendar-widget div.ui-widget-header{
         position: absolute;
     }
     .ui-datepicker-group {
-        border:1px solid #026BC8;
+        border:1px solid #026BC8; /*EDS*/
     }
     .ui-datepicker table {
         margin: 0 0.75em 0.75em;
