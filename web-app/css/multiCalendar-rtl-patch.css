@@ -148,8 +148,8 @@ input.hasMultiCalendarPicker.hasTimePicker:hover ~ .time-icon, input.hasMultiCal
     }
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w:hover {
-    background: transparent url("images/arrowrightBlue.svg") no-repeat scroll center center; /*EDS*/
+    background: transparent url("images/arrowrightblue.svg") no-repeat scroll center center; /*EDS*/
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-e:hover {
-    background: transparent url("images/arrowleftBlue.svg") no-repeat scroll center center; /*EDS*/
+    background: transparent url("images/arrowleftblue.svg") no-repeat scroll center center; /*EDS*/
 }
