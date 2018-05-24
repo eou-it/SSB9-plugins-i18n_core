@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2012-2017 Ellucian Company L.P. and its affiliates.
+ Copyright 2012-2018 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 
 (function($) {
@@ -52,7 +52,7 @@
 
             var calendarOptions = inst.settings;
             $('#' + this.calendarContainer).remove();
-            var DOMStructure = '<div id="' + this.calendarContainer + '" class="' + calendarOptions.orientation + '" ><div id="sceenReaderText" aria-live="rude" aria-atomic="true"></div>';
+            var DOMStructure = '<div id="' + this.calendarContainer + '" class="' + calendarOptions.orientation + '" style="display:none;" ><div id="sceenReaderText" aria-live="rude" aria-atomic="true"></div>';
             var calendars = calendarOptions.calendars;
             var numberOfCalendars = calendars.length;
             if(calendars && numberOfCalendars > 0) {
