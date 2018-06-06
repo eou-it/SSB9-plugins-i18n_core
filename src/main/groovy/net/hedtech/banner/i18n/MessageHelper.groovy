@@ -3,8 +3,8 @@ Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/ 
 package net.hedtech.banner.i18n
 
-import org.codehaus.groovy.grails.web.context.ServletContextHolder
-import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
+import grails.web.context.ServletContextHolder
+import org.grails.web.util.GrailsApplicationAttributes
 import org.springframework.context.ApplicationContext
 import org.springframework.context.i18n.LocaleContextHolder as LCH
 
