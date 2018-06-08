@@ -30,6 +30,6 @@ src/java/web/**/*
 messages_ar_SA.properties
 *.ipr
 *.iws
-build/
+build/**/*
 gradle-wrapper.properties
 .gradle/
