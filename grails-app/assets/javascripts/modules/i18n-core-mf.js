@@ -1,3 +1,4 @@
+//= require modules/jquery-mf.js
 //= require calendars/jquery.calendars.js
 //= require calendars/jquery.calendars.plus.js
 //= require calendars/jquery.calendars.picker.js
