@@ -1,13 +1,10 @@
 /*******************************************************************************
-Copyright 2009-2012 Ellucian Company L.P. and its affiliates.
+Copyright 2009-2018 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/ 
 package net.hedtech.banner.i18n
 
-import grails.web.context.ServletContextHolder
-import org.grails.web.util.GrailsApplicationAttributes
-import org.springframework.context.ApplicationContext
+import grails.util.Holders
 import org.springframework.context.i18n.LocaleContextHolder as LCH
-
 
 /**
  * Helper class to retrieve getMessage values from the resource bundle managed by grails.
@@ -29,6 +26,7 @@ class MessageHelper {
     // within a controller.
 
     private static def _messageSource
+
 
     /**
      * A 'localizer' closure that may be passed into an ApplicationException in order to localize error messages.
@@ -98,10 +96,8 @@ class MessageHelper {
 
     private static def getMessageSource() {
         if (_messageSource == null) {
-            ApplicationContext applicationContext = (ApplicationContext) ServletContextHolder.getServletContext().getAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT);
-            _messageSource = applicationContext.getBean("messageSource")
+            _messageSource = Holders.grailsApplication.getMainContext().getBean("messageSource")
         }
-
         return _messageSource
     }
 }

@@ -52,6 +52,9 @@ dependencies {
     testCompile "org.grails:grails-web-testing-support"
     compile "com.ibm.icu:icu4j:57.1"
 
+    //Added for BannerXE For FileUtils and others
+    compile 'commons-io:commons-io:2.6'
+
 }
 
 // Added for BannerXE - Internal plugin dependency
