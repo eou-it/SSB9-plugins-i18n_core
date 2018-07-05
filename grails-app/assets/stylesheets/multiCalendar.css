@@ -2576,7 +2576,7 @@ button.ui-datepicker-cmd {
 }
 
 .calendar-img {
-    background: url('images/date-picker-sprites.png') no-repeat scroll -7px 1px transparent;
+    background: url('date-picker-sprites.png') no-repeat scroll -7px 1px transparent;
 }
 
 input.hasMultiCalendarPicker:focus {
