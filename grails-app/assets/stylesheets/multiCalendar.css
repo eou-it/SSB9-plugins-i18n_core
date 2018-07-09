@@ -221,21 +221,21 @@ Copyright 2012-2018 Ellucian Company L.P. and its affiliates.
     visibility: hidden;
     height: 0px;
     width: 0px;
-    background: url("images/ui-icons_003366_256x240.png") no-repeat;
+    background: url("ui-icons_003366_256x240.png") no-repeat;
 }
 
 .ui-icon {
     width: 16px;
     height: 16px;
-    background-image: url(images/ui-icons_222222_256x240.png);
+    background-image: url("ui-icons_222222_256x240.png");
 }
 
 .ui-widget-content .ui-icon {
-    background-image: url(images/ui-icons_222222_256x240.png);
+    background-image: url("ui-icons_222222_256x240.png");
 }
 
 .ui-widget-header .ui-icon {
-    background-image: url(images/ui-icons_003366_256x240.png);
+    background-image: url("ui-icons_003366_256x240.png");
 }
 
 .ui-widget-header .ui-icon {
@@ -243,23 +243,23 @@ Copyright 2012-2018 Ellucian Company L.P. and its affiliates.
 }
 
 .ui-state-default .ui-icon {
-    background-image: url(images/ui-icons_888888_256x240.png);
+    background-image: url("ui-icons_888888_256x240.png");
 }
 
 .ui-state-hover .ui-icon, .ui-state-focus .ui-icon {
-    background-image: url(images/ui-icons_454545_256x240.png);
+    background-image: url("ui-icons_454545_256x240.png");
 }
 
 .ui-state-active .ui-icon {
-    background-image: url(images/ui-icons_ffffff_256x240.png);
+    background-image: url("ui-icons_ffffff_256x240.png");
 }
 
 .ui-state-highlight .ui-icon {
-    background-image: url(images/ui-icons_ffc51e_256x240.png);
+    background-image: url("ui-icons_ffc51e_256x240.png");
 }
 
 .ui-state-error .ui-icon, .ui-state-error-text .ui-icon {
-    background-image: url(images/ui-icons_cc3333_256x240.png);
+    background-image: url("ui-icons_cc3333_256x240.png");
 }
 
 /* positioning */
@@ -1486,27 +1486,27 @@ button.ui-datepicker-cmd {
     visibility: hidden;
     height: 0px;
     width: 0px;
-    background: url("images/ui-icons_003366_256x240.png") no-repeat;
+    background: url("ui-icons_003366_256x240.png") no-repeat;
 }
 
 .ui-widget-content .ui-icon {
-    background-image: url(images/ui-icons_222222_256x240.png);
+    background-image: url("ui-icons_222222_256x240.png");
 }
 
 .ui-widget-header .ui-icon {
-    background-image: url(images/ui-icons_003366_256x240.png);
+    background-image: url("ui-icons_003366_256x240.png");
 }
 
 .ui-state-default .ui-icon {
-    background-image: url(images/ui-icons_888888_256x240.png);
+    background-image: url("ui-icons_888888_256x240.png");
 }
 
 .ui-state-hover .ui-icon, .ui-state-focus .ui-icon {
-    background-image: url(images/ui-icons_454545_256x240.png);
+    background-image: url("ui-icons_454545_256x240.png");
 }
 
 .ui-state-active .ui-icon {
-    background-image: url(images/ui-icons_ffffff_256x240.png);
+    background-image: url("ui-icons_ffffff_256x240.png");
 }
 
 .ui-state-highlight .ui-icon {
