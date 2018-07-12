@@ -45,6 +45,26 @@ class JavaScriptMessagesTagLib {
             if (jsLoadedFile.exists() && !(jsLoadedFile.path.endsWith('-mf.js') || jsLoadedFile.path.endsWith('.min.js')) ){
                 def  fileText = jsLoadedFile.text
                 def matcher = regex.matcher(fileText)
+                //TODO :grails_332_change, needs to revisit
+               /*if (it.processedFile) {
+                    def fileText
+
+                    // Check to see if the file has been zipped.  This only occurs in the Environment.DEVELOPMENT
+                    // If it occurs, we'll create a reference to the original file and parse it instead.
+                    if (it.processedFile.path.endsWith(".gz")) {
+                        def originalFile = new File( "${it.workDir}${it.sourceUrl}" )
+                        if (originalFile.exists()) {
+                            fileText = originalFile.text
+                        }
+                        else {
+                            fileText = ""
+                        }
+                    }
+                    else {
+                        fileText = it.processedFile.text
+                    }
+
+                }*/
                 while (matcher.find()) {
                     if (matcher.group(1) != null) {
                         localeKeys << matcher.group(1)
