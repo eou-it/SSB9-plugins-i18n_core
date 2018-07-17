@@ -175,7 +175,7 @@ Copyright 2012-2018 Ellucian Company L.P. and its affiliates.
 ----------------------------------*/
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
     border: 1px solid #ffc51e;
-    background: #fef8be url(images/ui-bg_flat_55_fef8be_40x100.png) 50% 50% repeat-x;
+    background: #fef8be url(ui-bg_flat_55_fef8be_40x100.png) 50% 50% repeat-x;
     color: #363636;
 }
 
@@ -185,7 +185,7 @@ Copyright 2012-2018 Ellucian Company L.P. and its affiliates.
 
 .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
     border: 1px solid #dc6f6e;
-    background: #ebcfcf url(images/ui-bg_inset-soft_100_ebcfcf_1x100.png) 50% bottom repeat-x;
+    background: #ebcfcf url(ui-bg_inset-soft_100_ebcfcf_1x100.png) 50% bottom repeat-x;
     color: #000000;
 }
 
@@ -990,7 +990,7 @@ Copyright 2012-2018 Ellucian Company L.P. and its affiliates.
 
 /* Overlays */
 .ui-widget-overlay {
-    background: #000000 url(images/ui-bg_flat_0_000000_40x100.png) 50% 50% repeat-x;
+    background: #000000 url(ui-bg_flat_0_000000_40x100.png) 50% 50% repeat-x;
     opacity: .50;
     filter: Alpha(Opacity = 50);
 }
@@ -998,7 +998,7 @@ Copyright 2012-2018 Ellucian Company L.P. and its affiliates.
 .ui-widget-shadow {
     margin: -4px 0 0 -4px;
     padding: 4px;
-    background: #080808 url(images/ui-bg_highlight-soft_100_080808_1x100.png) 50% top repeat-x;
+    background: #080808 url(ui-bg_highlight-soft_100_080808_1x100.png) 50% top repeat-x;
     opacity: .30;
     filter: Alpha(Opacity = 30);
     -moz-border-radius: 4px;
@@ -1450,7 +1450,7 @@ button.ui-datepicker-cmd {
 
 .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
     border: 1px solid #dc6f6e;
-    background: #ebcfcf url(images/ui-bg_inset-soft_100_ebcfcf_1x100.png) 50% bottom repeat-x;
+    background: #ebcfcf url(ui-bg_inset-soft_100_ebcfcf_1x100.png) 50% bottom repeat-x;
     color: #000000;
 }
 
@@ -1510,11 +1510,11 @@ button.ui-datepicker-cmd {
 }
 
 .ui-state-highlight .ui-icon {
-    background-image: url(images/ui-icons_ffc51e_256x240.png);
+    background-image: url(ui-icons_ffc51e_256x240.png);
 }
 
 .ui-state-error .ui-icon, .ui-state-error-text .ui-icon {
-    background-image: url(images/ui-icons_cc3333_256x240.png);
+    background-image: url(ui-icons_cc3333_256x240.png);
 }
 /*
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w {
@@ -2229,7 +2229,7 @@ button.ui-datepicker-cmd {
 
 /* Overlays */
 .ui-widget-overlay {
-    background: #000000 url(images/ui-bg_flat_0_000000_40x100.png) 50% 50% repeat-x;
+    background: #000000 url(ui-bg_flat_0_000000_40x100.png) 50% 50% repeat-x;
     opacity: .50;
     filter: Alpha(Opacity = 50);
 }
@@ -2237,7 +2237,7 @@ button.ui-datepicker-cmd {
 .ui-widget-shadow {
     margin: -4px 0 0 -4px;
     padding: 4px;
-    background: #080808 url(images/ui-bg_highlight-soft_100_080808_1x100.png) 50% top repeat-x;
+    background: #080808 url(ui-bg_highlight-soft_100_080808_1x100.png) 50% top repeat-x;
     opacity: .30;
     filter: Alpha(Opacity = 30);
     -moz-border-radius: 4px;
@@ -2620,11 +2620,11 @@ input.hasMultiCalendarPicker {
 }
 
 .time-calendar-img {
-    background: url('images/date-time-sprite.png') no-repeat scroll -7px 0px transparent;
+    background: url('date-time-sprite.png') no-repeat scroll -7px 0px transparent;
 }
 
 .time-icon {
-    background: url('images/date-time-sprite.png') no-repeat scroll -28px 0px transparent;
+    background: url('date-time-sprite.png') no-repeat scroll -28px 0px transparent;
 }
 
 .calendar-icon {
@@ -2695,7 +2695,7 @@ input.hasMultiCalendarPicker.component-error:focus  {
 
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
     border:none;
-    background: #fef8be url(images/ui-bg_flat_55_fef8be_40x100.png) 50% 50% repeat-x;
+    background: #fef8be url(ui-bg_flat_55_fef8be_40x100.png) 50% 50% repeat-x;
     color: #363636;
 }
 .ui-datepicker {
@@ -2861,27 +2861,27 @@ div.ui-calendar-widget div.ui-widget-header{
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-ww {
     float:right;
-    background: transparent url("images/double-arrow-cal-left.svg") no-repeat scroll center center;
+    background: transparent url("double-arrow-cal-left.svg") no-repeat scroll center center;
 }
 
 
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-ee {
-    background: transparent url("images/double-arrow-cal-right.svg") no-repeat scroll center center;
+    background: transparent url("double-arrow-cal-right.svg") no-repeat scroll center center;
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w  {
     float:right;
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w {
-    background: transparent url("images/arrowleft.svg") no-repeat scroll center center;
+    background: transparent url("arrowleft.svg") no-repeat scroll center center;
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
-    background: transparent url("images/arrowright.svg") no-repeat scroll center center;
+    background: transparent url("arrowright.svg") no-repeat scroll center center;
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-e:hover {
-    background: transparent url("images/arrowrightblue.svg") no-repeat scroll center center; /*EDS*/
+    background: transparent url("arrowrightblue.svg") no-repeat scroll center center; /*EDS*/
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w:hover {
-    background: transparent url("images/arrowleftblue.svg") no-repeat scroll center center; /*EDS*/
+    background: transparent url("arrowleftblue.svg") no-repeat scroll center center; /*EDS*/
 }
 .ui-widget-header .ui-icon.ui-icon-circle-triangle-w, .ui-widget-header .ui-icon.ui-icon-circle-triangle-e {
     background-size:1.3em;
@@ -2953,7 +2953,7 @@ div.ui-calendar-widget div.ui-widget-header{
     }
 
     .ui-widget-header .ui-icon-close{
-        background: transparent url("images/icon-cl.png") no-repeat scroll center center;
+        background: transparent url("icon-cl.png") no-repeat scroll center center;
         background-position: 25px 5px !important;
     }
 
