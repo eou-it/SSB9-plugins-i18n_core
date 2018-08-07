@@ -3,12 +3,11 @@ package i18n.core
 import grails.plugins.*
 import grails.util.Environment
 import grails.util.Holders
+import groovy.util.logging.Slf4j
 import org.grails.config.PropertySourcesConfig
-import org.springframework.core.env.ConfigurableEnvironment
-import org.springframework.core.env.MapPropertySource
-import org.springframework.core.env.MutablePropertySources
-import org.springframework.web.context.support.StandardServletEnvironment
 
+
+@Slf4j
 class I18nCoreGrailsPlugin extends Plugin {
 
     // the version or versions of Grails the plugin is designed for
