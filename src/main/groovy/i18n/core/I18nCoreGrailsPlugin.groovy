@@ -16,7 +16,11 @@ class I18nCoreGrailsPlugin extends Plugin {
     def pluginExcludes = [
         "grails-app/views/error.gsp"
     ]
-
+    List loadAfter = ['springSecurityCore']
+    List loadBefore = ['bannerCore','springSecuritySaml','springSecurityCas']
+    def dependsOn =  [
+            springSecurityCore: '3.2.3 => *'
+    ]
     // TODO Fill in these fields
     def title = "I18n Core" // Headline display name of the plugin
     def author = "Your name"

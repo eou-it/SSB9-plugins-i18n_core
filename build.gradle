@@ -9,7 +9,7 @@ buildscript {
     }
 }
 
-version "0.1"
+version "9.28"
 group "i18n.core"
 
 apply plugin:"eclipse"
