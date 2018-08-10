@@ -34,7 +34,12 @@ Brief summary/description of the plugin.
     def documentation = "http://grails.org/plugin/i18n-core"
 
     Closure doWithSpring() { {->
+        println "--------- In Banner i18n: doWithSpring ----------------"
+        println "Before merge Holders.config.size()"  + grailsApplication.config.size()
         setupExternalConfig()
+        println "After mergeHolders.config.size()"  + grailsApplication.config.size()
+        println "\n AuthenticationProvider = " + Holders.flatConfig.banner.sso.authenticationProvider
+        println "--------- In Banner i18n: doWithSpring End \n----------------"
         }
     }
 
