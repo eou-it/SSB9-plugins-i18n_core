@@ -2,15 +2,13 @@
      Copyright 2009-2018 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 
-import grails.util.GrailsNameUtils
-import groovy.io.FileType
 import groovy.json.JsonSlurper
 
 
-    //def grailsUserhome = System.getProperty('user.home') + '\\.grails\\2.5.0\\projects\\i18n-core\\plugins'
     def jsonSlurper = new JsonSlurper()
 
-    //TODO
+    // TODO :grails_332_change, needs to revisit
+    //Task to exclude keys with default and typemismatch right now its taking as empty arraya as "exclude": []
     //Object reportMessages = jsonSlurper.parseText('{ "exclude": ["default","typeMismatch"] ,"dynamic": []}' )
     Object reportMessages = jsonSlurper.parseText('{ "exclude": [] ,"dynamic": []}' )
     def parseVariants = { variants ->
@@ -187,14 +185,14 @@ import groovy.json.JsonSlurper
 
 
     def baseDir = System.getProperty('user.dir')
-    def base = baseDir+"\\grails-app\\i18n"
-    def baseView = baseDir+"\\grails-app\\views"
-    def basetaglib = baseDir+"\\grails-app\\taglib"
-    def basecontrollers = baseDir+"\\grails-app\\controllers"
-    def basecomposers = baseDir+"\\grails-app\\composers"
-    def baseservices = baseDir+'\\grails-app\\services'
-    def basegroovy= baseDir+"\\src\\main\\groovy"
-    def basewebapp = baseDir+"\\grails-app\\assets"
+    def base = baseDir+"/grails-app/i18n"
+    def baseView = baseDir+"/grails-app/views"
+    def basetaglib = baseDir+"/grails-app/taglib"
+    def basecontrollers = baseDir+"/grails-app/controllers"
+    def basecomposers = baseDir+"/grails-app/composers"
+    def baseservices = baseDir+'/grails-app/services'
+    def basegroovy= baseDir+"/src/main/groovy"
+    def basewebapp = baseDir+"/grails-app/assets"
     def messagesFile
     def used = [:]
     def defined = [] as Set
@@ -213,7 +211,6 @@ import groovy.json.JsonSlurper
             if (!file.isDirectory()) {
                 defined.addAll(fetchAllKeysFromFiles(file))
             }
-            //println("defined"+defined)
         }
     }
 
@@ -249,7 +246,9 @@ import groovy.json.JsonSlurper
     missing = missing.findAll { key ->
         !domainClassNames.any { key.startsWith(it) } }
 
-    //TODO Task for finding 18n keys in .grails folder
+    // TODO :grails_332_change, needs to revisit
+    //Task for finding 18n keys in .grails folder
+
     /*def pluginDir = new File(System.getProperty('user.home') + '\\.grails\\2.5.0\\projects\\i18n-core\\plugins')
 
     def pluginProps = [] as Set
@@ -265,7 +264,7 @@ import groovy.json.JsonSlurper
             }
         }
     }*/
-    /*println("pluginProps"+pluginProps)
+    /*
     def keysDefinedInPlugins = [] as Set
     missing.each { key ->
         if(pluginProps.contains(key)) {
@@ -273,7 +272,7 @@ import groovy.json.JsonSlurper
         }
     }
 
-    println("keysDefinedInPlugins"+keysDefinedInPlugins)*/
+    */
     //missing = missing - keysDefinedInPlugins
 
     println "\n=================="
@@ -363,14 +362,6 @@ import groovy.json.JsonSlurper
     println "== obsolete keys ==\n"
     unmatched = defined - matched
 
-    /*if(new File("grails-app/domain").exists()) {
-        new File("grails-app/domain").eachFileRecurse { file ->
-            println file
-            if (!file.isDirectory()) {
-                domainClassNames << GrailsNameUtils.getPropertyName(file.name - ".groovy")
-        } }
-    }*/
-
     unmatched = unmatched.findAll { key ->
         !domainClassNames.any { key.startsWith(it) } }
     unmatched.each { println it }
@@ -379,7 +370,11 @@ import groovy.json.JsonSlurper
     println "found ${defined.size()} defined keys\n"
     println "found ${missing.size()} missing keys"
     println "found ${dynamic.size()} dynamic keys (${dynamicMissing.size()} missing)"
+
+    // TODO :grails_332_change, needs to revisit
+    //Removed below println as a part of "Task for finding 18n keys in .grails folder"
     //println "found ${keysDefinedInPlugins.size()} keys in plugins"
+
     println "found ${unmatched.size()} obsolete keys"
 
     if (!args) {
