@@ -3,9 +3,10 @@
  *******************************************************************************/
 package net.hedtech.banner.i18n.utils
 
+import grails.testing.mixin.integration.Integration
 import net.hedtech.banner.i18n.DateAndDecimalUtils
 import net.hedtech.banner.i18n.DateConverterService
-import org.codehaus.groovy.grails.plugins.testing.GrailsMockHttpServletRequest
+import org.grails.plugins.testing.GrailsMockHttpServletRequest
 import org.junit.After
 import org.junit.Test
 import org.springframework.context.i18n.LocaleContextHolder
@@ -15,15 +16,12 @@ import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertNull
-import static org.junit.Assert.assertTrue
+import static org.junit.Assert.*
 
 /**
  * Integration test cases for DateAndDecimalUtils.
  */
+@Integration
 class DateAndDecimalUtilsIntegrationTests {
 
     private final String EN = "en"

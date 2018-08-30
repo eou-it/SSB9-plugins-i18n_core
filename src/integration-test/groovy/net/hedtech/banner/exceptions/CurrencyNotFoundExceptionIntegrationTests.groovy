@@ -4,14 +4,17 @@
 package net.hedtech.banner.exceptions
 
 import com.ibm.icu.util.Currency
-import grails.test.GrailsUnitTestCase
+import grails.testing.mixin.integration.Integration
+
+//import grails.test.GrailsUnitTestCase
 import org.junit.Assert
 import org.junit.Test
 
 /**
  * Created by arunu on 12/7/2016.
  */
-class CurrencyNotFoundExceptionIntegrationTests extends GrailsUnitTestCase {
+@Integration
+class CurrencyNotFoundExceptionIntegrationTests {
 
     private static final String USD = "USD"
 

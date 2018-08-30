@@ -3,6 +3,7 @@ Copyright 2017 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/
 package net.hedtech.banner.i18n
 
+import grails.testing.mixin.integration.Integration
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -13,6 +14,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotEquals
 
+@Integration
 class MessageHelperIntegrationTests {
     def messageHelper
     public final String EN = "en"
@@ -20,12 +22,12 @@ class MessageHelperIntegrationTests {
     public final String US = "US"
     def message
 
-
     @Before
     public void setUp() {
         LocaleContextHolder.setLocale(new Locale(EN, IN))
         messageHelper = new MessageHelper()
     }
+
     @After
     public void tearDown() {
         LocaleContextHolder.setLocale(new Locale(EN, US))

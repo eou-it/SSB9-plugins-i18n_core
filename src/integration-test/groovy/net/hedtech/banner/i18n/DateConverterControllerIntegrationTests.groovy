@@ -3,10 +3,11 @@
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
+import grails.testing.mixin.integration.Integration
 import org.junit.Before
 import org.junit.Test
 
-
+@Integration
 class DateConverterControllerIntegrationTests {
     def dateConverterController
 

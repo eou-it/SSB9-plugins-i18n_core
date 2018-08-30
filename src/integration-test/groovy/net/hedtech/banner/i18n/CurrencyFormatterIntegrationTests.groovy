@@ -3,6 +3,7 @@
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
+import grails.testing.mixin.integration.Integration
 import org.junit.Before
 
 import static org.junit.Assert.assertEquals
@@ -14,7 +15,7 @@ import org.junit.After
 import org.springframework.context.i18n.LocaleContextHolder as LCH
 
 
-
+@Integration
 class CurrencyFormatterIntegrationTests {
 def currencyFormatService
     private final String POSITIVE_TEST_VALUE = "1234567890.239"

@@ -3,9 +3,12 @@
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
+import grails.testing.mixin.integration.Integration
+
 import static org.junit.Assert.assertEquals
 import org.junit.Test
 
+@Integration
 class DateLocaleFormatIntegrationTest {
 
     public final String KEY_TO_TEST = "js.datepicker.dateFormat"

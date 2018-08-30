@@ -6,10 +6,12 @@ package net.hedtech.banner.i18n
 import com.ibm.icu.util.Calendar
 import com.ibm.icu.util.ULocale
 import grails.converters.JSON
+import grails.testing.mixin.integration.Integration
 import net.hedtech.banner.i18n.utils.LocaleUtilities
-import org.codehaus.groovy.grails.web.json.JSONObject
-import org.codehaus.groovy.grails.web.servlet.mvc.GrailsWebRequest
+import org.grails.web.json.JSONObject
+import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.junit.After
+import org.junit.Assert
 import org.junit.Test
 import org.springframework.context.i18n.LocaleContextHolder
 
@@ -18,7 +20,8 @@ import java.text.SimpleDateFormat
 
 import static org.junit.Assert.*
 
-class DateConverterIntegrationTests   {
+@Integration
+class DateConverterIntegrationTests extends Assert  {
 
     def dateConverterService
 

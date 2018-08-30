@@ -1,6 +1,6 @@
 package net.hedtech.banner.i18n.utils
 
-import org.codehaus.groovy.grails.plugins.testing.GrailsMockHttpServletRequest
+import org.grails.plugins.testing.GrailsMockHttpServletRequest
 import org.springframework.web.context.request.RequestContextHolder
 
 /**
