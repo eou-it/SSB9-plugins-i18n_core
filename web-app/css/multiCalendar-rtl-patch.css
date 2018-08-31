@@ -13,9 +13,9 @@ Copyright 2012-2017 Ellucian Company L.P. and its affiliates.
 
 #multiCalenderIdCheck{
     height: 3.13em;
-    background-color: #F3F7F8 !important;
+    background-color: #FFFFFF !important; /*EDS*/
     font-family: lucidaGrande;
-    color: #058423;
+    color: #026BC8; /*EDS*/
     line-height: 3.13em;
     font-size: 16px;
     text-align: center;
@@ -58,9 +58,7 @@ Copyright 2012-2017 Ellucian Company L.P. and its affiliates.
         filter: Alpha(Opacity = 50);
     }
 }
-.ui-datepicker td {
-    border:1px solid #cccccc;
-}
+
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
     border:none;
 }
@@ -148,4 +146,10 @@ input.hasMultiCalendarPicker.hasTimePicker:hover ~ .time-icon, input.hasMultiCal
        padding-right: 3em;
         padding-left: 0em;
     }
+}
+.ui-widget-header .ui-icon.ui-icon-circle-triangle-w:hover {
+    background: transparent url("images/arrowrightblue.svg") no-repeat scroll center center; /*EDS*/
+}
+.ui-widget-header .ui-icon.ui-icon-circle-triangle-e:hover {
+    background: transparent url("images/arrowleftblue.svg") no-repeat scroll center center; /*EDS*/
 }
