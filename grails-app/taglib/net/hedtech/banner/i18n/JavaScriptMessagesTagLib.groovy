@@ -4,9 +4,10 @@
 package net.hedtech.banner.i18n
 
 import grails.util.Environment
-import org.apache.commons.io.FileUtils
+import groovy.io.FileVisitResult
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import static groovy.io.FileType.FILES
 
 /**
  * This class is built off to populate the i18n map.
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
  * The messages can be rendered using $.i18n.map("key") or $.i18n.prop("key")
  */
 class JavaScriptMessagesTagLib {
+    public static List jsFiles = []
 
     def encodeHTML(msg) {
         msg.replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;")
@@ -33,17 +35,24 @@ class JavaScriptMessagesTagLib {
 
 
     def i18nJavaScript = { attrs ->
+        println "jsFiles = " + jsFiles.size()
         Set keys = []
-        def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?|([\w\d\s.-]*)['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?\)/
-        String appDirPath = getCurrentDirectoryPath()
-        String[] jsExtension = ["js"] as String[]
-        List<File> jsFilesList = (List<File>) FileUtils.listFiles(new File(appDirPath), jsExtension, true)
+        if (jsFiles.size() == 0) {
+            def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?|([\w\d\s.-]*)['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?\)/
+            String appDirPath = getCurrentDirectoryPath()
 
-        jsFilesList?.each { jsLoadedFile ->
-            HashSet localeKeys = new HashSet()
+            final excludedDirs = ['.git', 'gradle', '.idea', 'node_modules', '.gradle', 'build', 'modules', 'd3', 'angular', 'jquery-plugins','target']
 
-            if (jsLoadedFile.exists() && !(jsLoadedFile.path.endsWith('-mf.js') || jsLoadedFile.path.endsWith('.min.js')) ){
-                def  fileText = jsLoadedFile.text
+            new File(appDirPath).traverse(
+                    type: FILES,
+                    preDir: {if (it.name in excludedDirs) return FileVisitResult.SKIP_SUBTREE}, // excludes children of excluded dirs
+                    excludeNameFilter: { it in excludedDirs }, // excludes the excluded dirs as well
+                    nameFilter: ~/.*.js/,// matched only given names
+            ) { jsFiles << it }
+
+            jsFiles?.each { jsLoadedFile ->
+                HashSet localeKeys = new HashSet()
+                def fileText = jsLoadedFile.text
                 def matcher = regex.matcher(fileText)
                 while (matcher.find()) {
                     if (matcher.group(1) != null) {
