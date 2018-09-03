@@ -16,7 +16,7 @@ import static groovy.io.FileType.FILES
  * The messages can be rendered using $.i18n.map("key") or $.i18n.prop("key")
  */
 class JavaScriptMessagesTagLib {
-    public static List jsFiles = []
+    public static boolean loadJSFiles = true
     public static Set keys = []
 
     def encodeHTML(msg) {
@@ -36,8 +36,9 @@ class JavaScriptMessagesTagLib {
 
 
     def i18nJavaScript = { attrs ->
-        println "jsFiles = " + jsFiles.size()
-        if (jsFiles.size() == 0) {
+        if (loadJSFiles) {
+            loadJSFiles = false
+            List jsFiles = []
             println "jsFiles is 0 cond "
             def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?|([\w\d\s.-]*)['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?\)/
             String appDirPath = getCurrentDirectoryPath()
