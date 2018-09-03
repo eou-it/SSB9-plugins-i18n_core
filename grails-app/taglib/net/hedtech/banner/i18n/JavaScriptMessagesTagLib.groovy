@@ -17,6 +17,7 @@ import static groovy.io.FileType.FILES
  */
 class JavaScriptMessagesTagLib {
     public static List jsFiles = []
+    public static Set keys = []
 
     def encodeHTML(msg) {
         msg.replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;")
@@ -36,8 +37,8 @@ class JavaScriptMessagesTagLib {
 
     def i18nJavaScript = { attrs ->
         println "jsFiles = " + jsFiles.size()
-        Set keys = []
         if (jsFiles.size() == 0) {
+            println "jsFiles is 0 cond "
             def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?|([\w\d\s.-]*)['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?\)/
             String appDirPath = getCurrentDirectoryPath()
 
@@ -68,6 +69,11 @@ class JavaScriptMessagesTagLib {
                 keys.addAll(localeKeys)
             }
         }
+        println "================= "
+        println "keys   = " + keys.isEmpty()
+        println "keys   = " + keys
+        println "================= "
+
         if(keys.isEmpty()){
             keys = ["default.calendar", "default.calendar1", "default.calendar2", "default.calendar.gregorian.ulocale",
                     "default.calendar.islamic.ulocale", "default.date.format", "default.gregorian.dayNames", "default.gregorian.dayNamesMin",
