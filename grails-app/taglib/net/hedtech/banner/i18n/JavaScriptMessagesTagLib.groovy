@@ -3,6 +3,7 @@
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
+import grails.core.GrailsApplication
 import grails.util.Environment
 import groovy.io.FileVisitResult
 import org.springframework.web.servlet.support.RequestContextUtils
@@ -18,17 +19,32 @@ import static groovy.io.FileType.FILES
 class JavaScriptMessagesTagLib {
     public static boolean loadJSFiles = true
     public static Set keys = []
+    public static List jsFiles=[]
 
     def encodeHTML(msg) {
         msg.replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;")
     }
 
+    void getJsFilesList(GrailsApplication grailsApplication){
+        String appDirPath = getCurrentDirectoryPath(grailsApplication)
 
-    String getCurrentDirectoryPath() {
+        final excludedDirs = ['.git', 'gradle', '.idea', 'node_modules', '.gradle', 'build', 'modules', 'd3', 'jquery-plugins','target','images']
+
+        new File(appDirPath).traverse(
+                type: FILES,
+                preDir: {if (it.name in excludedDirs) return FileVisitResult.SKIP_SUBTREE}, // excludes children of excluded dirs
+                excludeNameFilter: { it in excludedDirs }, // excludes the excluded dirs as well
+                nameFilter: ~/.*.js/,// matched only given names
+        ) { jsFiles << it }
+    }
+
+
+    private String getCurrentDirectoryPath(GrailsApplication grailsApplication) {
         String dirPath = ''
         if (Environment.current == Environment.PRODUCTION || Environment.current == Environment.TEST) {
             dirPath = grailsApplication.mainContext.servletContext.getRealPath('/')
         } else if (Environment.current == Environment.DEVELOPMENT) {
+            println "grailsApplication "+grailsApplication
             dirPath = System.properties['user.dir']
         }
         return dirPath
@@ -38,20 +54,8 @@ class JavaScriptMessagesTagLib {
     def i18nJavaScript = { attrs ->
         if (loadJSFiles) {
             loadJSFiles = false
-            List jsFiles = []
             println "jsFiles is 0 cond "
             def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?|([\w\d\s.-]*)['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?\)/
-            String appDirPath = getCurrentDirectoryPath()
-
-            final excludedDirs = ['.git', 'gradle', '.idea', 'node_modules', '.gradle', 'build', 'modules', 'd3', 'angular', 'jquery-plugins','target']
-
-            new File(appDirPath).traverse(
-                    type: FILES,
-                    preDir: {if (it.name in excludedDirs) return FileVisitResult.SKIP_SUBTREE}, // excludes children of excluded dirs
-                    excludeNameFilter: { it in excludedDirs }, // excludes the excluded dirs as well
-                    nameFilter: ~/.*.js/,// matched only given names
-            ) { jsFiles << it }
-
             jsFiles?.each { jsLoadedFile ->
                 HashSet localeKeys = new HashSet()
                 def fileText = jsLoadedFile.text
@@ -70,10 +74,6 @@ class JavaScriptMessagesTagLib {
                 keys.addAll(localeKeys)
             }
         }
-        println "================= "
-        println "keys   = " + keys.isEmpty()
-        println "keys   = " + keys
-        println "================= "
 
         if(keys.isEmpty()){
             keys = ["default.calendar", "default.calendar1", "default.calendar2", "default.calendar.gregorian.ulocale",
