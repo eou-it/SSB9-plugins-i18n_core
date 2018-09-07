@@ -44,7 +44,6 @@ class JavaScriptMessagesTagLib {
         if (Environment.current == Environment.PRODUCTION || Environment.current == Environment.TEST) {
             dirPath = grailsApplication.mainContext.servletContext.getRealPath('/')
         } else if (Environment.current == Environment.DEVELOPMENT) {
-            println "grailsApplication "+grailsApplication
             dirPath = System.properties['user.dir']
         }
         return dirPath
@@ -54,7 +53,6 @@ class JavaScriptMessagesTagLib {
     def i18nJavaScript = { attrs ->
         if (loadJSFiles) {
             loadJSFiles = false
-            println "jsFiles is 0 cond "
             def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?|([\w\d\s.-]*)['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?\)/
             jsFiles?.each { jsLoadedFile ->
                 HashSet localeKeys = new HashSet()
