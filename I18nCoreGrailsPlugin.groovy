@@ -9,7 +9,7 @@ class I18nCoreGrailsPlugin {
 
     String groupId = "net.hedtech"
 
-    def version = "9.28.1"
+    def version = "9.28.4"
 
     def grailsVersion = "2.2.1 > *"
 
