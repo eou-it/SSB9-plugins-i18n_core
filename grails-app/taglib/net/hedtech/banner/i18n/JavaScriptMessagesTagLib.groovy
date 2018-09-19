@@ -28,7 +28,7 @@ class JavaScriptMessagesTagLib {
     void getJsFilesList(GrailsApplication grailsApplication){
         String appDirPath = getCurrentDirectoryPath(grailsApplication)
 
-        final excludedDirs = ['.git', 'gradle', '.idea', 'node_modules', '.gradle', 'build', 'modules', 'd3', 'jquery-plugins','target','images']
+        final excludedDirs = ['.git', 'gradle', '.idea', 'node_modules', '.gradle', 'build', 'modules', 'd3', 'target','images']
 
         new File(appDirPath).traverse(
                 type: FILES,
