@@ -91,7 +91,7 @@ input.hasMultiCalendarPicker {
 }
 
 input.hasMultiCalendarPicker + span {
-    background: url('images/date-picker-sprites-flip.png') no-repeat scroll 0px 1px transparent;
+    background: url('date-picker-sprites-flip.png') no-repeat scroll 0px 1px transparent;
 
 }
 

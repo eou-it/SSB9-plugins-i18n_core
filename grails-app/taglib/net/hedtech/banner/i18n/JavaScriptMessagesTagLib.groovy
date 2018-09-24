@@ -3,10 +3,12 @@
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
+import grails.core.GrailsApplication
 import grails.util.Environment
-import org.apache.commons.io.FileUtils
+import groovy.io.FileVisitResult
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import static groovy.io.FileType.FILES
 
 /**
  * This class is built off to populate the i18n map.
@@ -15,13 +17,29 @@ import org.springframework.web.servlet.support.RequestContextUtils
  * The messages can be rendered using $.i18n.map("key") or $.i18n.prop("key")
  */
 class JavaScriptMessagesTagLib {
+    public static boolean loadJSFiles = true
+    public static Set keys = []
+    public static List jsFiles=[]
 
     def encodeHTML(msg) {
         msg.replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;")
     }
 
+    void getJsFilesList(GrailsApplication grailsApplication){
+        String appDirPath = getCurrentDirectoryPath(grailsApplication)
 
-    String getCurrentDirectoryPath() {
+        final excludedDirs = ['.git', 'gradle', '.idea', 'node_modules', '.gradle', 'build', 'modules', 'd3', 'target','images']
+
+        new File(appDirPath).traverse(
+                type: FILES,
+                preDir: {if (it.name in excludedDirs) return FileVisitResult.SKIP_SUBTREE}, // excludes children of excluded dirs
+                excludeNameFilter: { it in excludedDirs }, // excludes the excluded dirs as well
+                nameFilter: ~/.*.js/,// matched only given names
+        ) { jsFiles << it }
+    }
+
+
+    private String getCurrentDirectoryPath(GrailsApplication grailsApplication) {
         String dirPath = ''
         if (Environment.current == Environment.PRODUCTION || Environment.current == Environment.TEST) {
             dirPath = grailsApplication.mainContext.servletContext.getRealPath('/')
@@ -33,17 +51,12 @@ class JavaScriptMessagesTagLib {
 
 
     def i18nJavaScript = { attrs ->
-        Set keys = []
-        def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?|([\w\d\s.-]*)['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?\)/
-        String appDirPath = getCurrentDirectoryPath()
-        String[] jsExtension = ["js"] as String[]
-        List<File> jsFilesList = (List<File>) FileUtils.listFiles(new File(appDirPath), jsExtension, true)
-
-        jsFilesList?.each { jsLoadedFile ->
-            HashSet localeKeys = new HashSet()
-
-            if (jsLoadedFile.exists() && !(jsLoadedFile.path.endsWith('-mf.js') || jsLoadedFile.path.endsWith('.min.js')) ){
-                def  fileText = jsLoadedFile.text
+        if (loadJSFiles) {
+            loadJSFiles = false
+            def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?|([\w\d\s.-]*)['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?\)/
+            jsFiles?.each { jsLoadedFile ->
+                HashSet localeKeys = new HashSet()
+                def fileText = jsLoadedFile.text
                 def matcher = regex.matcher(fileText)
                 while (matcher.find()) {
                     if (matcher.group(1) != null) {
@@ -59,6 +72,7 @@ class JavaScriptMessagesTagLib {
                 keys.addAll(localeKeys)
             }
         }
+
         if(keys.isEmpty()){
             keys = ["default.calendar", "default.calendar1", "default.calendar2", "default.calendar.gregorian.ulocale",
                     "default.calendar.islamic.ulocale", "default.date.format", "default.gregorian.dayNames", "default.gregorian.dayNamesMin",
