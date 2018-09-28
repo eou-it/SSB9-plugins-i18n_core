@@ -21,25 +21,22 @@ class I18nCoreGrailsPlugin extends Plugin {
     def dependsOn =  [
             springSecurityCore: '3.2.3 => *'
     ]
-    // TODO Fill in these fields
-    def title = "I18n Core" // Headline display name of the plugin
-    def author = "Your name"
     def authorEmail = ""
     def description = '''\
-Brief summary/description of the plugin.
-'''
+                        Brief summary/description of the plugin.
+                       '''
     def profiles = ['web']
 
     // URL to the plugin's documentation
     def documentation = "http://grails.org/plugin/i18n-core"
 
     Closure doWithSpring() { {->
-        println "--------- In Banner i18n: doWithSpring ----------------"
-        println "Before merge Holders.config.size()"  + grailsApplication.config.size()
-        setupExternalConfig()
-        println "After mergeHolders.config.size()"  + grailsApplication.config.size()
-        println "\n AuthenticationProvider = " + Holders.flatConfig.banner.sso.authenticationProvider
-        println "--------- In Banner i18n: doWithSpring End \n----------------"
+        //println "--------- In Banner i18n: doWithSpring ----------------"
+        //println "Before merge Holders.config.size()"  + grailsApplication.config.size()
+        //setupExternalConfig()
+        //println "After mergeHolders.config.size()"  + grailsApplication.config.size()
+        //println "\n AuthenticationProvider = " + Holders.flatConfig.banner.sso.authenticationProvider
+        //println "--------- In Banner i18n: doWithSpring End \n----------------"
         }
     }
 
@@ -64,50 +61,6 @@ Brief summary/description of the plugin.
 
     void onShutdown(Map<String, Object> event) {
         // TODO Implement code that is executed when the application shuts down (optional)
-    }
-
-    private setupExternalConfig() {
-        PropertySourcesConfig config = Holders.config
-        def locations = config.grails.config.locations
-        String filePathName
-
-        locations.each { propertyName,  fileName ->
-            filePathName = getFilePath(System.getProperty(propertyName))
-            if (Environment.getCurrent() != Environment.PRODUCTION) {
-                if (!filePathName) {
-                    filePathName = getFilePath("${System.getProperty('user.home')}/.grails/${fileName}")
-                    if (filePathName) log.info "Using configuration file '\$HOME/.grails/$fileName'"
-                }
-                if (!filePathName) {
-                    filePathName = getFilePath("${fileName}")
-                    if (filePathName) log.info "Using configuration file '$fileName'"
-                }
-                if (!filePathName) {
-                    filePathName = getFilePath("grails-app/conf/$fileName")
-                    if (filePathName) log.info "Using configuration file 'grails-app/conf/$fileName'"
-                }
-            } else {
-                //filePathName = Thread.currentThread().getContextClassLoader().getResource( "$fileName" )?.toURI()
-                //filePathName = "classpath:$fileName"
-            }
-            if(filePathName) {
-                println "External configuration file: " + filePathName
-                try {
-                    String configText = new File(filePathName).text
-                    Map properties = configText ? new ConfigSlurper(Environment.current.name).parse(configText)?.flatten() : [:]
-                    Holders.config.merge(properties)
-                }
-                catch (e) {
-                    println "NOTICE: Caught exception while loading configuration files (depending on current grails target, this may be ok): ${e.message}"
-                }
-            }
-        }
-    }
-
-    private static String getFilePath( filePath ) {
-        if (filePath && new File( filePath ).exists()) {
-            "${filePath}"
-        }
     }
 
 }
