@@ -32,16 +32,10 @@ class I18nCoreGrailsPlugin extends Plugin {
     // URL to the plugin's documentation
     def documentation = "http://grails.org/plugin/i18n-core"
 
-    Closure doWithSpring() { {->
-        println "--------- In Banner i18n: doWithSpring ----------------"
-        println "Before merge Holders.config.size()"  + grailsApplication.config.size()
-        setupExternalConfig()
-        println "After mergeHolders.config.size()"  + grailsApplication.config.size()
-        println "SPRING UTILS - FAILURE URL - ${Holders.config.grails.plugin.springsecurity.failureHandler.defaultFailureUrl}"
-        println "\n AuthenticationProvider = " + Holders.flatConfig.banner.sso.authenticationProvider
-        println "CH.config.bannerDataSource - ${Holders.config.bannerDataSource}"
-        println "--------- In Banner i18n: doWithSpring End \n----------------"
-    }
+    Closure doWithSpring() {
+        { ->
+            setupExternalConfig()
+        }
     }
 
     void doWithDynamicMethods() {
