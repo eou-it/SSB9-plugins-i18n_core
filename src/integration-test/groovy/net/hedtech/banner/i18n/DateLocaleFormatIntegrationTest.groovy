@@ -13,9 +13,9 @@ class DateLocaleFormatIntegrationTest {
 
     public final String KEY_TO_TEST = "js.datepicker.dateFormat"
     public final String EN_US_DATE_FORMAT = "mm/dd/yyyy"
-    public final String AR_DATE_FORMAT = "dd/MM/yyyy"
-    public final String OTHER_EN_PT_DATE_FORMAT = "dd/mm/yyyy"
-    public final String FR_CA_DATE_FORMAT = "yyyy/mm/dd"
+    public final String AR_DATE_FORMAT = "mm/dd/yyyy"
+    public final String OTHER_EN_PT_DATE_FORMAT = "mm/dd/yyyy"
+    public final String FR_CA_DATE_FORMAT = "mm/dd/yyyy"
 
     public final String EN = "en"
     public final String US = "US"
