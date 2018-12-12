@@ -4,16 +4,27 @@
 package net.hedtech.banner.i18n
 
 import grails.testing.mixin.integration.Integration
+import grails.util.GrailsWebMockUtil
+import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.context.WebApplicationContext
+import org.springframework.web.context.request.RequestContextHolder
 
 @Integration
+
 class DateConverterControllerIntegrationTests {
     def dateConverterController
+    def dateConverterService
 
+    @Autowired
+    WebApplicationContext ctx
     @Before
     public void setUp() {
+        GrailsWebMockUtil.bindMockWebRequest(ctx)
         dateConverterController = new DateConverterController()
+        dateConverterController.dateConverterService =dateConverterService
     }
 
     @Test
@@ -31,5 +42,9 @@ class DateConverterControllerIntegrationTests {
     void testI18nPropertiesRender(){
         dateConverterController.i18nProperties()
         assert 200,dateConverterController.response.status
+    }
+    @AfterClass
+    public static void cleanUp() {
+        RequestContextHolder.resetRequestAttributes()
     }
 }
