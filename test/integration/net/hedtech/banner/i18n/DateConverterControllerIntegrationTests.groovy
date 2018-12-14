@@ -31,4 +31,21 @@ class DateConverterControllerIntegrationTests {
         dateConverterController.i18nProperties()
         assert 200,dateConverterController.response.status
     }
+
+    @Test
+    void testWithEmptyDate() {
+        dateConverterController.params.date= null
+        dateConverterController.params.fromULocale="en_US@calendar=gregorian"
+        dateConverterController.params.toULocale="en_AR@calendar=islamic"
+        dateConverterController.params.fromDateFormat="yyyy/MM/dd"
+        dateConverterController.params.toDateFormat="yyyy/MM/dd"
+        try{
+            dateConverterController.data()
+            fail : "This should have failed"
+        }catch (AssertionError ae){
+            assert "Date must be supplied", ae.message
+        }
+
+    }
+
 }
