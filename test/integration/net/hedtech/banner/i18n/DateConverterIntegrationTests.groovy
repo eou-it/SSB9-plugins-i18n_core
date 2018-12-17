@@ -12,7 +12,7 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsWebRequest
 import org.junit.After
 import org.junit.Test
 import org.springframework.context.i18n.LocaleContextHolder
-
+import static groovy.test.GroovyAssert.shouldFail
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
@@ -439,6 +439,24 @@ class DateConverterIntegrationTests   {
         assertEquals(dateConverterService.getDefaultCalendarWithTime(today, DEFAULT_DATETIME_FORMAT_EN), "04/12/2017 13:32:12")
     }
 
+    @Test
+    void testAssertNullCheck() {
+        shouldFail{
+            dateConverterService.convert(null, "en_AR@calendar=islamic", "en_US@calendar=gregorian", "yyyy/MM/dd", "yyyy/MM/dd")
+        }
+        shouldFail{
+            dateConverterService.convert("1433/02/08", null, "en_US@calendar=gregorian", "yyyy/MM/dd", "yyyy/MM/dd")
+        }
+        shouldFail{
+            dateConverterService.convert("1433/02/08", "en_AR@calendar=islamic", null, "yyyy/MM/dd", "yyyy/MM/dd")
+        }
+        shouldFail{
+            dateConverterService.convert("1433/02/08", "en_AR@calendar=islamic", "en_US@calendar=gregorian", null, "yyyy/MM/dd")
+        }
+        shouldFail{
+            dateConverterService.convert("1433/02/08", "en_AR@calendar=islamic", "en_US@calendar=gregorian", "yyyy/MM/dd",null)
+        }
+    }
 
     private String formatDate(date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
