@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2017 Ellucian Company L.P. and its affiliates.
+ Copyright 2017-2018 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
@@ -13,13 +13,13 @@ import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.request.RequestContextHolder
 
 @Integration
-
 class DateConverterControllerIntegrationTests {
     def dateConverterController
     def dateConverterService
 
     @Autowired
     WebApplicationContext ctx
+
     @Before
     public void setUp() {
         GrailsWebMockUtil.bindMockWebRequest(ctx)

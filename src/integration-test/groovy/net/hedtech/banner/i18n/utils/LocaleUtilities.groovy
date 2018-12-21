@@ -1,6 +1,8 @@
+/*******************************************************************************
+ Copyright 2017-2018 Ellucian Company L.P. and its affiliates.
+ *******************************************************************************/
 package net.hedtech.banner.i18n.utils
 
-import org.grails.plugins.testing.GrailsMockHttpServletRequest
 import org.springframework.web.context.request.RequestContextHolder
 import grails.util.GrailsWebMockUtil
 import org.springframework.web.context.support.WebApplicationContextUtils
@@ -16,7 +18,7 @@ class  LocaleUtilities {
         if(!webRequest) {
             def servletContext  = ServletContextHolder.getServletContext()
             def applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext)
-            webRequest =  grails.util.GrailsWebMockUtil.bindMockWebRequest(applicationContext)
+            webRequest =  GrailsWebMockUtil.bindMockWebRequest(applicationContext)
         }
         def localePieces = locale?.split("-")
         //however, for locales with language and country, better to go for Locale class constants,
@@ -36,7 +38,7 @@ class  LocaleUtilities {
         if(!webRequest) {
             def servletContext  = ServletContextHolder.getServletContext()
             def applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext)
-            webRequest =  grails.util.GrailsWebMockUtil.bindMockWebRequest(applicationContext)
+            webRequest =  GrailsWebMockUtil.bindMockWebRequest(applicationContext)
         }
         webRequest.addPreferredLocale(locale)
 
@@ -47,7 +49,7 @@ class  LocaleUtilities {
         if(!webRequest) {
             def servletContext  = ServletContextHolder.getServletContext()
             def applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext)
-            webRequest =  grails.util.GrailsWebMockUtil.bindMockWebRequest(applicationContext)
+            webRequest =  GrailsWebMockUtil.bindMockWebRequest(applicationContext)
         }
         return webRequest.locales
     }
