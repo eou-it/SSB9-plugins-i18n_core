@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.request.RequestContextHolder
 
+import static groovy.test.GroovyAssert.shouldFail
+
 @Integration
 class DateConverterControllerIntegrationTests {
     def dateConverterController
@@ -43,6 +45,24 @@ class DateConverterControllerIntegrationTests {
         dateConverterController.i18nProperties()
         assert 200,dateConverterController.response.status
     }
+
+    @Test
+    void testWithEmptyDate() {
+        dateConverterController.params.date= null
+        dateConverterController.params.fromULocale="en_US@calendar=gregorian"
+        dateConverterController.params.toULocale="en_AR@calendar=islamic"
+        dateConverterController.params.fromDateFormat="yyyy/MM/dd"
+        dateConverterController.params.toDateFormat="yyyy/MM/dd"
+        try{
+            shouldFail{
+                dateConverterController.data()
+            }
+        }catch (AssertionError ae){
+            assert "Date must be supplied", ae.message
+        }
+
+    }
+
     @AfterClass
     public static void cleanUp() {
         RequestContextHolder.resetRequestAttributes()

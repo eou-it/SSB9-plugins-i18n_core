@@ -8,6 +8,7 @@ import com.ibm.icu.util.ULocale
 import grails.converters.JSON
 import grails.testing.mixin.integration.Integration
 import net.hedtech.banner.i18n.utils.LocaleUtilities
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.junit.After
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.context.WebApplicationContext
 
+import static groovy.test.GroovyAssert.shouldFail
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
@@ -461,6 +463,75 @@ class DateConverterIntegrationTests extends Assert  {
         assertEquals(dateConverterService.getDefaultCalendarWithTime(today, DEFAULT_DATETIME_FORMAT_EN), "04/12/2017 13:32:12")
     }
 
+    @Test
+    void testAssertNullCheck() {
+        shouldFail{
+            dateConverterService.convert(null, "en_AR@calendar=islamic", "en_US@calendar=gregorian", "yyyy/MM/dd", "yyyy/MM/dd")
+        }
+        shouldFail{
+            dateConverterService.convert("1433/02/08", null, "en_US@calendar=gregorian", "yyyy/MM/dd", "yyyy/MM/dd")
+        }
+        shouldFail{
+            dateConverterService.convert("1433/02/08", "en_AR@calendar=islamic", null, "yyyy/MM/dd", "yyyy/MM/dd")
+        }
+        shouldFail{
+            dateConverterService.convert("1433/02/08", "en_AR@calendar=islamic", "en_US@calendar=gregorian", null, "yyyy/MM/dd")
+        }
+        shouldFail{
+            dateConverterService.convert("1433/02/08", "en_AR@calendar=islamic", "en_US@calendar=gregorian", "yyyy/MM/dd",null)
+        }
+    }
+
+    @Test
+    void testJSONDateMarshallerObjectWithValidDate(){
+        JSONObject data = new JSONObject(startDate: "01/01/2010")
+        def dateFields = ["startDate"]
+        def dateParts = dateConverterService.JSONDateMarshaller(data, dateFields)
+        assertEquals dateParts.startDate, "01/01/2010"
+    }
+
+    @Test
+    void testJSONDateMarshallerObjectWithInvalidKey(){
+        JSONObject data = new JSONObject(null: "01/01/2010")
+        def dateFields = ["startDate"]
+        def dateParts = dateConverterService.JSONDateMarshaller(data, dateFields)
+        assertEquals dateParts.startDate, null
+    }
+
+    @Test
+    void testJSONDateMarshallerObjectWithNonStringValue(){
+        JSONObject data = new JSONObject(startDate: new Date("01/01/2010"))
+        def dateFields = ["startDate"]
+        def dateParts = dateConverterService.JSONDateMarshaller(data, dateFields)
+        assertEquals dateParts.startDate, new Date("01/01/2010")
+    }
+
+    @Test
+    void testJSONDateMarshallerObjectWithNonStringValueInvalidKey(){
+        JSONObject data = new JSONObject(null: new Date("01/01/2010"))
+        def dateFields = ["startDate"]
+        def dateParts = dateConverterService.JSONDateMarshaller(data, dateFields)
+        assertEquals dateParts.startDate, null
+    }
+
+    @Test
+    void testJSONDateMarshallerObjectWithNullDate(){
+        JSONObject data = new JSONObject(startDate: null)
+        def dateFields = ["startDate"]
+        def dateParts = dateConverterService.JSONDateMarshaller(data, dateFields)
+        assertEquals dateParts.startDate, null
+    }
+
+    @Test
+    void testJSONDateMarshallerArrayWithValidDate(){
+        JSONArray newArray = new JSONArray()
+        newArray.put(0, "01/01/2010" )
+        newArray.put(1, "02/01/2010")
+        def dateFields = ["startDate", "endDate"]
+        def dateParts = dateConverterService.JSONDateMarshaller(newArray, null)
+        assertEquals dateParts[0], "01/01/2010"
+        assertEquals dateParts[1], "02/01/2010"
+    }
 
     private String formatDate(date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
