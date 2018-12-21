@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2017 Ellucian Company L.P. and its affiliates.
+ Copyright 2017-2018 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n.utils
 
@@ -83,7 +83,7 @@ class DateAndDecimalUtilsIntegrationTests {
 
         LocaleContextHolder.setLocale(new Locale(ARSA))
         dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
-        assertEquals("MM/dd/yyyy", dateFormat)
+        assertEquals("dd/MMMM/yyyy", dateFormat)
     }
 
 

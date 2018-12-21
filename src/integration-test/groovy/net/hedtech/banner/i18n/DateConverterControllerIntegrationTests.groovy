@@ -1,19 +1,32 @@
 /*******************************************************************************
- Copyright 2017 Ellucian Company L.P. and its affiliates.
+ Copyright 2017-2018 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
 import grails.testing.mixin.integration.Integration
+import grails.util.GrailsWebMockUtil
+import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.context.WebApplicationContext
+import org.springframework.web.context.request.RequestContextHolder
+
+import static groovy.test.GroovyAssert.shouldFail
 
 @Integration
 class DateConverterControllerIntegrationTests {
     def dateConverterController
+    def dateConverterService
+
+    @Autowired
+    WebApplicationContext ctx
 
     @Before
     public void setUp() {
+        GrailsWebMockUtil.bindMockWebRequest(ctx)
         dateConverterController = new DateConverterController()
+        dateConverterController.dateConverterService =dateConverterService
     }
 
     @Test
@@ -31,5 +44,27 @@ class DateConverterControllerIntegrationTests {
     void testI18nPropertiesRender(){
         dateConverterController.i18nProperties()
         assert 200,dateConverterController.response.status
+    }
+
+    @Test
+    void testWithEmptyDate() {
+        dateConverterController.params.date= null
+        dateConverterController.params.fromULocale="en_US@calendar=gregorian"
+        dateConverterController.params.toULocale="en_AR@calendar=islamic"
+        dateConverterController.params.fromDateFormat="yyyy/MM/dd"
+        dateConverterController.params.toDateFormat="yyyy/MM/dd"
+        try{
+            shouldFail{
+                dateConverterController.data()
+            }
+        }catch (AssertionError ae){
+            assert "Date must be supplied", ae.message
+        }
+
+    }
+
+    @AfterClass
+    public static void cleanUp() {
+        RequestContextHolder.resetRequestAttributes()
     }
 }
