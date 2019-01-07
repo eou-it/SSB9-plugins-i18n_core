@@ -84,5 +84,5 @@ task applicationEnvSetup{
     System.setProperty('rootProject.version', project.getRootProject().version.toString())
     System.setProperty('rootProject.path', project.getRootDir().absolutePath)
     System.setProperty('rootProject.packagingWarPath', 'build/libs/packaging/')
-    System.setProperty('rootProject.releaseWarPath', 'build/libs/release/')
+    System.setProperty('rootProject.releaseWarPath', 'build/libs/Release/')
 }
