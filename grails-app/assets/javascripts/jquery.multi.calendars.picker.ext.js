@@ -454,10 +454,11 @@
             handled = true;
         }
         else if (event.keyCode == 13) { // Enter - select
+        	// Changes done on ref. to HRU-8417: F9 and Enter doesn't populate the date on date field
             if(($('.ui-state-default.ui-state-hover').length !== 0)){
                 $('.ui-state-default.ui-state-hover').click();
             }else if($('.ui-state-active.ui-state-default').length !== 0 ){
-                $('.ui-state-active.ui-state-default').click()
+                $('.ui-state-active.ui-state-default').click();
             }else if ($('.ui-state-default.ui-state-highlight') !== 0){
                 $('.ui-state-default.ui-state-highlight').click();
             }
