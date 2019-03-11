@@ -16,7 +16,7 @@ class I18nCoreGrailsPlugin extends Plugin {
             "grails-app/views/error.gsp"
     ]
     //List loadAfter = ['springSecurityCore']
-    List loadBefore = ['bannerCore','springSecurityCore','springSecuritySaml','springSecurityCas']
+    List loadBefore = ['XFrameOptions','bannerCore','springSecurityCore','springSecuritySaml','springSecurityCas']
 
     def dependsOn =  [
             springSecurityCore: '3.2.3 => *'
