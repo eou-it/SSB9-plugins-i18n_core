@@ -24,6 +24,7 @@ class ExternalConfigurationUtils {
         String configText
 
         locations.each { propertyName,  fileName ->
+            Boolean isConfigFromClasspath = false
             filePathName = getFilePath(System.getProperty(propertyName))
             if (Environment.getCurrent() != Environment.PRODUCTION) {
                 if (!filePathName) {
@@ -48,6 +49,7 @@ class ExternalConfigurationUtils {
                 } else {
                     filePathName = Thread.currentThread().getContextClassLoader().getResource( "$fileName" )?.getFile()
                     configText   = Thread.currentThread().getContextClassLoader().getResource( "$fileName" )?.text
+                    isConfigFromClasspath = true
                     println "Using configuration file '$fileName' from the classpath"
                     log.info "Using configuration file '$fileName' from the classpath (e.g., from within the war file)"
                 }
@@ -58,7 +60,7 @@ class ExternalConfigurationUtils {
                         loadExternalGroovyConfig(configText)
                     }
                     else if(filePathName.endsWith('.properties')){
-                        loadExternalPropertiesConfig(filePathName,fileName )
+                        loadExternalPropertiesConfig(filePathName,fileName, isConfigFromClasspath )
                     }
                 }
                 catch (e) {
@@ -76,12 +78,12 @@ class ExternalConfigurationUtils {
         }
     }
 
-    private static void loadExternalPropertiesConfig(String filePathName, String fileName) {
+    private static void loadExternalPropertiesConfig(String filePathName, String fileName, Boolean isConfigFromClasspath) {
         InputStream inputStream
-        if (Environment.getCurrent() != Environment.PRODUCTION) {
-            inputStream = new FileInputStream(filePathName)
-        } else {
+        if (isConfigFromClasspath) {
             inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("/$fileName")
+        } else {
+            inputStream = new FileInputStream(filePathName)
         }
         Properties prop = new Properties()
         prop.load(inputStream)
