@@ -454,7 +454,13 @@
             handled = true;
         }
         else if (event.keyCode == 13) { // Enter - select
-			$('#multiCalendarContainer .activeCalendar a.ui-state-hover').click();
+            if(($('.ui-state-default.ui-state-hover').length !== 0)){
+                $('.ui-state-default.ui-state-hover').click();
+            }else if($('.ui-state-active.ui-state-default').length !== 0 ){
+                $('.ui-state-active.ui-state-default').click();
+            }else if ($('.ui-state-default.ui-state-highlight') !== 0){
+                $('.ui-state-default.ui-state-highlight').click();
+            }
             handled = true;
         }
 		else if (event.keyCode == 32) { // Space Select date and close.
