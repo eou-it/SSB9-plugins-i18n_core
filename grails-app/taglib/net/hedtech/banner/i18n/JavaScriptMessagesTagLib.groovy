@@ -1,108 +1,79 @@
 /*******************************************************************************
-Copyright 2009-2016 Ellucian Company L.P. and its affiliates.
-*******************************************************************************/
+ Copyright 2009-2018 Ellucian Company L.P. and its affiliates.
+ *******************************************************************************/
 package net.hedtech.banner.i18n
 
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
+import grails.core.GrailsApplication
+import grails.util.Environment
+import groovy.io.FileVisitResult
+import org.springframework.web.servlet.support.RequestContextUtils
+
+import static groovy.io.FileType.FILES
 
 /**
- * This class is built off the knowledge provided within the ResourceTagLib from
- * the resources plug-in.  It's goal is to scan the files that have been processed
- * for localication call outs and provide them in the i18n map on the client.
+ * This class is built off to populate the i18n map.
+ * It's goal is to scan all the JS files excluding the modules and minified files
+ * for localization call outs and provide them in the i18n map on the client.
+ * The messages can be rendered using $.i18n.map("key") or $.i18n.prop("key")
  */
 class JavaScriptMessagesTagLib {
+    public static boolean loadJSFiles = true
+    public static Set keys = []
+    public static List jsFiles=[]
 
-    static LOCALE_KEYS_ATTRIBUTE = "localeKeys"
-
-    def resourceService
-
-    def encodeHTML( msg ) {
+    def encodeHTML(msg) {
         msg.replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;")
     }
 
-    private def resourceModuleNames(request) {
-	def names = []
+    void getJsFilesList(GrailsApplication grailsApplication){
+        String appDirPath = getCurrentDirectoryPath(grailsApplication)
 
-	if (request.resourceDependencyTracker != null) {
-	    // resources plugin <= 1.0.2
-	    request.resourceDependencyTracker.each {
-		addDependendNames(it, names)
-	    }
-	} else if (request.resourceModuleTracker != null) {
-	    // resources plugin >= 1.0.3
-	    request.resourceModuleTracker.each {
-		if (it.value) { // todo what does 'false' for this property mean? validate usage
-		    addDependendNames(it.key, names)
-		}
-	    }
-	}
+        final excludedDirs = ['.git', 'gradle', '.idea', 'node_modules', '.gradle', 'build', 'modules', 'd3', 'target','images']
 
-	names
+        new File(appDirPath).traverse(
+                type: FILES,
+                preDir: {if (it.name in excludedDirs) return FileVisitResult.SKIP_SUBTREE}, // excludes children of excluded dirs
+                excludeNameFilter: { it in excludedDirs }, // excludes the excluded dirs as well
+                nameFilter: ~/.*.js/,// matched only given names
+        ) { jsFiles << it }
     }
 
-    void addDependendNames(name, list) {
-	     // After moving to submodule, the dependent resources where not picked for bundling the message properties
-	     // We are explicitly adding all the dependend modules to the list so that all the properties defined in the
-	     // JS file gets picked.
-	     list << name
-	     if(resourceService.getModule(name)?.dependsOn) {
-		 resourceService.getModule(name)?.dependsOn.each {
-		      addDependendNames(it, list)
-		 }
-	     }
+
+    private String getCurrentDirectoryPath(GrailsApplication grailsApplication) {
+        String dirPath = ''
+        if (Environment.current == Environment.PRODUCTION || Environment.current == Environment.TEST) {
+            dirPath = grailsApplication.mainContext.servletContext.getRealPath('/')
+        } else if (Environment.current == Environment.DEVELOPMENT) {
+            dirPath = System.properties['user.dir']
+        }
+        return dirPath
     }
+
 
     def i18nJavaScript = { attrs ->
-        def names = resourceModuleNames(request)
-        Set keys = []
-
-        if (names.size() > 0) {
-
-            // Search for any place where we are referencing message codes patterns to check .i18n.prop('abc') or ('abc' | xei18n)
-            def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?\)/
-            names.each { name ->
-                resourceService.getModule(name)?.resources?.findAll { it.sourceUrlExtension == "js" }?.each {
-
-                    if (!it.attributes.containsKey( LOCALE_KEYS_ATTRIBUTE )) {
-                        it.attributes[LOCALE_KEYS_ATTRIBUTE] = new HashSet()
-
-                        if (it.processedFile) {
-                            def fileText
-
-                            // Check to see if the file has been zipped.  This only occurs in the Environment.DEVELOPMENT
-                            // If it occurs, we'll create a reference to the original file and parse it instead.
-                            if (it.processedFile.path.endsWith(".gz")) {
-                                def originalFile = new File( "${it.workDir}${it.sourceUrl}" )
-                                if (originalFile.exists()) {
-                                    fileText = originalFile.text
-                                }
-                                else {
-                                    fileText = ""
-                                }
-                            }
-                            else {
-                                fileText = it.processedFile.text
-                            }
-
-                            def matcher = regex.matcher(fileText)
-                            while (matcher.find()) {
-                                if(matcher.group(1)!=null){
-                                   it.attributes[LOCALE_KEYS_ATTRIBUTE] << matcher.group(1)
-                                }
-                                if(matcher.group(2)!=null){
-                                    it.attributes[LOCALE_KEYS_ATTRIBUTE] << matcher.group(2)
-                                }
-                                if(matcher.group(3)!=null){
-                                    it.attributes[LOCALE_KEYS_ATTRIBUTE] << matcher.group(3)
-                                }
-                              }
-                        }
+        if (loadJSFiles) {
+            loadJSFiles = false
+            def regex = ~/\(*\.i18n.prop\(.*?[\'\"](.*?)[\'\"].*?\)|['"]([\w\d\s.-]*)['"]\s*\|\s*xei18n|[\$]filter\s*\(\s*['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?|([\w\d\s.-]*)['"]xei18n['"]\s*\)\s*\(\s*['"]([\w\d\s.-]+)['"].*?\)/
+            jsFiles?.each { jsLoadedFile ->
+                HashSet localeKeys = new HashSet()
+                def fileText = jsLoadedFile.text
+                def matcher = regex.matcher(fileText)
+                while (matcher.find()) {
+                    if (matcher.group(1) != null) {
+                        localeKeys << matcher.group(1)
+                    }
+                    if (matcher.group(2) != null) {
+                        localeKeys << matcher.group(2)
+                    }
+                    if (matcher.group(3) != null) {
+                        localeKeys << matcher.group(3)
+                    }
                 }
-
-                    keys.addAll( it.attributes[LOCALE_KEYS_ATTRIBUTE] )
-                }
+                keys.addAll(localeKeys)
             }
-        } else {
+        }
+
+        if(keys.isEmpty()){
             keys = ["default.calendar", "default.calendar1", "default.calendar2", "default.calendar.gregorian.ulocale",
                     "default.calendar.islamic.ulocale", "default.date.format", "default.gregorian.dayNames", "default.gregorian.dayNamesMin",
                     "default.gregorian.dayNamesShort", "default.gregorian.monthNames", "default.gregorian.monthNamesShort", "default.gregorian.amPm",
@@ -114,33 +85,33 @@ class JavaScriptMessagesTagLib {
                     "js.datepicker.datetimeFormat","js.input.datepicker.dateformatinfo","js.input.datepicker.info","js.datepicker.info",
                     "default.calendar.ummalqura.ulocale", "default.ummalqura.dayNames", "default.ummalqura.dayNamesMin", "default.ummalqura.dayNamesShort",
                     "default.ummalqura.monthNames","default.ummalqura.monthNamesShort", "default.ummalqura.amPm","default.calendar.ummalqura.translation"
-                    ]
+            ]
             keys.addAll(addTimeKeys())
         }
 
         out << '\$.i18n.map = {'
-            if (keys) {
-                def javaScriptProperties = []
-                keys.sort().each {
-                    String msg = "${g.message(code: it)}"
+        if (keys) {
+            def javaScriptProperties = []
+            keys.sort().each {
+                String msg = "${g.message(code: it)}"
 
-                    // Assume the key was not found.  Look to see if it exists in the bundle
-                    if (msg == it) {
-                        def value = DateAndDecimalUtils.properties( RCU.getLocale( request ) )[it]
+                // Assume the key was not found.  Look to see if it exists in the bundle
+                if (msg == it) {
+                    def value = DateAndDecimalUtils.properties( RequestContextUtils.getLocale( request ) )[it]
 
-                        if (value) {
-                            msg = value
-                        }
-                    }
-                    if (msg && it != msg){
-                        msg = encodeHTML(msg)
-                        javaScriptProperties << "\"$it\": \"$msg\""
+                    if (value) {
+                        msg = value
                     }
                 }
-
-                out << javaScriptProperties.join(",")
+                if (msg && it != msg){
+                    msg = encodeHTML(msg)
+                    javaScriptProperties << "\"$it\": \"$msg\""
+                }
             }
-            out << '};'
+
+            out << javaScriptProperties.join(",")
+        }
+        out << '};'
     }
 
     private addTimeKeys() {

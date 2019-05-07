@@ -8,9 +8,9 @@ import com.ibm.icu.text.DateFormat
 import com.ibm.icu.util.Calendar
 import com.ibm.icu.util.ULocale
 import org.apache.log4j.Logger
-import org.codehaus.groovy.grails.plugins.web.taglib.ValidationTagLib
-import org.codehaus.groovy.grails.web.json.JSONArray
-import org.codehaus.groovy.grails.web.json.JSONObject
+import org.grails.plugins.web.taglib.ValidationTagLib
+import org.grails.web.json.JSONArray
+import org.grails.web.json.JSONObject
 import org.springframework.util.ClassUtils
 
 import java.sql.Timestamp
