@@ -25,6 +25,7 @@ class ExternalConfigurationUtils {
         String configText
 
         locations.each { propertyName,  fileName ->
+            Boolean isConfigFromClasspath = false
             String propertyValue = System.getProperty(propertyName) ?: System.getenv(propertyName)
             filePathName = getFilePath(propertyValue)
             if (Environment.getCurrent() != Environment.PRODUCTION) {
