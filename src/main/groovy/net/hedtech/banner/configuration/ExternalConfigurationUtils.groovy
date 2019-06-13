@@ -13,8 +13,9 @@ class ExternalConfigurationUtils {
     /**
      * Loads the external configuration file, using the following search order.
      * 1. Load the configuration file if its location was specified on the command line using -DmyEnvName=myConfigLocation
-     * 2. (If NOT Grails production env) Load the configuration file if it exists within the user's .grails directory (i.e., convenient for developers)
-     * 3. Load from the classpath (e.g., load file from /WEB-INF/classes within the war file). The installer is used to copy configurations
+     * 2. Load the configuration file if its location was specified as a system environment variable.
+     * 3. If NOT Grails production env load the configuration file if it exists within the user's .grails directory (i.e., convenient for developers)
+     * 4. Load from the classpath (e.g., load file from /WEB-INF/classes within the war file). The installer is used to copy configurations
      *    to this location, so that war files 'may' be self contained (yet can still be overriden using external configuration files)
      **/
     public static setupExternalConfig() {
@@ -25,7 +26,8 @@ class ExternalConfigurationUtils {
 
         locations.each { propertyName,  fileName ->
             Boolean isConfigFromClasspath = false
-            filePathName = getFilePath(System.getProperty(propertyName))
+            String propertyValue = System.getProperty(propertyName) ?: System.getenv(propertyName)
+            filePathName = getFilePath(propertyValue)
             if (Environment.getCurrent() != Environment.PRODUCTION) {
                 if (!filePathName) {
                     filePathName = getFilePath("${System.getProperty('user.home')}/.grails/${fileName}")
