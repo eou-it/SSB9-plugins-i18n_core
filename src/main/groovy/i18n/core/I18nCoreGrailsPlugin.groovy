@@ -24,6 +24,8 @@ class I18nCoreGrailsPlugin extends Plugin {
 
     // URL to the plugin's documentation
     def documentation = "http://grails.org/plugin/i18n-core"
+	
+	def profiles = ['web']
 
     Closure doWithSpring() {
         { ->
