@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2018 Ellucian Company L.P. and its affiliates.
+ Copyright 2018-2019 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.configuration
 
@@ -58,10 +58,10 @@ class ExternalConfigurationUtils {
             }
             if(filePathName && configText) {
                 try {
-                    if(filePathName.endsWith('.groovy')){
+                    if((filePathName.trim()).endsWith('.groovy')){
                         loadExternalGroovyConfig(configText)
                     }
-                    else if(filePathName.endsWith('.properties')){
+                    else if((filePathName.trim()).endsWith('.properties')){
                         loadExternalPropertiesConfig(filePathName,fileName, isConfigFromClasspath )
                     }
                 }
