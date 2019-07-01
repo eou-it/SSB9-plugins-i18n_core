@@ -1,10 +1,11 @@
 /*******************************************************************************
- Copyright 2018 Ellucian Company L.P. and its affiliates.
+ Copyright 2018-2019 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.configuration
 
 import grails.util.Environment
 import grails.util.Holders
+import grails.util.Metadata
 import groovy.util.logging.Slf4j
 
 @Slf4j
@@ -58,10 +59,10 @@ class ExternalConfigurationUtils {
             }
             if(filePathName && configText) {
                 try {
-                    if(filePathName.endsWith('.groovy')){
+                    if((filePathName.trim()).endsWith('.groovy')){
                         loadExternalGroovyConfig(configText)
                     }
-                    else if(filePathName.endsWith('.properties')){
+                    else if((filePathName.trim()).endsWith('.properties')){
                         loadExternalPropertiesConfig(filePathName,fileName, isConfigFromClasspath )
                     }
                 }
@@ -97,4 +98,25 @@ class ExternalConfigurationUtils {
         Holders.config.merge(properties)
     }
 
+    /**
+     * This method is used for setup the external LogbackConfig. If User pass the config name system parameter or command
+     * line using -Dappname_log.config=mylocation\\custom_logback.groovy then this will consider that logback configuration.
+     * Otherwise it will consider the logback config from grails-app/conf.
+     */
+
+    static void setupExternalLogbackConfig(){
+        String appname = Metadata.current.getApplicationName() ?: System.getProperty('info.app.name')
+
+        String configPropertyName = "${appname}_log.config"
+        String propertyValue = System.getProperty(configPropertyName) ?: System.getenv(configPropertyName)
+        if(propertyValue){
+            System.setProperty("logging.config",propertyValue)
+        }
+        String loggingConfig = System.getProperty('logging.config')
+        if(loggingConfig){
+            println "${appname} is using the Logback configuration from ${loggingConfig}."
+        } else {
+            println "${appname} is using the Logback configuration from grails-app/conf."
+        }
+    }
 }
