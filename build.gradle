@@ -2,14 +2,16 @@ buildscript {
     repositories {
         mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
+        maven { url "https://dl.bintray.com/goodstartgenetics/grails3-plugins/" }
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.14.2"
+        classpath "net.saliman:gradle-cobertura-plugin:2.6.0"
     }
 }
 
-version "9.30"
+version "9.32"
 group "i18n.core"
 
 apply plugin:"eclipse"
@@ -18,10 +20,12 @@ apply plugin:"org.grails.grails-plugin"
 apply plugin:"org.grails.grails-plugin-publish"
 apply plugin:"asset-pipeline"
 apply plugin:"org.grails.grails-gsp"
+apply plugin: 'net.saliman.cobertura'
 
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
+    maven { url "https://dl.bintray.com/goodstartgenetics/grails3-plugins/" }
 }
 
 dependencies {
@@ -75,4 +79,26 @@ bootRepackage.enabled = false
 
 assets {
     packagePlugin = true
+}
+
+
+task applicationEnvSetup{
+    System.setProperty('rootProject.name', project.getRootProject().name)
+    System.setProperty('rootProject.version', project.getRootProject().version.toString())
+    System.setProperty('rootProject.path', project.getRootDir().absolutePath)
+    System.setProperty('rootProject.packagingWarPath', 'build/libs/packaging/')
+    System.setProperty('rootProject.releaseWarPath', 'build/libs/Release/')
+}
+
+apply plugin: 'codenarc'
+dependencies {
+    //testRuntime "org.slf4j:slf4j-log4j12:1.7.5"
+    //testRuntime "log4j:log4j:1.2.17"
+}
+codenarc {
+    def codenarcRulePath = project(":banner-codenarc").projectDir.absolutePath + "/config/codenarc/rules.groovy"
+    configFile = file(codenarcRulePath)
+    maxPriority1Violations = Integer.MAX_VALUE
+    maxPriority2Violations = Integer.MAX_VALUE
+    maxPriority3Violations = Integer.MAX_VALUE
 }
