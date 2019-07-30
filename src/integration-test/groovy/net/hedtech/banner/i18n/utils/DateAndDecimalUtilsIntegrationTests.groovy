@@ -33,6 +33,7 @@ class DateAndDecimalUtilsIntegrationTests {
     @After
     public void tearDown() {
         LocaleContextHolder.setLocale(new Locale(EN, US))
+        LocaleContextHolder.resetLocaleContext()
     }
 
     @Test

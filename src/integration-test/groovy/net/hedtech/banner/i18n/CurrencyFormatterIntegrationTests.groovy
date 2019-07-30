@@ -113,6 +113,7 @@ def currencyFormatService
     @After
     public void tearDown() {
         LCH.setLocale(new Locale(EN, US))
+        LCH.resetLocaleContext()
 
     }
 
