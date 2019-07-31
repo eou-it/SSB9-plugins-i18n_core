@@ -5,6 +5,7 @@ package net.hedtech.banner.i18n
 
 import grails.testing.mixin.integration.Integration
 import org.junit.After
+import org.junit.Before
 import org.springframework.context.i18n.LocaleContextHolder
 
 import static org.junit.Assert.assertEquals
@@ -32,6 +33,10 @@ class DateLocaleFormatIntegrationTest {
     public final String ES = "es"
     public final String AR = "ar"
 
+    @Before
+    public void setUp() {
+        LocaleContextHolder.resetLocaleContext()
+    }
     @After
     public void tearDown() {
         LocaleContextHolder.resetLocaleContext()
