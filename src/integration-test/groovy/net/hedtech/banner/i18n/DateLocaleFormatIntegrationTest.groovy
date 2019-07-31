@@ -4,6 +4,8 @@
 package net.hedtech.banner.i18n
 
 import grails.testing.mixin.integration.Integration
+import org.junit.After
+import org.springframework.context.i18n.LocaleContextHolder
 
 import static org.junit.Assert.assertEquals
 import org.junit.Test
@@ -13,9 +15,9 @@ class DateLocaleFormatIntegrationTest {
 
     public final String KEY_TO_TEST = "js.datepicker.dateFormat"
     public final String EN_US_DATE_FORMAT = "mm/dd/yyyy"
-    public final String AR_DATE_FORMAT = "mm/dd/yyyy"
-    public final String OTHER_EN_PT_DATE_FORMAT = "mm/dd/yyyy"
-    public final String FR_CA_DATE_FORMAT = "mm/dd/yyyy"
+    public final String AR_DATE_FORMAT = "dd/MM/yyyy"
+    public final String OTHER_EN_PT_DATE_FORMAT = "dd/mm/yyyy"
+    public final String FR_CA_DATE_FORMAT = "yyyy/mm/dd"
 
     public final String EN = "en"
     public final String US = "US"
@@ -30,8 +32,10 @@ class DateLocaleFormatIntegrationTest {
     public final String ES = "es"
     public final String AR = "ar"
 
-
-
+    @After
+    public void tearDown() {
+        LocaleContextHolder.resetLocaleContext()
+    }
 
     @Test
     public void testJSDatePickerKeyFor_en_US(){
