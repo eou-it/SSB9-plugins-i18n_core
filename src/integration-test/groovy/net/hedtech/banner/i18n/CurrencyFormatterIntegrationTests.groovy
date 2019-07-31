@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2009-2017 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2019 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
@@ -106,22 +106,16 @@ def currencyFormatService
     @Before
     public void setUp() {
         LCH.setLocale(new Locale(EN, US))
-
     }
-
 
     @After
     public void tearDown() {
-        LCH.setLocale(new Locale(EN, US))
         LCH.resetLocaleContext()
-
     }
-
 
     @Test
     void testInjection() {
         assertNotNull currencyFormatService
-
     }
 
     @Test
@@ -137,7 +131,7 @@ def currencyFormatService
     @Test
     void testUSDPositiveCurrencyFormatter() {
         assertEquals currencyFormatService.format(USD,new BigDecimal(POSITIVE_TEST_VALUE)),USD_POS_TEST_VALUE
-        }
+    }
 
     @Test
     void testUSDNegativeCurrencyFormatter() {
