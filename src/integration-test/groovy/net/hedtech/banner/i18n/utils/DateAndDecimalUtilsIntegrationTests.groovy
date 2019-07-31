@@ -6,6 +6,7 @@ package net.hedtech.banner.i18n.utils
 import grails.testing.mixin.integration.Integration
 import net.hedtech.banner.i18n.DateAndDecimalUtils
 import net.hedtech.banner.i18n.DateConverterService
+import net.hedtech.banner.i18n.MessageHelper
 import org.grails.plugins.testing.GrailsMockHttpServletRequest
 import org.junit.After
 import org.junit.Test
@@ -72,21 +73,26 @@ class DateAndDecimalUtilsIntegrationTests {
         LocaleContextHolder.setLocale(new Locale(EN, US))
         def dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
         assertEquals("MM/dd/yyyy", dateFormat)
+        LocaleContextHolder.resetLocaleContext()
 
         LocaleContextHolder.setLocale(new Locale(FRCA))
         dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
         assertEquals("MM/dd/yyyy", dateFormat)
+        LocaleContextHolder.resetLocaleContext()
 
         LocaleContextHolder.setLocale(new Locale(ES))
         dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
         assertEquals("dd/MM/yyyy", dateFormat)
+        LocaleContextHolder.resetLocaleContext()
 
         LocaleContextHolder.setLocale(new Locale(ARSA))
         println("***************************************************************")
         println("Locale:"+LocaleContextHolder.getLocale())
+        println("MessageProperties:"+MessageHelper.message("default.date.format"))
         println("***************************************************************")
         dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
         assertEquals("dd/MMMM/yyyy", dateFormat)
+        LocaleContextHolder.resetLocaleContext()
     }
 
 
