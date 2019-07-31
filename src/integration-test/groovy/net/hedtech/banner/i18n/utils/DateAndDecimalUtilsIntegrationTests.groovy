@@ -32,7 +32,6 @@ class DateAndDecimalUtilsIntegrationTests {
 
     @After
     public void tearDown() {
-        LocaleContextHolder.setLocale(new Locale(EN, US))
         LocaleContextHolder.resetLocaleContext()
     }
 
@@ -83,6 +82,9 @@ class DateAndDecimalUtilsIntegrationTests {
         assertEquals("dd/MM/yyyy", dateFormat)
 
         LocaleContextHolder.setLocale(new Locale(ARSA))
+        println("***************************************************************")
+        println("Locale:"+LocaleContextHolder.getLocale())
+        println("***************************************************************")
         dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
         assertEquals("dd/MMMM/yyyy", dateFormat)
     }
