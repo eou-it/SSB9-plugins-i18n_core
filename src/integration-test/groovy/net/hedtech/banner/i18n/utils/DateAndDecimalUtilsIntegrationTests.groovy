@@ -9,6 +9,7 @@ import net.hedtech.banner.i18n.DateConverterService
 import net.hedtech.banner.i18n.MessageHelper
 import org.grails.plugins.testing.GrailsMockHttpServletRequest
 import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.servlet.support.RequestContextUtils
@@ -30,6 +31,11 @@ class DateAndDecimalUtilsIntegrationTests {
     private final String FRCA = "fr-CA"
     private final String ES = "es"
     private final String ARSA = "ar_SA"
+
+    @Before
+    public void setUp() {
+        LocaleContextHolder.resetLocaleContext()
+    }
 
     @After
     public void tearDown() {

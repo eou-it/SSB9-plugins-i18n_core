@@ -156,6 +156,9 @@ class DateAndDecimalUtils {
             }
             catch (IllegalArgumentException x) {
                 x.printStackTrace()
+                println("***************************************************************")
+                println("Catch case:"+ x.printStackTrace())
+                println("***************************************************************")
                 value = it?.format('yyyy-MM-dd')
             }
         }
