@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright 2017 Ellucian Company L.P. and its affiliates.
+Copyright 2017-2019 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/
 
 package net.hedtech.banner.i18n
@@ -270,7 +270,7 @@ class DateConverterService {
            else if(data instanceof JSONObject) {
                JSONObject jsonObj = new JSONObject();
                data.each { key, value ->
-                  if(value instanceof String && dateFields.contains(key) && value != JSONObject.NULL) {
+                  if(value instanceof String && dateFields.contains(key) && JSON.parse('{ "value": null }') != null) {
                        value = parseGregorianToDefaultCalendar(value)
                        jsonObj.put(key, value);
                   }
@@ -321,7 +321,7 @@ class DateConverterService {
     private JSONObject unmarshallDateForJSONObject(data, dateFields) {
         JSONObject jsonObj = new JSONObject();
         data.each { key, value ->
-           if(dateFields.contains(key) && value != JSONObject.NULL && value != "") {
+           if(dateFields.contains(key) && JSON.parse('{ "value": null }') != null && value != "") {
                    value = parseDefaultCalendarToGregorian(value)
            }
            jsonObj.put(key, value);
