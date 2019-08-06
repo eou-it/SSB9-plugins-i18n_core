@@ -28,9 +28,11 @@ class DateAndDecimalUtilsIntegrationTests {
 
     private final String EN = "en"
     private final String US = "US"
-    private final String FRCA = "fr-CA"
+    private final String FR = "fr"
+    private final String CA = "CA"
     private final String ES = "es"
-    private final String ARSA = "ar_SA"
+    private final String AR = "SA"
+    private final String SA = "SA"
 
     @Before
     public void setUp() {
@@ -81,9 +83,9 @@ class DateAndDecimalUtilsIntegrationTests {
         assertEquals("MM/dd/yyyy", dateFormat)
         LocaleContextHolder.resetLocaleContext()
 
-        LocaleContextHolder.setLocale(new Locale(FRCA))
+        LocaleContextHolder.setLocale(new Locale(FR, CA))
         dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
-        assertEquals("MM/dd/yyyy", dateFormat)
+        assertEquals("yyyy/mm/dd", dateFormat)
         LocaleContextHolder.resetLocaleContext()
 
         LocaleContextHolder.setLocale(new Locale(ES))
@@ -91,11 +93,7 @@ class DateAndDecimalUtilsIntegrationTests {
         assertEquals("dd/MM/yyyy", dateFormat)
         LocaleContextHolder.resetLocaleContext()
 
-        LocaleContextHolder.setLocale(new Locale(ARSA))
-        println("***************************************************************")
-        println("Locale:"+LocaleContextHolder.getLocale())
-        println("MessageProperties:"+MessageHelper.message("default.date.format"))
-        println("***************************************************************")
+        LocaleContextHolder.setLocale(new Locale(AR, SA))
         dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
         assertEquals("dd/MMMM/yyyy", dateFormat)
         LocaleContextHolder.resetLocaleContext()

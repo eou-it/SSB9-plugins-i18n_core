@@ -148,23 +148,14 @@ class DateAndDecimalUtils {
         def messageSource =  Holders.grailsApplication.mainContext.getBean('messageSource')
         //def pattern = MessageUtility.message("default.date.format")
         Locale locale = LCH.getLocale()
-        println("***************************************************************")
-        println("locale:"+ locale)
-        println("***************************************************************")
         def pattern = messageSource.getMessage("default.date.format", null, locale)
         def value = it
         try {
             try {
                 value = it?.format(pattern)
-                println("***************************************************************")
-                println("value:"+ value)
-                println("***************************************************************")
             }
             catch (IllegalArgumentException x) {
                 x.printStackTrace()
-                println("***************************************************************")
-                println("Catch case:"+ x.printStackTrace())
-                println("***************************************************************")
                 value = it?.format('yyyy-MM-dd')
             }
         }
