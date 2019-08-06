@@ -31,7 +31,7 @@ class DateAndDecimalUtilsIntegrationTests {
     private final String FR = "fr"
     private final String CA = "CA"
     private final String ES = "es"
-    private final String AR = "SA"
+    private final String AR = "ar"
     private final String SA = "SA"
 
     @Before
