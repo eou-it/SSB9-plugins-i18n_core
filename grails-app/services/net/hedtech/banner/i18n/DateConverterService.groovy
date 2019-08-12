@@ -28,7 +28,6 @@ import java.util.regex.Pattern
 class DateConverterService {
 
     static transactional = false
-    private static final def Logger logger = Logger.getLogger(this.getClass())
 
     public static final int FIRST_DAY_OF_MONTH = -1
     public static final int LAST_DAY_OF_MONTH = -2
@@ -104,7 +103,7 @@ class DateConverterService {
 
         } catch (Exception exception) {
             String errorString = "Unable to perform conversion --  date: " + fromDateValue + ", fromULocaleString: " + fromULocaleString + ", toULocaleString: " + toULocaleString + ", fromDateFormatString: " + fromDateFormatString + ", toDateFormatString: " + toDateFormatString
-            logger.error errorString, exception
+            log.error errorString, exception
             return "error"
         }
     }
