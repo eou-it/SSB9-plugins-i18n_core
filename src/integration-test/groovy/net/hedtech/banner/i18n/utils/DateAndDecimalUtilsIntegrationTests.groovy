@@ -1,13 +1,15 @@
 /*******************************************************************************
- Copyright 2017-2018 Ellucian Company L.P. and its affiliates.
+ Copyright 2017-2019 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n.utils
 
 import grails.testing.mixin.integration.Integration
 import net.hedtech.banner.i18n.DateAndDecimalUtils
 import net.hedtech.banner.i18n.DateConverterService
+import net.hedtech.banner.i18n.MessageHelper
 import org.grails.plugins.testing.GrailsMockHttpServletRequest
 import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.servlet.support.RequestContextUtils
@@ -26,13 +28,20 @@ class DateAndDecimalUtilsIntegrationTests {
 
     private final String EN = "en"
     private final String US = "US"
-    private final String FRCA = "fr-CA"
+    private final String FR = "fr"
+    private final String CA = "CA"
     private final String ES = "es"
-    private final String ARSA = "ar_SA"
+    private final String AR = "ar"
+    private final String SA = "SA"
+
+    @Before
+    public void setUp() {
+        LocaleContextHolder.resetLocaleContext()
+    }
 
     @After
     public void tearDown() {
-        LocaleContextHolder.setLocale(new Locale(EN, US))
+        LocaleContextHolder.resetLocaleContext()
     }
 
     @Test
@@ -72,18 +81,22 @@ class DateAndDecimalUtilsIntegrationTests {
         LocaleContextHolder.setLocale(new Locale(EN, US))
         def dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
         assertEquals("MM/dd/yyyy", dateFormat)
+        LocaleContextHolder.resetLocaleContext()
 
-        LocaleContextHolder.setLocale(new Locale(FRCA))
+        LocaleContextHolder.setLocale(new Locale(FR, CA))
         dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
-        assertEquals("MM/dd/yyyy", dateFormat)
+        assertEquals("yyyy/mm/dd", dateFormat)
+        LocaleContextHolder.resetLocaleContext()
 
         LocaleContextHolder.setLocale(new Locale(ES))
         dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
         assertEquals("dd/MM/yyyy", dateFormat)
+        LocaleContextHolder.resetLocaleContext()
 
-        LocaleContextHolder.setLocale(new Locale(ARSA))
+        LocaleContextHolder.setLocale(new Locale(AR, SA))
         dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
         assertEquals("dd/MMMM/yyyy", dateFormat)
+        LocaleContextHolder.resetLocaleContext()
     }
 
 
