@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-version "9.32.1"
+version "9.33"
 group "i18n.core"
 
 apply plugin:"eclipse"
@@ -101,4 +101,13 @@ codenarc {
     maxPriority1Violations = Integer.MAX_VALUE
     maxPriority2Violations = Integer.MAX_VALUE
     maxPriority3Violations = Integer.MAX_VALUE
+}
+
+integrationTest {
+    ignoreFailures = true
+    testLogging.showStandardStreams = false
+}
+
+cobertura{
+    coverageFormats = ['xml','html']
 }
