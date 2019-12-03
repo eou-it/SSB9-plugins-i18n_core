@@ -115,6 +115,6 @@ class JavaScriptMessagesTagLib {
     }
 
     private addTimeKeys() {
-        return ["default.time.am","default.time.pm","default.time.increment","default.time.decrement","default.time.format", "default.date.time.error"] as Set
+        return ["default.time.am","default.time.pm","default.time.increment","default.time.decrement","default.time.format", "default.date.time.error", "default.timepicker.time.format"] as Set
     }
 }
