@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2009-2018 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2020 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
@@ -115,6 +115,6 @@ class JavaScriptMessagesTagLib {
     }
 
     private addTimeKeys() {
-        return ["default.time.am","default.time.pm","default.time.increment","default.time.decrement","default.time.format", "default.date.time.error"] as Set
+        return ["default.time.am","default.time.pm","default.time.increment","default.time.decrement","default.time.format", "default.date.time.error", "default.timepicker.time.format"] as Set
     }
 }
