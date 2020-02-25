@@ -11,6 +11,7 @@ import org.apache.log4j.Logger
 import org.grails.plugins.web.taglib.ValidationTagLib
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.util.ClassUtils
 
 import java.sql.Timestamp
@@ -52,7 +53,6 @@ class DateConverterService {
 
         try {
             Date fromDate
-
             //String fromULocaleString = fromLocaleString + "@calendar=" + fromCalendarString
             if(fromDateValue instanceof String) {
                 ULocale fromULocale = new ULocale(fromULocaleString)
@@ -372,11 +372,19 @@ class DateConverterService {
 
     public parseGregorianToDefaultCalendar(value) {
        try {
-           if(value instanceof Date) {
-                SimpleDateFormat sdf = new SimpleDateFormat(localizerService(code: "default.date.format"));
-                value = sdf.format(new Date(value.getTime()));
-           }
            String defaultDateFormat = localizerService(code: "default.date.format")
+           String currentLocale = LocaleContextHolder.getLocale().toString().toLowerCase()
+           if(value instanceof Date) {
+               if (isSpanishLocale(currentLocale)) {
+                   DateFormat df = new com.ibm.icu.text.SimpleDateFormat(defaultDateFormat, LocaleContextHolder.getLocale())
+                   DateFormatSymbols dateFormatSymbols = getShortMonthsForSpanishLocale(currentLocale)
+                   df.setDateFormatSymbols(dateFormatSymbols)
+                   value = df.format(value)
+               } else {
+                   SimpleDateFormat sdf = new SimpleDateFormat(localizerService(code: "default.date.format"));
+                   value = sdf.format(new Date(value.getTime()));
+               }
+           }
            def tempValue = convert(value,
                               getULocaleStringForCalendar('gregorian'),
                               getULocaleTranslationStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
@@ -559,5 +567,11 @@ class DateConverterService {
     public getDefaultCalendarWithTime(date, format) {
        String uLocaleString= getULocaleStringForCalendar(localizerService(code: "default.calendar", default: 'gregorian'))
        return convert(date, uLocaleString, getDefaultTranslationULocaleString(), format, format)
+    }
+
+    private static boolean isSpanishLocale(String localeString){
+        Pattern p = Pattern.compile("es_?.*")
+        Matcher m = p.matcher(localeString)
+        return m.find()
     }
 }
