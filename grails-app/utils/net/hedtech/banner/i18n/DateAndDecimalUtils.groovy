@@ -190,9 +190,9 @@ class DateAndDecimalUtils {
     }
 
 
-    public static boolean isSpanishLocaleString(String toULocaleString){
+    public static boolean isSpanishLocaleString(String localeString){
         Pattern p = Pattern.compile("es_?.*?@")
-        Matcher m = p.matcher(toULocaleString)
+        Matcher m = p.matcher(localeString)
         return m.find()
     }
 }
