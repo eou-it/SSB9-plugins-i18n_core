@@ -85,7 +85,7 @@ class DateAndDecimalUtilsIntegrationTests {
 
         LocaleContextHolder.setLocale(new Locale(FR, CA))
         dateFormat = DateAndDecimalUtils.formatDate("10/01/2010")
-        assertEquals("yyyy/mm/dd", dateFormat)
+        assertEquals("yyyy/MM/dd", dateFormat)
         LocaleContextHolder.resetLocaleContext()
 
         LocaleContextHolder.setLocale(new Locale(ES))
