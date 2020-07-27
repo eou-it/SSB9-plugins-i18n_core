@@ -1,6 +1,7 @@
 /*******************************************************************************
  Copyright 2017-2020 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
+
 package net.hedtech.banner.i18n.utils
 
 import grails.testing.mixin.integration.Integration
