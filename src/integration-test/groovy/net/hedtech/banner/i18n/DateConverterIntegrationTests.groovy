@@ -407,6 +407,12 @@ class DateConverterIntegrationTests extends Assert  {
     }
 
     @Test
+    void testConvertGregorianToDefaultCalendarWithTimeForArabicFormat(){
+        LocaleUtilities.setLocale(ARABIC_LOCALE)
+        assertEquals(dateConverterService.convertGregorianToDefaultCalendarWithTime(new Date((2012 - 1900),0,1,13,32,12),"dd/MMMM/yyyy hh:mm a","hh:mm a"),"06/صفر/1433 01:32 م")
+    }
+
+    @Test
     void testConvertDefaultCalendarToGregorianWithTime(){
         assertEquals(dateConverterService.convertDefaultCalendarToGregorianWithTime(new Date((2012 - 1900),0,1),"yyyy/MM/dd"),"2012/01/01")
     }
