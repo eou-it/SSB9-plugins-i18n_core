@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2009-2017 Ellucian Company L.P. and its affiliates.
+ Copyright 2009-2020 Ellucian Company L.P. and its affiliates.
  *******************************************************************************/
 package net.hedtech.banner.i18n
 
@@ -404,6 +404,12 @@ class DateConverterIntegrationTests extends Assert  {
     @Test
     void testConvertGregorianToDefaultCalendarWithTime(){
         assertEquals(dateConverterService.convertGregorianToDefaultCalendarWithTime(new Date((2012 - 1900),0,1),"yyyy/MM/dd"),"2012/01/01")
+    }
+
+    @Test
+    void testConvertGregorianToDefaultCalendarWithTimeForArabicFormat(){
+        LocaleUtilities.setLocale(ARABIC_LOCALE)
+        assertEquals(dateConverterService.convertGregorianToDefaultCalendarWithTime(new Date((2012 - 1900),0,1,13,32,12),"dd/MMMM/yyyy hh:mm a","hh:mm a"),"06/صفر/1433 01:32 م")
     }
 
     @Test

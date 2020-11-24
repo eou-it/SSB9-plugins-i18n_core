@@ -1,13 +1,14 @@
 /*******************************************************************************
-Copyright 2017-2019 Ellucian Company L.P. and its affiliates.
+Copyright 2017-2020 Ellucian Company L.P. and its affiliates.
 *******************************************************************************/
 
 package net.hedtech.banner.i18n
 
 import com.ibm.icu.text.DateFormat
+import com.ibm.icu.text.DateFormatSymbols
 import com.ibm.icu.util.Calendar
 import com.ibm.icu.util.ULocale
-import org.apache.log4j.Logger
+import grails.converters.JSON
 import org.grails.plugins.web.taglib.ValidationTagLib
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -15,11 +16,8 @@ import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.util.ClassUtils
 
 import java.sql.Timestamp
-import com.ibm.icu.text.DateFormatSymbols
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import grails.converters.JSON
-
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -248,6 +246,13 @@ class DateConverterService {
                 format)
     }
 
+    public convertGregorianToDefaultCalendarWithTime(date, format , String fromTimeFormat) {
+        return convert(date,
+                getDefaultTranslationULocaleString(),
+                getULocaleStringForCalendar(localizerService(code: "default.calendar",default:'gregorian')),
+                "MM/dd/yyyy " + fromTimeFormat ,
+                format)
+    }
 
     private Calendar adjustDate(Calendar calendar, String adjustDays) {
 
