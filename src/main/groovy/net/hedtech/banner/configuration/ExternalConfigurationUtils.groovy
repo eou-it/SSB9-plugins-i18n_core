@@ -111,11 +111,9 @@ class ExternalConfigurationUtils {
         String propertyValue = System.getProperty(configPropertyName) ?: System.getenv(configPropertyName)
         if(propertyValue){
             System.setProperty("logging.config",propertyValue)
-        }
-        String loggingConfig = System.getProperty('logging.config')
-        if(loggingConfig){
-            println "${appname} is using the Logback configuration from ${loggingConfig}."
+            println "${appname} is using the Logback configuration from ${propertyValue}."
         } else {
+            System.clearProperty("logging.config")
             println "${appname} is using the Logback configuration from grails-app/conf."
         }
     }
